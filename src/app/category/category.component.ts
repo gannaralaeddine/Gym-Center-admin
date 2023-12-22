@@ -26,9 +26,5 @@ export class CategoryComponent implements OnInit
       error: (err) => console.log(err)
     })
 
-    // this.categoryService.getAllCategories().subscribe({
-    //   next :(val)=> console.log(val),
-    //   error: (err) => console.log(err)
-    // })
   }
 }
