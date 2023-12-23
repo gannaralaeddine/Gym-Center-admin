@@ -11,42 +11,42 @@
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Titre</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Gestion</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Titre</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Description</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex px-2 py-1">
+                <tr *ngFor="let category of categories">
+                    <td class="text-center">
+                        <div>
                           <div>
                             <img src="assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
                           </div>
                         </div>
                       </td>
 
-                  <td>
-                    <div class="d-flex px-2 py-1">
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">John Michael</h6>
-                        <p class="text-xs text-secondary mb-0">john&#64;creative-tim.com</p>
+                  <td class="text-center">
+                    <div> 
+                      <div>
+                        <h6 class="mb-0 text-sm">{{category.catName}}</h6>
                       </div>
                     </div>
                   </td>
 
-                   <td>
-                    <p class="text-xs font-weight-bold mb-0">Manager</p>
-                    <p class="text-xs text-secondary mb-0">Organization</p>
+                   <td class="text-center">
+                    <h6 class="mb-0 text-sm">{{category.catDescription}}</h6>
                   </td>
 
 
 
                   <td class="align-middle">
-                    <a href="javascript:" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                      Edit
-                    </a>
+                    <div class="ms-auto text-center">
+                      <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="material-icons text-sm me-2">edit</i>Éditer</a>
+                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;" (click)="deleteCategory(category.catId)"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
+                    </div>
+                    
                   </td>
 
                 </tr>
