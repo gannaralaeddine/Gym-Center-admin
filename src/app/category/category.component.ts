@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, inject} from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { NgFor } from '@angular/common';
+import { AddCategoryComponent } from "./add-category/add-category.component";
 
 @Component({
-  selector: 'app-category',
-  standalone: true,
-  imports: [NgFor],
-  templateUrl: './category.component.html',
-  styleUrl: './category.component.css'
+    selector: 'app-category',
+    standalone: true,
+    templateUrl: './category.component.html',
+    styleUrl: './category.component.css',
+    imports: [NgFor, AddCategoryComponent]
 })
 export class CategoryComponent implements OnInit
 {
@@ -16,8 +17,7 @@ export class CategoryComponent implements OnInit
 
   public constructor(private categoryService: CategoryService) {}
 
-  ngOnInit() { this.getAllCategories(); this.getCategory(2) }
-
+  ngOnInit() { this.getAllCategories() }
 
   getAllCategories()
   {

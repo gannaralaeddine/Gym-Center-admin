@@ -10,6 +10,8 @@ import { HomeComponent } from './app/home/home.component';
 import { LoginComponent } from './app/login/login.component';
 import { ProfileComponent } from './app/profile/profile.component';
 import { RegisterComponent } from './app/register/register.component';
+import { routes } from './app/app.routes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /*bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err))*/
@@ -17,14 +19,7 @@ import { RegisterComponent } from './app/register/register.component';
   bootstrapApplication(AppComponent, {
     providers:[
       importProvidersFrom(HttpClientModule),
-      provideRouter([
-        { path: '', component: LoginComponent },
-        { path: 'register', component: RegisterComponent },
-        { path: 'home', component: HomeComponent },
-        { path: 'dashboard', component: DashbordComponent },
-        { path: 'profile', component: ProfileComponent },
-        { path: 'category', component: CategoryComponent }
-      ])
+      provideRouter(routes)
     ]
   })
   .catch((err) => console.error(err))

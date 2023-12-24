@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable} from '@angular/core';
+import { Inject, Injectable} from '@angular/core';
+import { Category } from '../category/category';
+import { AddCategoryComponent } from '../category/add-category/add-category.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +30,10 @@ export class CategoryService
   public updateCategory(id: any, category:any) 
   {
     return this.http.put(this.API_GYM_CENTER + "/update-category/" + id,category)
+  }
+
+  public addCategory(category:any) 
+  {
+    return this.http.post(this.API_GYM_CENTER + "/add-category",category)
   }
 }
