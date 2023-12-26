@@ -21,7 +21,6 @@ export class AddCategoryComponent implements OnInit
   isCategoryUpdated: Boolean
   isUpdateButtonClicked!: Boolean
   category!: Category
-  categoryFormTitle!: string
 
   constructor(
     private categoryFormBuilder: FormBuilder, 
