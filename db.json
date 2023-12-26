@@ -1,0 +1,31 @@
+{
+  "categories": [
+    {
+      "catName": "catégorie 1",
+      "catDescription": "catégorie 1",
+      "catImage": "cat1.jpg",
+      "id": 1
+    },
+    {
+      "catName": "firas",
+      "catDescription": "firas",
+      "catImage": "firas.jpg",
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "catName": "ghassen",
+      "catDescription": "de",
+      "catImage": "de",
+      "id": 4
+    },
+    {
+      "catName": "catégorie 10",
+      "catDescription": "frf",
+      "catImage": "frr",
+      "id": 5
+    }
+  ]
+}
