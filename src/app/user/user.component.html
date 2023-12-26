@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Liste des utilisateurs</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">E-mail</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nom & Prénom</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of usersList">
+              <td class="text-center">
+                <div>
+                  <div>
+                    <img ngSrc="assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1" height="400" width="400">
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div>
+                  <div>
+                    <h6 class="mb-0 text-sm">{{user.userEmail}}</h6>
+                  </div>
+                </div>
+              </td>
+
+              <td class="text-center">
+                <h6 class="mb-0 text-sm"> {{ user.userFirstName }} {{ user.userLastName }}</h6>
+              </td>
+
+              <td class="align-middle">
+                <div class="ms-auto text-center">
+                  <a class="btn btn-link px-3 mb-0" href="javascript:"><i class="material-icons text-sm me-2">assignment</i>Détails</a>
+                  <a class="btn btn-link text-dark px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">edit</i>Éditer</a>
+                  <a class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
+                </div>
+              </td>
+
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pl-1" id="exampleModalLabel">Ajouter Catégorie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-add-category></app-add-category>
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>-->
+    </div>
+  </div>
+</div>
