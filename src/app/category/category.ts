@@ -11,4 +11,5 @@ export class Category
         this.catDescription = description
         this.catImage = image
     }
+
 }

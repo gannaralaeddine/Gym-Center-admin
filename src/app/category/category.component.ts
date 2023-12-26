@@ -2,6 +2,8 @@ import {Component, Injector, OnInit, inject} from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { NgFor } from '@angular/common';
 import { AddCategoryComponent } from "./add-category/add-category.component";
+import { SharedService } from '../services/shared-service.service';
+import { Category } from './category';
 
 @Component({
     selector: 'app-category',
@@ -12,10 +14,12 @@ import { AddCategoryComponent } from "./add-category/add-category.component";
 })
 export class CategoryComponent implements OnInit
 {
-
   categories: any
+  addComponent!: AddCategoryComponent
 
-  public constructor(private categoryService: CategoryService) {}
+  public constructor(
+    private categoryService: CategoryService, 
+    private sharedService: SharedService) {}
 
   ngOnInit() { this.getAllCategories() }
 
@@ -50,5 +54,17 @@ export class CategoryComponent implements OnInit
       next: (val) => console.log(val),
       error: (err) => console.error(err)
     })
+  }
+
+  sendCategoryData(categoryName: string, categoryDescription: string, categoryImage: string)
+  {
+    this.sharedService.setCategory(categoryName,categoryDescription,categoryImage)
+  }
+
+  getUpdateFormPopulated(category: Category)
+  {
+    /*this.getSelectedCategory(category.catName,category.catDescription,category.catImage)
+    this.sharedService.populateUpdateForm()*/
+   
   }
 }
