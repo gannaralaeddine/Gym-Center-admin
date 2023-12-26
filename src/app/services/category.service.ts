@@ -17,22 +17,22 @@ export class CategoryService
     return this.http.get(this.API_GYM_CENTER + "/retrieve-all-categories")
   }
 
-  public getCategory(id: any) 
+  public getCategory(id: any)
   {
     return this.http.get(this.API_GYM_CENTER + "/retrieve-category/" + id)
   }
 
-  public deleteCategory(id: any) 
+  public deleteCategory(id: any)
   {
     return this.http.delete(this.API_GYM_CENTER + "/delete-category/" + id)
   }
 
-  public updateCategory(id: any, category:any) 
+  public updateCategory(id: any, category:any)
   {
     return this.http.put(this.API_GYM_CENTER + "/update-category/" + id,category)
   }
 
-  public addCategory(category:any) 
+  public addCategory(category:any)
   {
     return this.http.post(this.API_GYM_CENTER + "/add-category",category)
   }

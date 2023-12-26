@@ -22,6 +22,7 @@ export class AppComponent {
   isAuthenticated = true
 
 
+
   public constructor(private router: Router)
   {
       if (this.isAuthenticated)
