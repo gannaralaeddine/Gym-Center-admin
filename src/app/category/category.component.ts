@@ -1,27 +1,44 @@
 import {Component, Injector, OnInit, inject} from '@angular/core';
 import { CategoryService } from '../services/category.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { AddCategoryComponent } from "./add-category/add-category.component";
 import { SharedService } from '../services/shared-service.service';
 import { Category } from './category';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-category',
     standalone: true,
     templateUrl: './category.component.html',
     styleUrl: './category.component.css',
-    imports: [NgFor, AddCategoryComponent]
+    imports: [NgFor, AddCategoryComponent,ReactiveFormsModule,NgIf]
 })
 export class CategoryComponent implements OnInit
 {
   categories: any
-  addComponent!: AddCategoryComponent
+  categoryFormValue !: FormGroup
+  isCategoryUpdated!: Boolean
+  categoryId!: number
+  category!: Category
 
   public constructor(
-    private categoryService: CategoryService, 
-    private sharedService: SharedService) {}
+    private categoryService: CategoryService,
+    private categoryFormBuilder: FormBuilder,
+    private sharedService: SharedService) 
+    {
+      this.isCategoryUpdated = false
+    }
+  
 
-  ngOnInit() { this.getAllCategories() }
+  ngOnInit() 
+  { 
+    this.getAllCategories()
+    this.categoryFormValue = this.categoryFormBuilder.group({
+      categoryName : '',
+      categoryDescription : '',
+      categoryImage : ''
+    })
+  }
 
   getAllCategories()
   {
@@ -40,10 +57,16 @@ export class CategoryComponent implements OnInit
     })
   }
 
-  updateCategory(id:any,category:any)
+  updateCategory(id:any)
   {
-    this.categoryService.updateCategory(id,category).subscribe({
-      complete: () => this.getAllCategories(),
+    this.categoryService.updateCategory(id,new Category(
+      this.categoryFormValue.value.categoryName,
+      this.categoryFormValue.value.categoryDescription,
+      this.categoryFormValue.value.categoryImage)).subscribe({
+      complete: () => {
+        this.isCategoryUpdated = true,
+        this.getAllCategories()
+      },
       error:(err)=> console.error(err)
     })
   }
@@ -56,15 +79,17 @@ export class CategoryComponent implements OnInit
     })
   }
 
-  sendCategoryData(categoryName: string, categoryDescription: string, categoryImage: string)
+  sendCategoryData(categoryName: any, categoryDescription: any, categoryImage: any)
   {
     this.sharedService.setCategory(categoryName,categoryDescription,categoryImage)
+    console.log(this.sharedService.categoryObject)
   }
 
-  getUpdateFormPopulated(category: Category)
+ populateUpdateForm(category:any)
   {
-    /*this.getSelectedCategory(category.catName,category.catDescription,category.catImage)
-    this.sharedService.populateUpdateForm()*/
-   
+    this.categoryId = category.id
+    this.categoryFormValue.controls['categoryName'].setValue(category.catName)
+    this.categoryFormValue.controls['categoryDescription'].setValue(category.catDescription)
+    this.categoryFormValue.controls['categoryImage'].setValue(category.catImage)
   }
 }

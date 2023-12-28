@@ -11,16 +11,27 @@ import { CategoryComponent } from '../category/category.component';
 export class SharedService
 {
   isButtonUpdateClicked!: Boolean
-  categoryObject!: Category
+  //categoryObject!: Category
+  categoryObject!: any
 
-  private category = new BehaviorSubject(this.categoryObject)
-  selectedCategory = this.category.asObservable()
+  /*private category = new BehaviorSubject(this.categoryObject)
+  selectedCategory = this.category.asObservable()*/
   
   constructor() {}
 
-  setCategory(categoryName: string,categoryDescription: string,categoryImage: string) 
+  setCategory(categoryName: any,categoryDescription: any,categoryImage: any) 
+  { 
+    this.categoryObject =  {
+      "catName": categoryName,
+      "catDescription" : categoryDescription,
+      "catImage" : categoryImage
+    }
+  }
+
+  getCategory():any {return this.categoryObject}
+  /*setCategory(categoryName: string,categoryDescription: string,categoryImage: string) 
   { 
     this.categoryObject = new Category(categoryName,categoryDescription,categoryImage)
     this.category.next(this.categoryObject) 
-  }
+  }*/
 }

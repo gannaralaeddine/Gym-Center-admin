@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable, OnInit } from '@angular/core';
+import { Component, Inject, Injectable, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../category';
@@ -18,23 +18,13 @@ export class AddCategoryComponent implements OnInit
 {
   categoryFormValue !: FormGroup
   isCategoryAdded: Boolean
-  isCategoryUpdated: Boolean
-  isUpdateButtonClicked!: Boolean
-  category!: Category
 
   constructor(
     private categoryFormBuilder: FormBuilder, 
     private categoryService: CategoryService, 
-    private categoryComponent: CategoryComponent,
-    private sharedService: SharedService)
+    private categoryComponent: CategoryComponent)
   {
     this.isCategoryAdded = false
-    this.isCategoryUpdated = false
-    this.sharedService.selectedCategory.subscribe({
-      next: (value) => {this.category = value},
-      error: (err) => console.error(err)
-    })
-    console.log(this.category)
   }
 
   ngOnInit()
@@ -62,7 +52,7 @@ export class AddCategoryComponent implements OnInit
     })
   }
 
-  updateCategory()
+  /*updateCategory()
   {
     this.categoryService.updateCategory(this.category.catId,this.category).subscribe({
       next: () => {
@@ -70,14 +60,5 @@ export class AddCategoryComponent implements OnInit
       },
       error: (err) => console.error(err)
     })
-  }
-
-  populateUpdateForm()
-  {
-    this.categoryFormValue.value.categoryName = this.category.catName
-    this.categoryFormValue.value.categoryDescription = this.category.catDescription
-    this.categoryFormValue.value.categoryImage = this.category.catImage
-  
-  }
-
+  }*/
 }

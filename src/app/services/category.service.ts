@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable} from '@angular/core';
+import { Category } from '../category/category';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class CategoryService
   public getCategory(id: any)
   {
     //return this.http.get(this.API_GYM_CENTER + "/retrieve-category/" + id)
-    return this.http.get(this.API_GYM_CENTER + id)
+    return this.http.get<any>(this.API_GYM_CENTER + id)
   }
 
   public deleteCategory(id: any)
