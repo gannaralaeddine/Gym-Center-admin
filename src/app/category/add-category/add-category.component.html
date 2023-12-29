@@ -1,48 +1,46 @@
 
-    <div class="modal-content" >
+<div class="modal-content" style="margin: 10px">
 
-      <div class="modal-header" >
-        <h5 class="modal-title pl-1" id="exampleModalLabel">Ajouter Catégorie</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="isCategoryAdded = false">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    
-      <div class="modal-body">
-    
-        <div *ngIf="!isCategoryAdded">
-          <form [formGroup]="categoryFormValue" >
-        
-              <div class="form-group">
-                <label for="categoryNameInput" class="text-dark font-weight-bold" >Nom Catégorie</label>
-                <input type="email" class="form-control border border-secondary pl-2 round" id="categoryNameInput" placeholder="saisir nom catégorie" formControlName="categoryName">
+  <div class="modal-header">
+
+    <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Catégorie</h1>
+    <h1 class="modal-title pl-1" *ngIf="!isAddOperation" >Éditer Catégorie</h1>
+
+    <button type="button" class="close" >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div>
+      <form [formGroup]="categoryFormValue" >
+
+            <div class="form-group">
+              <label for="categoryNameInput" class="text-dark font-weight-bold" >Nom Catégorie</label>
+              <input type="email" class="form-control border border-secondary pl-2 round" id="categoryNameInput" placeholder="saisir nom catégorie" formControlName="categoryName">
+            </div>
+
+            <div class="form-group">
+              <label for="categoryDescriptionInput" class="text-dark font-weight-bold">Description Catégorie</label>
+              <textarea type="text" class="form-control border border-secondary pl-2 round" id="categoryDescriptionInput" placeholder="saisir description catégorie" formControlName="categoryDescription"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="categoryImageInput" class="text-dark font-weight-bold">Nom Image Catégorie</label>
+                <input type="text" class="form-control border border-secondary pl-2 round" id="categoryImageInput" placeholder="saisir nom image catégorie" formControlName="categoryImage">
+            </div>
+
+            <div class="row">
+              <div class="col text-center">
+                <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="addCategory()" *ngIf="isAddOperation">ajouter</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="updateCategory(categoryId)" *ngIf="!isAddOperation">Éditer</button>
               </div>
-        
-              <div class="form-group">
-                <label for="categoryDescriptionInput" class="text-dark font-weight-bold">Description Catégorie</label>
-                <textarea type="text" class="form-control border border-secondary pl-2 round" id="categoryDescriptionInput" placeholder="saisir description catégorie" formControlName="categoryDescription"></textarea>
-              </div>
-        
-              <div class="form-group">
-                  <label for="categoryImageInput" class="text-dark font-weight-bold">Nom Image Catégorie</label>
-                  <input type="text" class="form-control border border-secondary pl-2 round" id="categoryImageInput" placeholder="saisir nom image catégorie" formControlName="categoryImage">
-                </div>
-        
-                <div class="row">
-                  <div class="col text-center">
-                    <button type="button" class="btn btn-dark mr-3" data-dismiss="modal">annuler</button>
-                    <button type="button" class="btn btn-primary mr-3" (click)="addCategory()">ajouter</button>
-                  </div>
-                </div>
-          </form>
-        </div>
-        
-        
-        <div class="text-center"  *ngIf="isCategoryAdded">
-              <img class="rounded" src="./assets/img/green-check.jpg" height="70" width="70 ">
-              <p class="text-center text-success" style="font-size: 25px;">Catégorie ajoutée avec succès</p>
-              <button class="btn btn-primary text-center" (click)="isCategoryAdded = false">ajouter catégorie</button>
-        </div>
-      </div>
-      
+            </div>
+      </form>
     </div>
+
+  </div>
+
+</div>

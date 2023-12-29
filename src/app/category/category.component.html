@@ -5,8 +5,8 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
             <div class="d-flex ml-6">
-              <div class="ml-5"><h6 class="text-white text-capitalize pl-4 pt-2 add-category-position">gestion catégorie</h6></div>
-              <div class="ml-auto transparent-color mr-4 pr-5 text-left"><a type="button" class="btn btn-success mr-3 text-white add-category-position" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</a></div>
+              <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position">gestion catégorie</h3></div>
+              <div class="ml-auto transparent-color mr-4 pr-5 text-left"><button (click)="addOrUpdateDialog(0)" type="button" class="btn btn-success mr-3 text-white add-category-position"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</button></div>
             </div>
           </div>
         </div>
@@ -27,13 +27,13 @@
                     <td class="text-center">
                         <div>
                           <div>
-                            <img src="assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                            <img [src]="getCategoryImage(category.catImage)" class="avatar avatar-sm me-3 border-radius-lg" alt="Category image">
                           </div>
                         </div>
                       </td>
 
                   <td class="text-center">
-                    <div> 
+                    <div>
                       <div>
                         <h6 class="mb-0 text-sm">{{category.catName}}</h6>
                       </div>
@@ -46,8 +46,8 @@
 
                   <td class="align-middle">
                     <div class="ms-auto text-center">
-                      <button class="btn btn-link text-dark px-3 mb-0" data-toggle="modal" data-target="#updateModal" (click)="populateUpdateForm(category)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
-                      <a class="btn btn-link text-danger px-3 mb-0" href="javascript:;"data-toggle="modal" data-target="#deleteModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
+                      <button class="btn btn-link text-dark px-3 mb-0" (click)="addOrUpdateDialog(category.catId)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
+                      <a class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#deleteModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
                     </div>
                   </td>
 
@@ -60,65 +60,9 @@
     </div>
   </div>
 
-  <!-- Add Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <app-add-category></app-add-category> <!--  -->
-  </div>
-</div>
 
-<!--Update Modal-->
 
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" >
 
-      <div class="modal-header" >
-        <h5 class="modal-title pl-1" id="updateModalLabel">Modifier Catégorie</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="isCategoryUpdated = false">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    
-      <div class="modal-body">
-    
-          <div>
-            <form [formGroup]="categoryFormValue" *ngIf="!isCategoryUpdated">
-          
-                <div class="form-group">
-                  <label for="categoryNameInput" class="text-dark font-weight-bold" >Nom Catégorie</label>
-                  <input type="email" class="form-control border border-secondary pl-2 round" id="categoryNameInput" placeholder="saisir nom catégorie" formControlName="categoryName">
-                </div>
-          
-                <div class="form-group">
-                  <label for="categoryDescriptionInput" class="text-dark font-weight-bold">Description Catégorie</label>
-                  <textarea type="text" class="form-control border border-secondary pl-2 round" id="categoryDescriptionInput" placeholder="saisir description catégorie" formControlName="categoryDescription"></textarea>
-                </div>
-          
-                <div class="form-group">
-                    <label for="categoryImageInput" class="text-dark font-weight-bold">Nom Image Catégorie</label>
-                    <input type="text" class="form-control border border-secondary pl-2 round" id="categoryImageInput" placeholder="saisir nom image catégorie" formControlName="categoryImage">
-                  </div>
-          
-                  <div class="row">
-                    <div class="col text-center">
-                      <button type="button" class="btn btn-dark mr-3" data-dismiss="modal">annuler</button>
-                      <button type="button" class="btn btn-primary mr-3" (click)="updateCategory(categoryId)">Modifier</button>
-                    </div>
-                  </div>
-            </form>
-          </div>
-          
-          
-          <div class="text-center" *ngIf="isCategoryUpdated">
-                <img class="rounded" src="./assets/img/green-check.jpg" height="70" width="70 ">
-                <p class="text-center text-success" style="font-size: 25px;">Catégorie modifiée avec succès</p>
-          </div>
-      </div>
-      
-    </div>
-  </div>
-</div>
 
 
 <!-- Delete Modal -->
