@@ -1,15 +1,19 @@
-export class Category 
+import {FileHandleModule} from "../file-handle/file-handle.module";
+
+export class Category
 {
     catId!:number
     catName!: string
     catDescription!: string
     catImage!: string
+    catImages!: FileHandleModule[]
 
-    constructor(name:string, description: string, image: string)
+    constructor(catName: string, catDescription: string, catImage: string, catImages: FileHandleModule[])
     {
-        this.catName = name
-        this.catDescription = description
-        this.catImage = image
+        this.catName = catName
+        this.catDescription = catDescription
+        this.catImage = catImage
+        this.catImages = catImages
     }
 
 }

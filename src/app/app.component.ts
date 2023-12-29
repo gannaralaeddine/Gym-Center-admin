@@ -16,12 +16,7 @@ import { HttpClientModule} from '@angular/common/http';
 })
 export class AppComponent {
   title = 'Gym-Center-admin';
-  welcomeLogo = "assets/img/logo-ct.png"
-  static gymCenterEntryPoint = "http://localhost:8089/gym-center"
-
   isAuthenticated = true
-
-
 
   public constructor(private router: Router)
   {
@@ -34,9 +29,6 @@ export class AppComponent {
         this.router.navigate([""])
       }
 
-      // this.http.get("http://localhost:8089/gym-center/category/retrieve-all-categories").subscribe((res) => {
-      //   console.log(res)
-      // })
   }
 
 }
