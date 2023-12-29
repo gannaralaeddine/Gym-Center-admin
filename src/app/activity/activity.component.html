@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <div class="d-flex ml-6">
+              <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position">gestion activité</h3></div>
+              <!--<div class="ml-auto transparent-color mr-4 pr-5 text-left"><a type="button" class="btn btn-success mr-3 text-white add-category-position" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</a></div>-->
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body px-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Titre</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Description</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let activity of activities">
+                    <td class="text-center">
+                        <div>
+                          <div>
+                            <img src="assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                          </div>
+                        </div>
+                      </td>
+
+                  <td class="text-center">
+                    <div> 
+                      <div>
+                        <h6 class="mb-0 text-sm">{{activity.actName}}</h6>
+                      </div>
+                    </div>
+                  </td>
+
+                   <td class="text-center">
+                    <h6 class="mb-0 text-sm">{{activity.actDescription}}</h6>
+                  </td>
+
+                  <td class="align-middle">
+                    <div class="ms-auto text-center">
+                      <button class="btn btn-link text-dark px-3 mb-0"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
+                      <button class="btn btn-link text-danger px-3 mb-0"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
+                    </div>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

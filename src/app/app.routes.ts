@@ -6,7 +6,7 @@ import { LoginComponent } from "./login/login.component";
 import { CategoryComponent } from './category/category.component';
 import {RegisterComponent} from "./register/register.component";
 import {UserComponent} from "./user/user.component";
-import {AddCategoryComponent} from "./category/add-category/add-category.component";
+import { ActivityComponent } from './activity/activity.component';
 
 export const routes: Routes = [
 
@@ -16,6 +16,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'category', component: CategoryComponent },
-  { path: 'add-category', component: AddCategoryComponent },
+  { path: 'activity', component: ActivityComponent },
   { path: 'users', component: UserComponent }
 ];
