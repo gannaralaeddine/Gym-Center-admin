@@ -11,15 +11,9 @@ export class UserService {
 
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
-  public getAllUsers()
-  {
-    return this.http.get(this.utils.API_GYM_CENTER + "/user/retrieve-all-users")
-  }
+  public getAllUsers()  { return this.http.get(this.utils.API_GYM_CENTER + "/user/retrieve-all-users") }
 
-  public getNumberOfUsers()
-  {
-    return this.http.get(this.utils.API_GYM_CENTER + "/user/number-of-users")
-  }
+  public getNumberOfUsers()  { return this.http.get(this.utils.API_GYM_CENTER + "/user/number-of-users") }
 
   public addMember(member: any): Observable<Object>
   {
