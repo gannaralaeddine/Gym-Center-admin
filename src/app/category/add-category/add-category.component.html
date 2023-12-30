@@ -28,14 +28,15 @@
 
           <div class="form-group">
             <label for="formFileMultiple" class="text-dark font-weight-bold">Image Catégorie</label>
-            <input type="file" class="form-control border border-secondary" #selectFile id="formFileMultiple" (change)="onFileSelected($event)">
+            <input type="file" class="form-control border border-secondary" #selectFile id="formFileMultiple" (change)="onFileSelected($event)" multiple>
           </div>
 
             <div class="row">
               <div class="col text-center">
                 <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
                 <button type="button" class="btn btn-primary mr-3" (click)="addCategoryWithOneImage()" *ngIf="isAddOperation">ajouter</button>
-                <button type="button" class="btn btn-primary mr-3" (click)="updateCategory(categoryId)" *ngIf="!isAddOperation">Éditer</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="addImagesToCategory(categoryId)" *ngIf="!isAddOperation">add images</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="updateCategoryDetails(categoryId)" *ngIf="!isAddOperation">Éditer</button>
               </div>
             </div>
       </form>

@@ -1,6 +1,7 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {UtilsService} from "../serviceutils/utils.service";
+import { UtilsService } from "../serviceutils/utils.service";
+import {Category} from "../category/category";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,9 @@ export class CategoryService
 
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
-  public addCategoryWithOneImage(category: FormData) { return this.http.post(this.utils.API_GYM_CENTER + "/category/create-one-category", category ) }
+  public addCategoryWithOneImage(category: FormData) { return this.http.post(this.utils.API_GYM_CENTER + "/category/create-category", category ) }
 
-  public addCategory(category:any)  { return this.http.post(this.utils.API_GYM_CENTER + "/category/add-category",category) }
+  public addImagesToCategory(category: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/category/add-images-to-category", category ) }
 
   public getAllCategories()  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-all-categories") }
 
@@ -21,8 +22,8 @@ export class CategoryService
 
   public getCategoryImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/category/get-image/" + imageName }
 
-  public updateCategory(id: any, category:any) {return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category/" + id,category) }
+  public updateCategory(id: number, category: Category) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category", category) }
 
-  public deleteCategory(id: any)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
+  public deleteCategory(id: number)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
 
 }
