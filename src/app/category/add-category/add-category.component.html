@@ -6,7 +6,7 @@
     <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Catégorie</h1>
     <h1 class="modal-title pl-1" *ngIf="!isAddOperation" >Éditer Catégorie</h1>
 
-    <button type="button" class="close" >
+    <button type="button" class="close" (click)="closeDialog()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -34,7 +34,7 @@
             <div class="row">
               <div class="col text-center">
                 <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
-                <button type="button" class="btn btn-primary mr-3" (click)="addCategory()" *ngIf="isAddOperation">ajouter</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="addCategory()" *ngIf="isAddOperation">Ajouter</button>
                 <button type="button" class="btn btn-primary mr-3" (click)="updateCategory(categoryId)" *ngIf="!isAddOperation">Éditer</button>
               </div>
             </div>

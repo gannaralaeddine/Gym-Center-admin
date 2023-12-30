@@ -25,14 +25,11 @@ export class AddCategoryComponent implements OnInit
     private categoryService: CategoryService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddCategoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any)
-  {
-    this.categoryId = data.categoryId
-  }
+    @Inject(MAT_DIALOG_DATA) public data: any) { this.categoryId = data.categoryId }
 
   ngOnInit()
   {
-    if ( this.categoryId )
+    if ( this.categoryId != 0 )
     {
       this.isAddOperation = false;
       this.getCategoryById(this.categoryId)
@@ -43,6 +40,7 @@ export class AddCategoryComponent implements OnInit
       categoryDescription : '',
       categoryImage : ''
     })
+
   }
 
   addCategory()
@@ -74,8 +72,9 @@ export class AddCategoryComponent implements OnInit
     })
   }
 
-  closeDialog() {
-    this.dialogRef.close();
+  closeDialog() 
+  {
+    this.dialogRef.close()
   }
 
   getCategoryById(id: number)

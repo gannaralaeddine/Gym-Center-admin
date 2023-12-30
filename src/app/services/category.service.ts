@@ -13,7 +13,7 @@ export class CategoryService
 
   public getAllCategories()  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-all-categories") }
 
-  public getCategory(id: number)  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
+  public getCategory(id: any)  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
 
   public deleteCategory(id: any)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
 
