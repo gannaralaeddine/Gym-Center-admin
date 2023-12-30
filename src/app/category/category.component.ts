@@ -20,17 +20,10 @@ export class CategoryComponent implements OnInit
 
   public constructor(
     private categoryService: CategoryService,
-    private dialogRef: MatDialog
-    )
-    {
-      this.isCategoryUpdated = false
-    }
+    private dialogRef: MatDialog) { this.isCategoryUpdated = false }
 
 
-  ngOnInit()
-  {
-    this.getAllCategories()
-  }
+  ngOnInit() { this.getAllCategories() }
 
   getAllCategories()
   {
@@ -55,7 +48,8 @@ export class CategoryComponent implements OnInit
   }
 
 
-  addOrUpdateDialog(categoryId: number){
+  addOrUpdateDialog(categoryId: number)
+  {
 
     const popup = this.dialogRef.open(AddCategoryComponent, {
       width: "40%",
@@ -63,7 +57,7 @@ export class CategoryComponent implements OnInit
       exitAnimationDuration: "1000ms",
       data: { categoryId: categoryId }
     })
-    popup.afterClosed().subscribe(item =>{
+    popup.afterClosed().subscribe(() =>{
       this.getAllCategories()
     })
   }

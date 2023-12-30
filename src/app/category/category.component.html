@@ -47,7 +47,7 @@
                   <td class="align-middle">
                     <div class="ms-auto text-center">
                       <button class="btn btn-link text-dark px-3 mb-0" (click)="addOrUpdateDialog(category.catId)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
-                      <a class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#deleteModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
+                      <button class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#deleteModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
                     </div>
                   </td>
 
@@ -75,12 +75,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        Voulez-vous vraiment supprimer cette catégorie ?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-dark" data-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary">Supprimer</button>
+      <div class="modal-body text-center">
+        <div>Voulez-vous vraiment supprimer cette catégorie ?</div>
+        <div class="text-center mt-2">
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-primary ml-1">Supprimer</button>
+        </div>
       </div>
     </div>
   </div>

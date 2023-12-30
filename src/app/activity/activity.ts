@@ -8,11 +8,10 @@ export class Activity
     actImage!: string
     category!: Category
 
-    constructor (name:string, description: string, image: string, cat: Category)
+    constructor (name:string, description: string, image: string)
     {
         this.actName = name
         this.actDescription = description
         this.actImage = image
-        this.category = cat
     }
 }
