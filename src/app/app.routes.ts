@@ -7,7 +7,7 @@ import { CategoryComponent } from './category/category.component';
 import {RegisterComponent} from "./register/register.component";
 import {UserComponent} from "./user/user.component";
 import { ActivityComponent } from './activity/activity.component';
-import {DetailsCategoryComponent} from "./category/details-category/details-category.component";
+import { DetailsCategoryComponent } from './category/details-category/details-category.component';
 
 export const routes: Routes = [
 
