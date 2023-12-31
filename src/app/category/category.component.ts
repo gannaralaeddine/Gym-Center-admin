@@ -67,9 +67,11 @@ export class CategoryComponent implements OnInit
     })
   }
 
-  goToCategoryDetails()
+  goToCategoryDetails(category: Category)
   {
-    this.router.navigate(["category-details"])
+    const params = { catId: category.catId }
+
+    this.router.navigate(["category-details"], { queryParams: params  })
   }
 
 }
