@@ -19,6 +19,7 @@
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Titre</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Description</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Catégorie</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
                 </tr>
               </thead>
@@ -44,8 +45,13 @@
                     <h6 class="mb-0 text-sm">{{activity.actDescription}}</h6>
                   </td>
 
+                  <td class="text-center">
+                    <h6 class="mb-0 text-sm">{{activity.category.catName}}</h6>
+                  </td>
+
                   <td class="align-middle">
                     <div class="ms-auto text-center">
+                      <button class="btn btn-link px-3 mb-0" href="javascript:"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
                       <button class="btn btn-link text-dark px-3 mb-0" (click)="addOrUpdateDialog(activity.actId)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
                       <button class="btn btn-link text-danger px-3 mb-0"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
                     </div>

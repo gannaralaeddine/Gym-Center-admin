@@ -5,12 +5,13 @@ import { AddCategoryComponent } from '../../category/add-category/add-category.c
 import { UtilsService } from '../../serviceutils/utils.service';
 import { ActivityService } from '../../services/activity.service';
 import { Activity } from '../activity';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-add-activity',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf],
+  imports: [ReactiveFormsModule,NgIf,NgFor],
   templateUrl: './add-activity.component.html',
   styleUrl: './add-activity.component.css'
 })
@@ -19,10 +20,12 @@ export class AddActivityComponent
   activityFormValue !: FormGroup
   isAddOperation = true
   activityId: number
+  categories : any
 
   constructor(
     private activityFormBuilder: FormBuilder,
     private activityService: ActivityService,
+    private categoryService: CategoryService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddCategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { this.activityId = data.activityId }
@@ -40,6 +43,8 @@ export class AddActivityComponent
       activityDescription : '',
       activityImage : ''
     })
+
+    this.getAllCategories()
   }
 
   addActivity()
@@ -89,5 +94,13 @@ export class AddActivityComponent
     this.activityFormValue.controls['activityName'].setValue(activity.actName)
     this.activityFormValue.controls['activityDescription'].setValue(activity.actDescription)
     this.activityFormValue.controls['activityImage'].setValue(activity.actImage)
+  }
+
+  getAllCategories()
+  {
+    this.categoryService.getAllCategories().subscribe({
+      next: (category) => this.categories = category,
+      error: (err) => console.error(err)
+    })
   }
 }
