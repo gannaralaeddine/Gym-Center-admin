@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../services/activity.service';
 import { MatDialog } from '@angular/material/dialog';

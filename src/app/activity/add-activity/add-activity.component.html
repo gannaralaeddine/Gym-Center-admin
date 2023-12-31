@@ -33,11 +33,11 @@
               <div class="form-group"> 
                 <div class="btn-group">
                   <button class="btn btn-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Sélectionner Activité
+                    Sélectionner Catégorie
                   </button>
 
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" *ngFor="let category of categories">{{category.catName}}</a>
+                    <a class="dropdown-item" *ngFor="let category of categories" (click)="getCategory(category.catId)">{{category.catName}}</a>
                   </div>
                 </div>
               </div>

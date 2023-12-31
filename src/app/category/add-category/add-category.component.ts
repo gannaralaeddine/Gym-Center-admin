@@ -44,7 +44,6 @@ export class AddCategoryComponent implements OnInit
   {
     if ( this.categoryId )
     {
-      console.log("catId: " + this.categoryId)
       this.isAddOperation = false;
       this.getCategoryById(this.categoryId)
     }
@@ -60,7 +59,7 @@ export class AddCategoryComponent implements OnInit
   getCategoryById(id: number)
   {
     this.categoryService.getCategory(id).subscribe({
-      next: (val) => console.log(val), //this.populateUpdateForm(val),
+      next: (val) => this.populateUpdateForm(val),
       error: (err) => console.error(err)
     })
   }
@@ -76,7 +75,7 @@ export class AddCategoryComponent implements OnInit
   {
       this.category.catName = this.categoryFormValue.value.categoryName
       this.category.catDescription = this.categoryFormValue.value.categoryDescription
-
+      this.category.catImage = this.categoryFormValue.value.categoryImage
 
       this.categoryService.updateCategory(id, this.category).subscribe({
         complete: () => {
@@ -107,7 +106,6 @@ export class AddCategoryComponent implements OnInit
   prepareFormData(category: Category): FormData
   {
     const formData = new FormData()
-
 
     formData.append(
       "category", new Blob( [ JSON.stringify(category) ], { type: "application/json" } )
@@ -153,18 +151,6 @@ export class AddCategoryComponent implements OnInit
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   addImagesToCategory(catId: any)
   {
 
@@ -181,11 +167,6 @@ export class AddCategoryComponent implements OnInit
       error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
     })
   }
-
-
-
-
-
 
 
 }

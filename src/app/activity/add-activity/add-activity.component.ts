@@ -7,6 +7,7 @@ import { ActivityService } from '../../services/activity.service';
 import { Activity } from '../activity';
 import { NgFor, NgIf } from '@angular/common';
 import { CategoryService } from '../../services/category.service';
+import { Category } from '../../category/category';
 
 @Component({
   selector: 'app-add-activity',
@@ -15,12 +16,14 @@ import { CategoryService } from '../../services/category.service';
   templateUrl: './add-activity.component.html',
   styleUrl: './add-activity.component.css'
 })
+
 export class AddActivityComponent 
 {
   activityFormValue !: FormGroup
   isAddOperation = true
   activityId: number
   categories : any
+  category!: Category
 
   constructor(
     private activityFormBuilder: FormBuilder,
@@ -32,7 +35,7 @@ export class AddActivityComponent
 
   ngOnInit()
   {
-    if ( this.activityId != 0 )
+    if ( this.activityId )
     {
       this.isAddOperation = false;
       this.getActivityById(this.activityId)
@@ -52,11 +55,11 @@ export class AddActivityComponent
     this.activityService.addActivity(new Activity(
       this.activityFormValue.value.activityName,
       this.activityFormValue.value.activityDescription,
-      this.activityFormValue.value.activityImage)).subscribe({
+      this.activityFormValue.value.activityImage,
+      this.category)).subscribe({
       next:()=> {
         this.dialogRef.close()
         this.utilsService.openDialog("Opération réussite", "Activité ajoutée avec succès", true)
-
     },
       error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
     })
@@ -67,7 +70,8 @@ export class AddActivityComponent
     this.activityService.updateActivity(id,new Activity(
       this.activityFormValue.value.activityName,
       this.activityFormValue.value.activityDescription,
-      this.activityFormValue.value.activityImage)).subscribe({
+      this.activityFormValue.value.activityImage,
+      this.category)).subscribe({
       complete: () => {
         this.dialogRef.close()
         this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
@@ -101,6 +105,14 @@ export class AddActivityComponent
     this.categoryService.getAllCategories().subscribe({
       next: (category) => this.categories = category,
       error: (err) => console.error(err)
+    })
+  }
+
+  getCategory(id:any)
+  {
+    this.categoryService.getCategory(id).subscribe({
+      next: (categoryObject) => this.category = categoryObject as Category,
+      error: (err) => console.log(err)
     })
   }
 }

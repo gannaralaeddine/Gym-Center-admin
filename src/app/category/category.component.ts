@@ -67,7 +67,6 @@ export class CategoryComponent implements OnInit
     })
   }
 
-
   goToCategoryDetails()
   {
     this.router.navigate(["category-details"])
