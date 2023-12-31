@@ -6,7 +6,7 @@
     <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Catégorie</h1>
     <h1 class="modal-title pl-1" *ngIf="!isAddOperation" >Éditer Catégorie</h1>
 
-    <button type="button" class="close" (click)="closeDialog()">
+    <button type="button" class="close" >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -28,18 +28,15 @@
 
           <div class="form-group">
             <label for="formFileMultiple" class="text-dark font-weight-bold">Image Catégorie</label>
-            <input type="file" class="form-control border border-secondary" #selectFile id="formFileMultiple" (change)="onFileSelected($event)">
+            <input type="file" class="form-control border border-secondary" #selectFile id="formFileMultiple" (change)="onFileSelected($event)" multiple>
           </div>
 
             <div class="row">
               <div class="col text-center">
                 <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
-<<<<<<< HEAD
-                <button type="button" class="btn btn-primary mr-3" (click)="addCategory()" *ngIf="isAddOperation">Ajouter</button>
-=======
                 <button type="button" class="btn btn-primary mr-3" (click)="addCategoryWithOneImage()" *ngIf="isAddOperation">ajouter</button>
->>>>>>> 3e33867b67d39e65957d458369770c1fe5ecbded
-                <button type="button" class="btn btn-primary mr-3" (click)="updateCategory(categoryId)" *ngIf="!isAddOperation">Éditer</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="addImagesToCategory(categoryId)" *ngIf="!isAddOperation">add images</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="updateCategoryDetails(categoryId)" *ngIf="!isAddOperation">Éditer</button>
               </div>
             </div>
       </form>

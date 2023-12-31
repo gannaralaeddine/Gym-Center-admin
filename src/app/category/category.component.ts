@@ -4,13 +4,14 @@ import { NgFor, NgIf } from '@angular/common';
 import { AddCategoryComponent } from "./add-category/add-category.component";
 import { Category } from './category';
 import { MatDialog } from '@angular/material/dialog';
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
     selector: 'app-category',
     standalone: true,
     templateUrl: './category.component.html',
     styleUrl: './category.component.css',
-    imports: [ NgFor, AddCategoryComponent, NgIf ]
+  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink]
 })
 export class CategoryComponent implements OnInit
 {
@@ -20,7 +21,11 @@ export class CategoryComponent implements OnInit
 
   public constructor(
     private categoryService: CategoryService,
-    private dialogRef: MatDialog) { this.isCategoryUpdated = false }
+    private dialogRef: MatDialog,
+    private router: Router)
+  {
+    this.isCategoryUpdated = false
+  }
 
 
   ngOnInit() { this.getAllCategories() }
@@ -61,4 +66,11 @@ export class CategoryComponent implements OnInit
       this.getAllCategories()
     })
   }
+
+
+  goToCategoryDetails()
+  {
+    this.router.navigate(["category-details"])
+  }
+
 }

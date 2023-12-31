@@ -34,20 +34,17 @@ export class AddCategoryComponent implements OnInit
     private categoryService: CategoryService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddCategoryComponent>,
-<<<<<<< HEAD
-    @Inject(MAT_DIALOG_DATA) public data: any) { this.categoryId = data.categoryId }
-=======
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sanitizer: DomSanitizer)
   {
     this.categoryId = data.categoryId
   }
->>>>>>> 3e33867b67d39e65957d458369770c1fe5ecbded
 
   ngOnInit()
   {
-    if ( this.categoryId != 0 )
+    if ( this.categoryId )
     {
+      console.log("catId: " + this.categoryId)
       this.isAddOperation = false;
       this.getCategoryById(this.categoryId)
     }
@@ -57,49 +54,13 @@ export class AddCategoryComponent implements OnInit
       categoryDescription : '',
       categoryImage : ''
     })
-
   }
 
-  addCategory()
-  {
-    this.categoryService.addCategory(new Category(
-      this.categoryFormValue.value.categoryName,
-      this.categoryFormValue.value.categoryDescription,
-      this.categoryFormValue.value.categoryImage,
-      [])).subscribe({
-      next:()=> {
-        this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
-
-    },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-    })
-  }
-
-  updateCategory(id:any)
-  {
-    this.categoryService.updateCategory(id,new Category(
-      this.categoryFormValue.value.categoryName,
-      this.categoryFormValue.value.categoryDescription,
-      this.categoryFormValue.value.categoryImage,
-      [])).subscribe({
-      complete: () => {
-        this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
-      },
-      error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-    })
-  }
-
-  closeDialog() 
-  {
-    this.dialogRef.close()
-  }
 
   getCategoryById(id: number)
   {
     this.categoryService.getCategory(id).subscribe({
-      next: (val) => this.populateUpdateForm(val),
+      next: (val) => console.log(val), //this.populateUpdateForm(val),
       error: (err) => console.error(err)
     })
   }
@@ -111,30 +72,19 @@ export class AddCategoryComponent implements OnInit
     this.categoryFormValue.controls['categoryImage'].setValue(category.catImage)
   }
 
-
-
-
-
-  onFileSelected(event: any)
+  updateCategoryDetails(id: number)
   {
-    if (event.target.files)
-    {
-      const file = event.target.files[0]
+      this.category.catName = this.categoryFormValue.value.categoryName
+      this.category.catDescription = this.categoryFormValue.value.categoryDescription
 
 
-      const fileHandle: FileHandleModule = {
-        file: file,
-        url: this.sanitizer.bypassSecurityTrustUrl(
-          window.URL.createObjectURL(file)
-        )
-      }
-
-      console.log("file handler: " + fileHandle.file.name + " " + fileHandle.url)
-
-      this.category.catImages.push(fileHandle)
-
-    }
-
+      this.categoryService.updateCategory(id, this.category).subscribe({
+        complete: () => {
+          this.dialogRef.close()
+          this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+        },
+        error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      })
   }
 
   addCategoryWithOneImage()
@@ -142,7 +92,7 @@ export class AddCategoryComponent implements OnInit
     this.category.catName = this.categoryFormValue.value.categoryName
     this.category.catDescription = this.categoryFormValue.value.categoryDescription
 
-    const categoryFormData =  this.prepareFormData(this.category)
+    const categoryFormData =  this.prepareFormData( this.category )
 
     this.categoryService.addCategoryWithOneImage(categoryFormData).subscribe({
       next:()=> {
@@ -158,12 +108,9 @@ export class AddCategoryComponent implements OnInit
   {
     const formData = new FormData()
 
-    formData.append(
-      "catName", new Blob( [ JSON.stringify(category.catName) ], { type: "application/json" } )
-    )
 
     formData.append(
-      "catDescription", new Blob( [ JSON.stringify(category.catDescription) ], { type: "application/json" } )
+      "category", new Blob( [ JSON.stringify(category) ], { type: "application/json" } )
     )
 
     for ( let i = 0 ; i < category.catImages.length ; i++ )
@@ -176,5 +123,69 @@ export class AddCategoryComponent implements OnInit
     }
     return formData
   }
+
+  onFileSelected(event: any)
+  {
+    console.log(event.target.files)
+
+    if (event.target.files)
+    {
+
+      for (let i= 0 ; i < event.target.files.length ; i++)
+      {
+        const file = event.target.files[i]
+
+        const fileHandle: FileHandleModule = {
+          file: file,
+          url: this.sanitizer.bypassSecurityTrustUrl(
+            window.URL.createObjectURL(file)
+          )
+        }
+
+        this.category.catImages.push(fileHandle)
+
+      }
+    }
+  }
+
+  closeDialog() {
+  this.dialogRef.close();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  addImagesToCategory(catId: any)
+  {
+
+    this.category.catId = catId
+
+    const categoryFormData =  this.prepareFormData(this.category)
+
+    this.categoryService.addImagesToCategory(categoryFormData).subscribe({
+      next:()=> {
+        this.dialogRef.close()
+        this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+    })
+  }
+
+
+
+
+
+
 
 }
