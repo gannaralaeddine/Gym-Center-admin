@@ -44,6 +44,7 @@ export class AddCategoryComponent implements OnInit
   {
     if ( this.categoryId )
     {
+      console.log("catId: " + this.categoryId)
       this.isAddOperation = false;
       this.getCategoryById(this.categoryId)
     }
@@ -59,7 +60,7 @@ export class AddCategoryComponent implements OnInit
   getCategoryById(id: number)
   {
     this.categoryService.getCategory(id).subscribe({
-      next: (val) => this.populateUpdateForm(val),
+      next: (val) => console.log(val), //this.populateUpdateForm(val),
       error: (err) => console.error(err)
     })
   }
@@ -144,9 +145,7 @@ export class AddCategoryComponent implements OnInit
         this.category.catImages.push(fileHandle)
 
       }
-
     }
-
   }
 
   closeDialog() {
