@@ -8,6 +8,7 @@ import {RegisterComponent} from "./register/register.component";
 import {UserComponent} from "./user/user.component";
 import { ActivityComponent } from './activity/activity.component';
 import { DetailsCategoryComponent } from './category/details-category/details-category.component';
+import { DetailsActivityComponent } from './activity/details-activity/details-activity.component';
 
 export const routes: Routes = [
 
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'category', component: CategoryComponent },
   { path: 'activity', component: ActivityComponent },
   { path: 'users', component: UserComponent },
-  { path: 'category-details', component: DetailsCategoryComponent }
+  { path: 'category-details', component: DetailsCategoryComponent },
+  { path: 'activity-details', component: DetailsActivityComponent }
 ];

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../services/activity.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from './add-activity/add-activity.component';
+import { Activity } from './activity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity',
@@ -16,7 +18,10 @@ export class ActivityComponent implements OnInit
 {
   activities: any
 
-  constructor(private activityService: ActivityService,private dialogRef: MatDialog) {}
+  constructor(
+    private activityService: ActivityService,
+    private dialogRef: MatDialog, 
+    private router: Router) {}
 
   ngOnInit() { this.getAllActivities() }
 
@@ -47,5 +52,12 @@ export class ActivityComponent implements OnInit
     popup.afterClosed().subscribe(() =>{
       this.getAllActivities()
     })
+  }
+
+  goToActivityDetails(activity: Activity)
+  {
+    const params = { actId: activity.actId }
+
+    this.router.navigate(["activity-details"], { queryParams: params  })
   }
 }
