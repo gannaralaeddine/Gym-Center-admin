@@ -24,11 +24,11 @@ export class DetailsActivityComponent implements OnInit
   activityCategoryDescription!: string
 
 constructor(
-  private router: ActivatedRoute, 
+  private router: ActivatedRoute,
   private activityService: ActivityService,
   private categoryService: CategoryService) {}
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.router.queryParams.subscribe( params => {
 
@@ -45,7 +45,7 @@ constructor(
   {
     this.activityTitle = activity.actName
     this.activityDescription = activity.actDescription
-    this.activityImageUrl = "https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    this.activityImageUrl = this.activityService.getActivityImage(activity.actImage)
     this.actImages = activity.actImage
     this.activityCategoryImage = this.categoryService.getCategoryImage(activity.category.catImage)
     this.activityCategoryDescription = activity.category.catDescription

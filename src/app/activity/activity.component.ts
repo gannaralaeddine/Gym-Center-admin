@@ -14,13 +14,13 @@ import { Router } from '@angular/router';
   styleUrl: './activity.component.css'
 })
 
-export class ActivityComponent implements OnInit 
+export class ActivityComponent implements OnInit
 {
   activities: any
 
   constructor(
     private activityService: ActivityService,
-    private dialogRef: MatDialog, 
+    private dialogRef: MatDialog,
     private router: Router) {}
 
   ngOnInit() { this.getAllActivities() }
@@ -59,5 +59,10 @@ export class ActivityComponent implements OnInit
     const params = { actId: activity.actId }
 
     this.router.navigate(["activity-details"], { queryParams: params  })
+  }
+
+  getCategoryImage(imageName: string): string
+  {
+    return this.activityService.getActivityImage(imageName)
   }
 }
