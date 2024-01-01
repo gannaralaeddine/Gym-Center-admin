@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddCategoryComponent } from '../../category/add-category/add-category.component';
 import { UtilsService } from '../../serviceutils/utils.service';
@@ -24,7 +24,7 @@ export class AddActivityComponent
   activityId: number
   categories : any
   categoryObject!: Category
-
+  isValidForm = true
   constructor(
     private activityFormBuilder: FormBuilder,
     private activityService: ActivityService,
@@ -42,9 +42,9 @@ export class AddActivityComponent
     }
 
     this.activityFormValue = this.activityFormBuilder.group({
-      activityName : '',
-      activityDescription : '',
-      activityImage : '',
+      activityName : ['',Validators.required],
+      activityDescription : ['',Validators.required],
+      activityImage : ['',Validators.required],
       activityCategory:undefined
     })
 
@@ -53,17 +53,21 @@ export class AddActivityComponent
 
   addActivity()
   {
-    this.activityService.addActivity(new Activity(
-      this.activityFormValue.value.activityName,
-      this.activityFormValue.value.activityDescription,
-      this.activityFormValue.value.activityImage,
-      this.categoryObject)).subscribe({
-      next:()=> {
-        this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Activité ajoutée avec succès", true)
-    },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-    })
+      if (!this.isValidForm)
+      {
+        this.checkValidityForm()
+      }
+     /* this.activityService.addActivity(new Activity(
+        this.activityFormValue.value.activityName,
+        this.activityFormValue.value.activityDescription,
+        this.activityFormValue.value.activityImage,
+        this.categoryObject)).subscribe({
+        next:()=> {
+          this.dialogRef.close()
+          this.utilsService.openDialog("Opération réussite", "Activité ajoutée avec succès", true)
+      },
+        error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      })*/
   }
 
   updateActivity(id:any)
@@ -116,5 +120,17 @@ export class AddActivityComponent
       next: (cat) => this.categoryObject = cat as Category,
       error: (err) => console.log(err)
     })
+  }
+
+  checkValidityForm()
+  {
+    if (!this.activityFormValue.value.activityName)
+    {
+      this.isValidForm = false
+    }
+    else
+    {
+      this.isValidForm = true
+    }
   }
 }
