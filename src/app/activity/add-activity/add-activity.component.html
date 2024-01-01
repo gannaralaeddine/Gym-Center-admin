@@ -36,9 +36,9 @@
                     Sélectionner Catégorie
                   </button>-->
                     <label for="categoryImageInput" class="text-dark font-weight-bold">Sélectionner Catégorie</label>
-                    <select class="form-control border border-dark pl-2 round">
+                    <select class="form-control border border-dark pl-2 round" formControlName="activityCategory" (change)="getCategory()">
                       <option></option>
-                      <option *ngFor="let category of categories" (click)="getCategory(category.catId)">{{category.catName}}</option>
+                      <option *ngFor="let category of categories" [value]="category.catId">{{category.catName}}</option>
                     </select>
                   
                 </div>

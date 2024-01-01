@@ -23,7 +23,7 @@ export class AddActivityComponent
   isAddOperation = true
   activityId: number
   categories : any
-  category!: Category
+  categoryObject!: Category
 
   constructor(
     private activityFormBuilder: FormBuilder,
@@ -44,7 +44,8 @@ export class AddActivityComponent
     this.activityFormValue = this.activityFormBuilder.group({
       activityName : '',
       activityDescription : '',
-      activityImage : ''
+      activityImage : '',
+      activityCategory:undefined
     })
 
     this.getAllCategories()
@@ -56,7 +57,7 @@ export class AddActivityComponent
       this.activityFormValue.value.activityName,
       this.activityFormValue.value.activityDescription,
       this.activityFormValue.value.activityImage,
-      this.category)).subscribe({
+      this.categoryObject)).subscribe({
       next:()=> {
         this.dialogRef.close()
         this.utilsService.openDialog("Opération réussite", "Activité ajoutée avec succès", true)
@@ -71,7 +72,7 @@ export class AddActivityComponent
       this.activityFormValue.value.activityName,
       this.activityFormValue.value.activityDescription,
       this.activityFormValue.value.activityImage,
-      this.category)).subscribe({
+      this.categoryObject)).subscribe({
       complete: () => {
         this.dialogRef.close()
         this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
@@ -97,7 +98,7 @@ export class AddActivityComponent
   {
     this.activityFormValue.controls['activityName'].setValue(activity.actName)
     this.activityFormValue.controls['activityDescription'].setValue(activity.actDescription)
-    this.activityFormValue.controls['activityImage'].setValue(activity.actImage)
+    //this.activityFormValue.controls['activityImage'].setValue(activity.actImage)
   }
 
   getAllCategories()
@@ -108,10 +109,11 @@ export class AddActivityComponent
     })
   }
 
-  getCategory(id:any)
+  getCategory()
   {
+    let id = this.activityFormValue.value.activityCategory
     this.categoryService.getCategory(id).subscribe({
-      next: (categoryObject) => this.category = categoryObject as Category,
+      next: (cat) => this.categoryObject = cat as Category,
       error: (err) => console.log(err)
     })
   }
