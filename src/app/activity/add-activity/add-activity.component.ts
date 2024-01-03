@@ -63,6 +63,7 @@ export class AddActivityComponent
     })
 
     this.getAllCategories()
+
   }
 
   updateActivity(id:any)
@@ -119,15 +120,31 @@ export class AddActivityComponent
     })
   }
 
+  changeClassName(elementId:string,className: string)
+  {
+    document.getElementById(elementId)!.className = className
+  }
+
   checkValidityForm()
   {
-    if (!this.activityFormValue.value.activityName)
+    // check activity name and change borer color based on validity of input
+    if (this.activityFormValue.controls['activityName'].invalid && this.activityFormValue.controls['activityName'].touched)
     {
-      this.isValidForm = false
+      document.getElementById('activityNameInput')!.className = "form-control border border-danger pl-2 round"
     }
     else
     {
-      this.isValidForm = true
+      document.getElementById('activityNameInput')!.className = "form-control border border-dark pl-2 round"
+    }
+    
+    // check activity description and change borer color based on validity of input
+    if (this.activityFormValue.controls['activityDescription'].invalid && this.activityFormValue.controls['activityDescription'].touched)
+    {
+      document.getElementById('activityDescriptionInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('activityDescriptionInput')!.className = "form-control border border-dark pl-2 round"
     }
   }
 

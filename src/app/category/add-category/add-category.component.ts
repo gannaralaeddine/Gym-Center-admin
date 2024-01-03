@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../category';
 import { NgIf } from '@angular/common';
@@ -49,8 +49,8 @@ export class AddCategoryComponent implements OnInit
     }
 
     this.categoryFormValue = this.categoryFormBuilder.group({
-      categoryName : '',
-      categoryDescription : '',
+      categoryName : ['',Validators.required],
+      categoryDescription :['',Validators.required],
       categoryImage : ''
     })
   }
@@ -168,5 +168,27 @@ export class AddCategoryComponent implements OnInit
     })
   }
 
+  checkValidityForm()
+  {
+    // check category name and change borer color based on validity of input
+    if (this.categoryFormValue.controls['categoryName'].invalid && this.categoryFormValue.controls['categoryName'].touched)
+    {
+      document.getElementById('categoryNameInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('categoryNameInput')!.className = "form-control border border-dark pl-2 round"
+    }
+    
+    // check category description and change borer color based on validity of input
+    if (this.categoryFormValue.controls['categoryDescription'].invalid && this.categoryFormValue.controls['categoryDescription'].touched)
+    {
+      document.getElementById('categoryDescriptionInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('categoryDescriptionInput')!.className = "form-control border border-dark pl-2 round"
+    }
+  }
 
 }
