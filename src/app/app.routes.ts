@@ -9,9 +9,11 @@ import {UserComponent} from "./user/user.component";
 import { ActivityComponent } from './activity/activity.component';
 import { DetailsCategoryComponent } from './category/details-category/details-category.component';
 import { DetailsActivityComponent } from './activity/details-activity/details-activity.component';
+import {AppComponent} from "./app.component";
 
 export const routes: Routes = [
 
+  { path: 'app-component', component: AppComponent },
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },

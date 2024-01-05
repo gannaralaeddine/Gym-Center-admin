@@ -8,13 +8,13 @@ export class User
   userLastName?: string
   userBirthDate? : string
   userPhoneNumber? : string
-  userCity? : string
-  userState? : string
-  userCountry? : string
   userGender? : string
   userHeight? : string
   userWeight? : string
   userPicture? : string
+  userCity? : string
+  userState? : string
+  userCountry? : string
   userZipCode? : string
   userPassword? : string
   roles?: Array<Role>
