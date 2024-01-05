@@ -16,7 +16,7 @@ export class CategoryService
 
   public addImagesToCategory(category: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/category/add-images-to-category", category ) }
 
-  public getAllCategories()  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-all-categories") }
+  public getAllCategories()  { return this.http.get<any>(this.utils.API_GYM_CENTER + "/category/retrieve-all-categories") }
 
   public getCategory(id: any)  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
 
