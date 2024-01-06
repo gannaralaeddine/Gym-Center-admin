@@ -36,7 +36,7 @@
             <div class="row">
               <div class="col text-center">
                 <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
-                <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addCategoryWithOneImage()" *ngIf="isAddOperation">ajouter</button>
+                <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addCategoryWithOneImage()" *ngIf="isAddOperation" disabled>ajouter</button>
                 <button type="button" class="btn btn-primary mr-3" (click)="addImagesToCategory(categoryId)" *ngIf="!isAddOperation">add images</button>
                 <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateCategoryDetails(categoryId)" *ngIf="!isAddOperation">Éditer</button>
               </div>
