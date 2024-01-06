@@ -1,8 +1,8 @@
 
 
-<aside
+<aside *ngIf="isLoggedIn()"
   class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-  id="sidenav-main" *ngIf="isAuthenticated">
+  id="sidenav-main" >
 
   <div class="sidenav-header">
     <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -37,7 +37,7 @@
         <a class="nav-link text-white " routerLink="users">
 
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">dashboard</i>
+            <i class="material-icons opacity-10">manage_accounts</i>
           </div>
 
           <span class="nav-link-text ms-1">Gestion des utilisateurs</span>
@@ -48,7 +48,7 @@
         <a class="nav-link text-white " routerLink="category">
 
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">table_view</i>
+            <i class="material-icons opacity-10">category</i>
           </div>
 
           <span class="nav-link-text ms-1">Gestion des catégories</span>
@@ -123,13 +123,21 @@
         <a class="nav-link text-white " routerLink="register">
 
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">assignment</i>
+            <i class="material-icons opacity-10">app_registration</i>
           </div>
 
           <span class="nav-link-text ms-1">Créer un compte</span>
         </a>
       </li>
 
+      <li class="nav-item" (click)="logout()">
+        <a class="nav-link text-white">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">logout</i>
+          </div>
+          <span class="nav-link-text ms-1">Se déconnecter</span>
+        </a>
+      </li>
     </ul>
   </div>
 
@@ -139,18 +147,18 @@
 
 <main class="main-content border-radius-lg position-relative max-height-vh-100 h-100">
   <!-- Navbar -->
-  <app-header *ngIf="isAuthenticated"></app-header>
+  <app-header *ngIf="isLoggedIn()"></app-header>
   <!-- End Navbar -->
 
   <router-outlet></router-outlet>
 
 
   <!-- footer -->
-  <app-footer *ngIf="isAuthenticated"></app-footer>
+  <app-footer *ngIf="isLoggedIn()"></app-footer>
   <!-- End footer -->
 
 
 </main>
 
-<app-settings *ngIf="isAuthenticated"></app-settings>
+<app-settings *ngIf="isLoggedIn()"></app-settings>
 

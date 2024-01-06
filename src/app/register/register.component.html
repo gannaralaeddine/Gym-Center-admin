@@ -14,42 +14,45 @@
             </div>
             <div class="card-body">
 
-              <form >
+              <form [formGroup]="userForm">
 
                 <div class="form-group" browser-default custom-select>
                   <label for="userRoleSelect" class="text-primary font-weight-bold" >Type de compte</label>
-                 
+
                   <select class="form-control border border-primary pl-2 round select-picker" id="userRoleSelect" name="userRole" >
-                    <option >MEMBRE</option>
-                    <option>COACH</option>
-                    <option>ADMIN</option>
+                    <option value="0">Choisir le type de compte</option>
+                    <option value="1">MEMBRE</option>
+                    <option value="2">COACH</option>
+                    <option value="3" *ngIf="isRoleMatches('ROLE_ADMIN')">ADMIN</option>
                   </select>
 
                 </div>
 
                 <div class="form-group">
                   <label for="userEmailInput" class="text-primary font-weight-bold" >Email</label>
-                  <input type="email" [(ngModel)]="member.userEmail" class="form-control border border-primary pl-2 round" id="userEmailInput" name="userEmail" placeholder="saisir votre adresse Email" >
+                  <input type="email" formControlName="userEmail" class="form-control border border-primary pl-2 round" id="userEmailInput" name="userEmail" placeholder="saisir votre adresse Email" >
                 </div>
+
+
 
                 <div class="form-group">
                   <label for="userLastName" class="text-primary font-weight-bold">Nom</label>
-                  <input type="text" [(ngModel)]="member.userLastName" class="form-control border border-primary pl-2 round" id="userLastName" name="userLastName" placeholder="saisir votre nom" >
+                  <input type="text" formControlName="userLastName" class="form-control border border-primary pl-2 round" id="userLastName" name="userLastName" placeholder="saisir votre nom" >
                 </div>
 
                 <div class="form-group">
                   <label for="userFirstName" class="text-primary font-weight-bold">Prénom</label>
-                  <input type="text" [(ngModel)]="member.userFirstName" class="form-control border border-primary pl-2 round" id="userFirstName" name="userFirstName" placeholder="saisir votre prénom" >
+                  <input type="text" formControlName="userFirstName" class="form-control border border-primary pl-2 round" id="userFirstName" name="userFirstName" placeholder="saisir votre prénom" >
                 </div>
 
                 <div class="form-group">
                   <label for="userPassword" class="text-primary font-weight-bold">Mot de passe</label>
-                  <input type="password" [(ngModel)]="member.userPassword" class="form-control border border-primary pl-2 round" id="userPassword" name="userPassword" placeholder="saisir votre mot de passe" >
+                  <input type="password" formControlName="userPassword" class="form-control border border-primary pl-2 round" id="userPassword" name="userPassword" placeholder="saisir votre mot de passe" >
                 </div>
 
                 <div class="row">
                   <div class="col text-center">
-                    <button type="submit" (click)="addMember()" class="btn bg-gradient-primary w-100 my-4 mb-2" >Enregistrer</button>
+                    <button type="submit" (click)="createUser()" class="btn bg-gradient-primary w-100 my-4 mb-2" >Enregistrer</button>
                   </div>
                 </div>
 
