@@ -189,6 +189,16 @@ export class AddCategoryComponent implements OnInit
     {
       document.getElementById('categoryDescriptionInput')!.className = "form-control border border-dark pl-2 round"
     }
+
+    // enable the add button
+    if (this.categoryFormValue.controls['categoryName'].valid && this.categoryFormValue.controls['categoryName'].valid)
+    {
+      document.getElementById("addButton")?.removeAttribute("disabled")
+    }
+    else
+    {
+      document.getElementById("addButton")?.setAttribute("disabled","")
+    }
   }
 
 }

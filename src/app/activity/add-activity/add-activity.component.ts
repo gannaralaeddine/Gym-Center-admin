@@ -27,7 +27,6 @@ export class AddActivityComponent
   categories : any
   categoryObject!: Category
   isValidForm = true
-  cate: any
 
   activity = new Activity(
     "",
@@ -59,12 +58,10 @@ export class AddActivityComponent
       activityName : ['',Validators.required],
       activityDescription : ['',Validators.required],
       activityImage : ['',Validators.required],
-      activityCategory:''
+      activityCategory:['',Validators.required]
     })
 
     this.getAllCategories()
-    //console.log("this.categories: "+this.categories)
-
   }
 
   updateActivity(id:any)
@@ -98,6 +95,8 @@ export class AddActivityComponent
 
   populateUpdateForm(activity: any)
   {
+    this.categoryObject = activity.category
+
     let optionTag!: HTMLOptionElement
     let selectTag!: HTMLSelectElement
 
@@ -133,9 +132,9 @@ export class AddActivityComponent
     optionTag.textContent = activity.category.catName
     categorySelectList?.appendChild(optionTag)
 
+    //add other options under the first element in the list
     this.categoryService.getAllCategories().subscribe({
       next:(category)=>{
-
       for (let i = 0; i < category.length; i++) 
       {
         if (category[i].catId != activity.category.catId)
@@ -188,11 +187,6 @@ export class AddActivityComponent
 
   }
 
-  /*changeClassName(elementId:string,className: string)
-  {
-    document.getElementById(elementId)!.className = className
-  }*/
-
   checkValidityForm()
   {
     // check activity name and change borer color based on validity of input
@@ -213,6 +207,26 @@ export class AddActivityComponent
     else
     {
       document.getElementById('activityDescriptionInput')!.className = "form-control border border-dark pl-2 round"
+    }
+
+    // check activity category and change borer color based on validity of selected option
+    if (this.activityFormValue.controls['activityCategory'].invalid && this.activityFormValue.controls['activityCategory'].touched)
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-dark pl-2 round"
+    }
+
+    // enable the add button
+    if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid)
+    {
+      document.getElementById("addButton")?.removeAttribute("disabled")
+    }
+    else
+    {
+      document.getElementById("addButton")?.setAttribute("disabled","")
     }
   }
 
@@ -273,8 +287,6 @@ export class AddActivityComponent
       }
     }
   } 
-
-
   
 }
   
