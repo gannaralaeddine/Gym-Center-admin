@@ -27,6 +27,8 @@ export class RegisterComponent
 {
     userForm !: FormGroup
     roles: any
+    selectList!: HTMLSelectElement
+    selectedOptionValue!: string
 
     admin = new User()
     member = new MemberModule()
@@ -39,23 +41,24 @@ export class RegisterComponent
       this.getAllRoles()
 
       this.userForm = this.userFormBuilder.group({
-        userEmail : [''],
-        userLastName : [''],
-        userFirstName : [''],
-        userPassword: [''],
+        userEmail : ['',Validators.required],
+        userLastName : ['',Validators.required],
+        userFirstName : ['',Validators.required],
+        userPassword: ['',Validators.required],
+        userRole: [undefined,Validators.required]
       })
-    }
 
+    }
 
     createUser()
     {
         console.log("email: " + this.userForm.value.userEmail)
 
-        const selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
+        this.selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
 
-        const selectedOptionValue = selectList.options[selectList.selectedIndex].value
+        this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
 
-        switch (selectedOptionValue)
+        switch (this.selectedOptionValue)
         {
           case "1": this.registerMember()
             break;
@@ -64,7 +67,7 @@ export class RegisterComponent
           case "3": this.registerAdmin()
             break;
           default:
-            console.log(selectedOptionValue)
+            console.log(this.selectedOptionValue)
 
         }
     }

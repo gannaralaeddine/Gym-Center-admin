@@ -219,9 +219,8 @@ export class AddActivityComponent
       document.getElementById('categorySelectList')!.className = "form-control border border-dark pl-2 round"
     }
 
-    if (this.activityId)
+    if (this.activityId) // enable or disable the update button
     {
-      // enable or disable the update button
       if (this.activityFormValue.controls['activityDescription'].invalid || this.activityFormValue.controls['activityName'].invalid)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
@@ -231,9 +230,8 @@ export class AddActivityComponent
         document.getElementById("updateButton")?.removeAttribute("disabled")
       }
     }
-    else
+    else // enable or disable the add button
     {
-      // enable or disable the add button
       if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")

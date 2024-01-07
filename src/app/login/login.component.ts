@@ -5,13 +5,15 @@ import { AuthService } from "../services/auth.service";
 import {routes} from "../app.routes";
 import {AlertSuccessComponent} from "../alert-success/alert-success.component";
 import {UtilsService} from "../serviceutils/utils.service";
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     RouterLink,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
