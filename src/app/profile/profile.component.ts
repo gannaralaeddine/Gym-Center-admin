@@ -1,6 +1,6 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
-import {AuthService} from "../services/auth.service";
+import {AuthService} from "../auth/auth.service";
 import {isPlatformBrowser} from "@angular/common";
 
 @Component({

@@ -22,7 +22,9 @@ export class CategoryService
 
   public getCategoryImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/category/get-image/" + imageName }
 
-  public updateCategory(id: number, category: Category) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category/"+id, category) }
+  public updateCategoryData(id: number, category: Category) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category/"+id, category) }
+
+  public updateCategory(category: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category", category) }
 
   public deleteCategory(id: number)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
 

@@ -7,7 +7,7 @@ import { UtilsService } from "../serviceutils/utils.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CoachModule} from "../user/coach.module";
 import {MemberModule} from "../user/member.module";
-import {AuthService} from "../services/auth.service";
+import {AuthService} from "../auth/auth.service";
 
 
 @Component({

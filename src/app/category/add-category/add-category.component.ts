@@ -73,34 +73,53 @@ export class AddCategoryComponent implements OnInit
 
   updateCategoryDetails(id: number)
   {
+      this.category.catId = id
       this.category.catName = this.categoryFormValue.value.categoryName
       this.category.catDescription = this.categoryFormValue.value.categoryDescription
-      this.category.catImage = this.categoryFormValue.value.categoryImage
 
-      this.categoryService.updateCategory(id, this.category).subscribe({
-        complete: () => {
-          this.dialogRef.close()
-          this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
-        },
-        error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-      })
+      if (this.category.catImages.length > 0)
+      {
+          const formData = this.prepareFormData(this.category)
+
+          this.categoryService.updateCategory(formData).subscribe({
+            complete: () => {
+              this.dialogRef.close()
+              this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+            },
+            error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+          })
+      }
+      else
+      {
+        this.categoryService.updateCategoryData(id, this.category).subscribe({
+          complete: () => {
+            this.dialogRef.close()
+            this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+          },
+          error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+        })
+      }
+
   }
 
   addCategoryWithOneImage()
   {
-    this.category.catName = this.categoryFormValue.value.categoryName
-    this.category.catDescription = this.categoryFormValue.value.categoryDescription
+      this.category.catName = this.categoryFormValue.value.categoryName
+      this.category.catDescription = this.categoryFormValue.value.categoryDescription
 
-    const categoryFormData =  this.prepareFormData( this.category )
+      const categoryFormData =  this.prepareFormData( this.category )
 
-    this.categoryService.addCategoryWithOneImage(categoryFormData).subscribe({
-      next:()=> {
-        this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
+      this.categoryService.addCategoryWithOneImage(categoryFormData).subscribe({
+        next:()=> {
+          this.dialogRef.close()
+          this.utilsService.openDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
 
-      },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-    })
+        },
+        error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      })
+
+
+
   }
 
   prepareFormData(category: Category): FormData
@@ -119,12 +138,17 @@ export class AddCategoryComponent implements OnInit
         category.catImages[i].file.name
       )
     }
+
     return formData
   }
 
   onFileSelected(event: any)
   {
     console.log(event.target.files)
+
+    this.category.catImages = []
+
+
 
     if (event.target.files)
     {
@@ -142,6 +166,8 @@ export class AddCategoryComponent implements OnInit
 
         this.category.catImages.push(fileHandle)
 
+        this.checkValidityForm()
+        this.onTouched()
       }
     }
   }
@@ -179,7 +205,7 @@ export class AddCategoryComponent implements OnInit
     {
       document.getElementById('categoryNameInput')!.className = "form-control border border-dark pl-2 round"
     }
-    
+
     // check category description and change borer color based on validity of input
     if (this.categoryFormValue.controls['categoryDescription'].invalid && this.categoryFormValue.controls['categoryDescription'].touched)
     {
@@ -193,7 +219,7 @@ export class AddCategoryComponent implements OnInit
     if (this.categoryId)
     {
       // enable or disable the update button
-      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid)
+      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid || this.category.catImages.length == 0)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -205,7 +231,7 @@ export class AddCategoryComponent implements OnInit
     else
     {
       // enable or disable the add button
-      if (this.categoryFormValue.controls['categoryName'].valid && this.categoryFormValue.controls['categoryDescription'].valid)
+      if (this.categoryFormValue.controls['categoryName'].valid && this.categoryFormValue.controls['categoryDescription'].valid && this.category.catImages.length > 0 )
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -217,4 +243,31 @@ export class AddCategoryComponent implements OnInit
     }
   }
 
+  onTouched()
+  {
+      if (this.category.catImages.length == 0)
+      {
+          if (document.getElementById("formFile"))
+          {
+            document.getElementById("formFile")!.className = "form-control border border-danger pl-2 round"
+          }
+          if (document.getElementById("formMultipleFiles"))
+          {
+            document.getElementById("formMultipleFiles")!.className = "form-control border border-danger pl-2 round"
+          }
+      }
+      else
+      {
+          if (document.getElementById("formFile"))
+          {
+            document.getElementById("formFile")!.className = "form-control border border-dark pl-2 round"
+          }
+          if (document.getElementById("formMultipleFiles"))
+          {
+            document.getElementById("formMultipleFiles")!.className = "form-control border border-dark pl-2 round"
+          }
+      }
+
+
+    }
 }

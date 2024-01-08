@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import { FormsModule, NgForm } from "@angular/forms";
-import { AuthService } from "../services/auth.service";
-import {routes} from "../app.routes";
-import {AlertSuccessComponent} from "../alert-success/alert-success.component";
+import { AuthService } from "../auth/auth.service";
 import {UtilsService} from "../serviceutils/utils.service";
 import { NgIf } from '@angular/common';
 

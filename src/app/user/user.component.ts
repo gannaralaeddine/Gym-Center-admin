@@ -39,6 +39,18 @@ export class UserComponent implements OnInit
         })
     }
 
+  getCategoryImage(imageName: string): string
+  {
+    if (imageName)
+    {
+      return "" //this.categoryService.getCategoryImage(imageName)
+    }
+    else
+    {
+      return "../assets/img/icons/ic_person.png"
+    }
+
+  }
 
 
 }
