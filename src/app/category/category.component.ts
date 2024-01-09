@@ -49,7 +49,15 @@ export class CategoryComponent implements OnInit
 
   getCategoryImage(imageName: string): string
   {
-    return this.categoryService.getCategoryImage(imageName)
+    if (imageName)
+    {
+      return this.categoryService.getCategoryImage(imageName)
+    }
+    else
+    {
+      return "../assets/img/icons/ic_category.png"
+    }
+
   }
 
 

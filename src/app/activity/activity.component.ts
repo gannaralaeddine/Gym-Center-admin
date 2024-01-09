@@ -63,6 +63,16 @@ export class ActivityComponent implements OnInit
 
   getCategoryImage(imageName: string): string
   {
-    return this.activityService.getActivityImage(imageName)
+    if (imageName)
+    {
+      return this.activityService.getActivityImage(imageName)
+    }
+    else
+    {
+      return "../assets/img/icons/ic_activity.png"
+    }
+
+
+
   }
 }

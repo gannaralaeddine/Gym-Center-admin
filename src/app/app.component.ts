@@ -6,7 +6,7 @@ import { HeaderComponent } from "./header/header.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from "./services/auth.service";
+import { AuthService } from "./auth/auth.service";
 
 @Component({
   selector: 'app-root',
