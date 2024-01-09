@@ -206,10 +206,6 @@ export class AddActivityComponent
 
   }
 
-  /*changeClassName(elementId:string,className: string)
-  {
-    document.getElementById(elementId)!.className = className
-  }*/
 
   checkValidityForm()
   {
@@ -244,7 +240,7 @@ export class AddActivityComponent
 
     if (this.activityId) // enable or disable the update button
     {
-      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid)
+      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid || this.activity.actImages.length == 0)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -255,7 +251,7 @@ export class AddActivityComponent
     }
     else
     {
-      if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid)
+      if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid && this.activity.actImages.length > 0)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }

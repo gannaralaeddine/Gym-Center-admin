@@ -30,8 +30,10 @@
               </div>
 
               <div class="form-group">
-                  <label for="categoryImageInput" class="text-dark font-weight-bold">Image Activité</label>
-                  <input type="file" class="form-control border border-secondary pl-2 round" id="categoryImageInput" formControlName="activityImage" #selectFile (change)="onFileSelected($event)">
+                  <label for="formFile" class="text-dark font-weight-bold">Image Activité</label>
+                <input type="file" class="form-control border border-secondary" #selectFile id="formFile" (blur)="onTouched()" (change)="onFileSelected($event)" formControlName="activityImage" *ngIf="isAddOperation">
+                <input type="file" class="form-control border border-secondary" #selectFile id="formMultipleFiles" (blur)="onTouched()" (close)="onTouched()" (change)="onFileSelected($event)" formControlName="activityImage" *ngIf="!isAddOperation" multiple>
+                <h5 class="text-danger text-bold ml-2" *ngIf="activity.actImages.length < 1 && activityFormValue.controls['activityImage'].touched">Merci de sélectionner une image</h5>
               </div>
 
               <div class="form-group">
