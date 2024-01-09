@@ -59,7 +59,7 @@ export class AddActivityComponent
       activityName : ['',Validators.required],
       activityDescription : ['',Validators.required],
       activityImage : ['',Validators.required],
-      activityCategory:''
+      activityCategory:['',Validators.required]
     })
 
     this.getAllCategories()
@@ -99,6 +99,8 @@ export class AddActivityComponent
 
   populateUpdateForm(activity: any)
   {
+    this.categoryObject = activity.category
+
     let optionTag!: HTMLOptionElement
     let selectTag!: HTMLSelectElement
 
@@ -189,11 +191,6 @@ export class AddActivityComponent
 
   }
 
-  /*changeClassName(elementId:string,className: string)
-  {
-    document.getElementById(elementId)!.className = className
-  }*/
-
   checkValidityForm()
   {
     // check activity name and change borer color based on validity of input
@@ -214,6 +211,38 @@ export class AddActivityComponent
     else
     {
       document.getElementById('activityDescriptionInput')!.className = "form-control border border-dark pl-2 round"
+    }
+
+    if (this.activityFormValue.controls['activityCategory'].invalid && this.activityFormValue.controls['activityCategory'].touched)
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-dark pl-2 round"
+    }
+
+    if (this.activityId) // enable or disable the update button
+    {
+      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid)
+      {
+        document.getElementById("updateButton")?.setAttribute("disabled","")
+      }
+      else
+      {
+        document.getElementById("updateButton")?.removeAttribute("disabled")
+      }
+    }
+    else
+    {
+      if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid)
+      {
+        document.getElementById("addButton")?.removeAttribute("disabled")
+      }
+      else
+      {
+        document.getElementById("addButton")?.setAttribute("disabled","")
+      }
     }
   }
 
