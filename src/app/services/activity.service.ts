@@ -15,9 +15,9 @@ export class ActivityService
 
   public addImagesToActivity(activity: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/add-images-to-activity", activity ) }
 
-  public getAllActivities() { return this.http.get(this.utils.API_GYM_CENTER + "/activity/retrieve-all-activities") }
+  public getAllActivities() { return this.http.get<any>(this.utils.API_GYM_CENTER + "/activity/retrieve-all-activities") }
 
-  public getActivity(id: any) { return this.http.get(this.utils.API_GYM_CENTER + "/activity/retrieve-activity/" + id) }
+  public getActivity(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/activity/retrieve-activity/" + id) }
 
   public getActivityImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/activity/get-image/" + imageName }
 
