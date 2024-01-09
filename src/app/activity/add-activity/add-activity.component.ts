@@ -69,19 +69,34 @@ export class AddActivityComponent
 
   updateActivity(id:any)
   {
-    this.activityService.updateActivity(id,new Activity(
-      this.activityFormValue.value.activityName,
-      this.activityFormValue.value.activityDescription,
+      this.activity.actId = id
+      this.activity.actName = this.activityFormValue.value.activityName
+      this.activity.actDescription = this.activityFormValue.value.activityDescription
+      this.activity.category = this.categoryObject
 
-      this.activityFormValue.value.activityImage,
-      this.categoryObject,
-      [])).subscribe({
-      complete: () => {
-        this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
-      },
-      error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
-    })
+
+    if (this.activity.actImages.length > 0)
+    {
+        const formData = this.prepareFormData(this.activity)
+
+        this.activityService.updateActivity(formData).subscribe({
+          complete: () => {
+            this.dialogRef.close()
+            this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
+          },
+          error: (err) => this.utilsService.openDialog("Opération échouée", err.message, false)
+        })
+    }
+    else
+    {
+        this.activityService.updateActivityData(id, this.activity).subscribe({
+          complete: () => {
+            this.dialogRef.close()
+            this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
+          },
+          error: (err) => this.utilsService.openDialog("Opération échouée", err.message, false)
+        })
+    }
   }
 
   closeDialog()
@@ -191,6 +206,11 @@ export class AddActivityComponent
 
   }
 
+  /*changeClassName(elementId:string,className: string)
+  {
+    document.getElementById(elementId)!.className = className
+  }*/
+
   checkValidityForm()
   {
     // check activity name and change borer color based on validity of input
@@ -288,6 +308,8 @@ export class AddActivityComponent
   {
     console.log(event.target.files)
 
+    this.activity.actImages = []
+
     if (event.target.files)
     {
       for (let i= 0 ; i < event.target.files.length ; i++)
@@ -300,12 +322,41 @@ export class AddActivityComponent
           )
         }
         this.activity.actImages.push(fileHandle)
+
+        this.checkValidityForm()
+        this.onTouched()
       }
     }
   }
 
 
+  onTouched()
+  {
+    if (this.activity.actImages.length == 0)
+    {
+      if (document.getElementById("formFile"))
+      {
+        document.getElementById("formFile")!.className = "form-control border border-danger pl-2 round"
+      }
+      if (document.getElementById("formMultipleFiles"))
+      {
+        document.getElementById("formMultipleFiles")!.className = "form-control border border-danger pl-2 round"
+      }
+    }
+    else
+    {
+      if (document.getElementById("formFile"))
+      {
+        document.getElementById("formFile")!.className = "form-control border border-dark pl-2 round"
+      }
+      if (document.getElementById("formMultipleFiles"))
+      {
+        document.getElementById("formMultipleFiles")!.className = "form-control border border-dark pl-2 round"
+      }
+    }
 
+
+  }
 }
 
 

@@ -23,5 +23,7 @@ export class ActivityService
 
   public deleteActivity(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/activity/delete-activity/" + id) }
 
-  public updateActivity(id: any, activity:any) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/update-activity/" + id,activity) }
+  public updateActivityData(id: any, activity:any) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/update-activity/" + id,activity) }
+
+  public updateActivity(activity: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/update-activity", activity) }
 }
