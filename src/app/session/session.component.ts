@@ -4,7 +4,6 @@ import { SessionService } from '../services/session.service';
 import { Session } from './session';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AddActivityComponent } from '../activity/add-activity/add-activity.component';
 import { AddSessionComponent } from './add-session/add-session.component';
 
 @Component({
@@ -54,4 +53,15 @@ export class SessionComponent implements OnInit
       })
   }
 
+  getSessionImage(imageName: string): string
+  {
+    if (imageName)
+    {
+      return this.sessionService.getSessionImage(imageName)
+    }
+    else
+    {
+      return "../assets/img/icons/ic_activity.png"
+    }
+  }
 }

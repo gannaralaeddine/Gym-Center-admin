@@ -71,8 +71,5 @@ export class ActivityComponent implements OnInit
     {
       return "../assets/img/icons/ic_activity.png"
     }
-
-
-
   }
 }

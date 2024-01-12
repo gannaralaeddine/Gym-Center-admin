@@ -1,4 +1,5 @@
 import {Role} from "./role";
+import {FileHandleModule} from "../file-handle/file-handle.module";
 
 export class User
 {
@@ -18,4 +19,5 @@ export class User
   userZipCode? : string
   userPassword? : string
   roles?: Array<Role>
+  userImages!: FileHandleModule[]
 }

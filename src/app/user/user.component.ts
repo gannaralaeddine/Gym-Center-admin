@@ -3,6 +3,9 @@ import {UserService} from "../services/user.service";
 import {AddCategoryComponent} from "../category/add-category/add-category.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {User} from "./user";
+import {UtilsService} from "../serviceutils/utils.service";
+import {FileHandleModule} from "../file-handle/file-handle.module";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user',
@@ -19,10 +22,11 @@ import {User} from "./user";
 })
 export class UserComponent implements OnInit
 {
+    user = new User()
     member = new User();
     usersList: any
 
-    public constructor(private userService: UserService) {
+    public constructor(private userService: UserService, private utilsService: UtilsService, private sanitizer: DomSanitizer) {
         this.getAllUsers()
     }
 

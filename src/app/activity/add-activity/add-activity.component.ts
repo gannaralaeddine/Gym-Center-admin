@@ -26,14 +26,12 @@ export class AddActivityComponent
   activityId: number
   categories : any
   categoryObject!: Category
-  isValidForm = true
-  cate: any
 
   activity = new Activity(
     "",
     "",
     "",
-    new Category("", "", "", []),
+    new Category(),
     []
   )
 
@@ -102,7 +100,7 @@ export class AddActivityComponent
     this.dialogRef.close()
   }
 
-  getActivityById(id: number) 
+  getActivityById(id: number)
   {
     this.activityService.getActivity(id).subscribe({
       next: (activity) => this.populateUpdateForm(activity),
@@ -270,7 +268,8 @@ export class AddActivityComponent
     const activityFormData =  this.prepareFormData( this.activity )
 
     this.activityService.addActivityWithOneImage(activityFormData).subscribe({
-      next:()=> {
+      next:(val)=> {
+        console.log("Opération réussite: " + val)
         this.dialogRef.close()
         this.utilsService.openDialog("Opération réussite", "Activity ajoutée avec succès", true)
 
@@ -286,7 +285,7 @@ export class AddActivityComponent
     formData.append(
       "activity", new Blob( [ JSON.stringify(activity) ], { type: "application/json" } )
     )
-    console.log("imageFile: "  + activity.actImages.length)
+
     for ( let i = 0 ; i < activity.actImages.length ; i++ )
     {
       formData.append(
@@ -300,8 +299,6 @@ export class AddActivityComponent
 
   onFileSelected(event: any)
   {
-    console.log(event.target.files)
-
     this.activity.actImages = []
 
     if (event.target.files)
@@ -330,7 +327,7 @@ export class AddActivityComponent
     {
       if (document.getElementById("formFile"))
       {
-        document.getElementById("formFile")!.className = "form-control border border-danger pl-2 round"
+          document.getElementById("formFile")!.className = "form-control border border-danger pl-2 round"
       }
       if (document.getElementById("formMultipleFiles"))
       {

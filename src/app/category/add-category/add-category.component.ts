@@ -22,12 +22,7 @@ export class AddCategoryComponent implements OnInit
   isAddOperation = true
   categoryId: number
 
-  category = new Category(
-    "",
-    "",
-    "",
-    []
-  )
+  category = new Category()
 
   constructor(
     private categoryFormBuilder: FormBuilder,
@@ -42,6 +37,7 @@ export class AddCategoryComponent implements OnInit
 
   ngOnInit()
   {
+    this.category.catImages = []
     if ( this.categoryId )
     {
       this.isAddOperation = false;

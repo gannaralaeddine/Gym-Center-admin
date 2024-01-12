@@ -5,13 +5,12 @@ import { UtilsService } from '../serviceutils/utils.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService 
+export class SessionService
 {
 
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
   public addSessionWithOneImage(session: FormData) { return this.http.post(this.utils.API_GYM_CENTER + "/session/create-session", session ) }
-  //public addSessionWithOneImage(session: any) { return this.http.post(this.utils.API_GYM_CENTER + "/session/add-session", session ) }
 
   public addImagesToSession(session: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/session/add-images-to-session", session ) }
 
@@ -19,9 +18,11 @@ export class SessionService
 
   public getSession(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/session/retrieve-session/" + id) }
 
-  public getSessionImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/session/get-image/" + imageName }
+  public getSessionImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/image/get-image/" + imageName }
 
   public deleteSession(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/session/delete-session/" + id) }
 
   public updateSession(id: any, session:any) { return this.http.put(this.utils.API_GYM_CENTER + "/session/update-session/" + id,session) }
+
+
 }

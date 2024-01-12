@@ -19,7 +19,7 @@ export class ActivityService
 
   public getActivity(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/activity/retrieve-activity/" + id) }
 
-  public getActivityImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/activity/get-image/" + imageName }
+  public getActivityImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/image/get-image/" + imageName }
 
   public deleteActivity(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/activity/delete-activity/" + id) }
 

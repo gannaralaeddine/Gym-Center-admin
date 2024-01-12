@@ -2,7 +2,7 @@ import { Activity } from "../activity/activity"
 import { FileHandleModule } from "../file-handle/file-handle.module"
 import { User } from "../user/user"
 
-export class Session 
+export class Session
 {
     sessionId!: number
     sessionName!: string

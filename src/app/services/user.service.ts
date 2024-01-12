@@ -42,4 +42,7 @@ export class UserService {
 
   public retrieveUserByEmail(email: string)  { return this.http.get(this.utils.API_GYM_CENTER + "/user/retrieve-user-by-email/"+ email) }
 
+  public updateProfilePicture(user: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/user/update-profile-picture", user) }
+
+
 }

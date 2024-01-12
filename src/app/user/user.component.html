@@ -12,6 +12,7 @@
             <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Type de compte</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">E-mail</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nom & Prénom</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
@@ -24,6 +25,14 @@
                 <div>
                   <div>
                     <img src="assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1" height="400" width="400">
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div>
+                  <div>
+                    <h6 class="mb-0 text-sm">{{user.roles[0].roleName}}</h6>
                   </div>
                 </div>
               </td>
