@@ -9,6 +9,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Session } from '../session';
 import { UserService } from '../../services/user.service';
 import { User } from '../../user/user';
+import { Category } from '../../category/category';
+import {FileHandleModule} from "../../file-handle/file-handle.module";
+import { UtilsService } from '../../serviceutils/utils.service';
 
 @Component({
   selector: 'app-add-session',
@@ -17,6 +20,7 @@ import { User } from '../../user/user';
   templateUrl: './add-session.component.html',
   styleUrl: './add-session.component.css'
 })
+
 export class AddSessionComponent implements OnInit
 {
   sessionFormValue !: FormGroup
@@ -24,20 +28,32 @@ export class AddSessionComponent implements OnInit
   activities: any
   coaches: any
   isAddOperation = true
-  sessionObject!: Session
+  sessionObject = new Session()
+  /*sessionObject = new Session("",
+  new Activity("", "", "", new Category("","","",[]), []),
+    new User(),
+    "",
+    []
+  )*/
+
   activityObject!: Activity
   userObject!: User
+
+  
   
   constructor(private dialogRef: MatDialogRef<AddSessionComponent>,
     private sessionFormBuilder: FormBuilder,
     private sessionService: SessionService,
     private activityService: ActivityService,
     private userService: UserService,
+    private utilsService: UtilsService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sanitizer: DomSanitizer){}
 
   ngOnInit()
   {
+  
+
     if (this.data.sessionId)
     {
       this.isAddOperation = false
@@ -66,7 +82,8 @@ export class AddSessionComponent implements OnInit
       // retrieve activity in add operation
       this.activityService.getActivity(this.sessionFormValue.value.sessionActivity).subscribe({
         next: (activity) => this.activityObject = activity as Activity,
-        error: (err) => console.log(err)
+        error: (err) => console.log(err),
+        complete:()=> console.log(this.activityObject)
       })
     }
     else
@@ -134,9 +151,23 @@ export class AddSessionComponent implements OnInit
     }
   }
 
-  onFileSelected($event: Event)
+  onFileSelected(event: any)
   {
-    
+    this.sessionObject.sessionImages = []
+
+    if (event.target.files)
+    {
+      for (let i= 0 ; i < event.target.files.length ; i++)
+      {
+        this.sessionObject.sessionImages.push({
+          file:event.target.files[i], 
+          url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(event.target.files[i]))
+        })
+
+        this.checkValidityForm()
+        this.onTouched()
+      }
+    }
   }
 
   checkValidityForm() 
@@ -183,7 +214,7 @@ export class AddSessionComponent implements OnInit
     }
     else
     {
-      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid) // && this.sessionFormValue.controls['sessionCoach'].valid
+      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -196,7 +227,20 @@ export class AddSessionComponent implements OnInit
 
   addSessionWithOneImage() 
   {
-      
+    this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+    this.sessionObject.sessionActivity = this.activityObject
+    //this.sessionObject.sessionCoach = this.userObject
+
+    const sessionFormData = this.prepareFormData(this.sessionObject);
+
+    this.sessionService.addSessionWithOneImage(sessionFormData).subscribe({
+      next:()=> {
+        this.dialogRef.close()
+        this.utilsService.openDialog("Opération réussite", "Séance ajoutée avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+    })
   }
       
   updateSession(arg0: any) 
@@ -332,4 +376,49 @@ export class AddSessionComponent implements OnInit
       error: (err)=>console.error(err)
     })
   }
+
+  onTouched()
+  {
+    if (this.sessionObject.sessionImages.length == 0)
+    {
+      document.getElementById("categoryImageInput")!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById("categoryImageInput")!.className = "form-control border border-dark pl-2 round"
+    }
+  }
+
+  /*prepareFormData(session: Session): FormData
+  {
+    const formData = new FormData()
+
+    formData.append("session", new Blob([JSON.stringify(session)],{type : "application/json"}))
+
+    for ( let i = 0 ; i < session.sessionImages.length ; i++ )
+    {
+      formData.append("imageFile", session.sessionImages[i].file)
+    }
+
+    return formData
+  }*/
+  prepareFormData(session: Session): FormData
+  {
+    const formData = new FormData()
+
+    formData.append(
+      "session", new Blob( [ JSON.stringify(session) ], { type: "application/json" } )
+    )
+    console.log("imageFile: "  + session.sessionImages.length)
+    for ( let i = 0 ; i < session.sessionImages.length ; i++ )
+    {
+      formData.append(
+        "imageFile",
+        session.sessionImages[i].file,
+        session.sessionImages[i].file.name
+      )
+    }
+    return formData
+  }
+  
 }

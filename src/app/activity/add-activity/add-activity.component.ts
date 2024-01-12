@@ -63,8 +63,6 @@ export class AddActivityComponent
     })
 
     this.getAllCategories()
-    //console.log("this.categories: "+this.categories)
-
   }
 
   updateActivity(id:any)
@@ -104,7 +102,7 @@ export class AddActivityComponent
     this.dialogRef.close()
   }
 
-  getActivityById(id: number)
+  getActivityById(id: number) 
   {
     this.activityService.getActivity(id).subscribe({
       next: (activity) => this.populateUpdateForm(activity),
