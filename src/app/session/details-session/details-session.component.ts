@@ -18,6 +18,7 @@ export class DetailsSessionComponent implements OnInit
   sessionName: any
   sessionActivity: any
   sessionCoach: any
+  sessionImage: any
   sessionActivityImage: any
 
   constructor(
@@ -37,7 +38,7 @@ export class DetailsSessionComponent implements OnInit
         })
       })
     }
-    
+
   updateDialog(sessionId: number)
   {
     const popup = this.dialogRef.open(AddSessionComponent, {
@@ -61,5 +62,6 @@ export class DetailsSessionComponent implements OnInit
     this.sessionActivity = session.sessionActivity
     this.sessionCoach = session.sessionCoach
     this.sessionActivityImage = this.activityService.getActivityImage(session.sessionActivity.actImage)
+    this.sessionImage = this.activityService.getActivityImage(session.sessionImage)
   }
 }

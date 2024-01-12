@@ -4,7 +4,6 @@ import {AddCategoryComponent} from "../category/add-category/add-category.compon
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {User} from "./user";
 import {UtilsService} from "../serviceutils/utils.service";
-import {FileHandleModule} from "../file-handle/file-handle.module";
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({

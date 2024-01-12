@@ -5,11 +5,11 @@
     </div>
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
-  
-        <img ngSrc="assets/img/team-2.jpg" height="600" width="500" alt="Activity Image">
-  
-  
-  
+
+        <img [src]="sessionImage" height="600" width="500" alt="Activity Image">
+
+
+
         <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
           <div class="nav-wrapper position-relative end-0">
             <ul class="nav nav-pills nav-fill p-1" role="tablist">
@@ -22,10 +22,10 @@
             </ul>
           </div>
         </div>
-  
+
       </div>
-  
-      
+
+
       <div class="row">
         <div class="row">
           <div class="row">
@@ -59,28 +59,28 @@
                   </div>
                 </div>
                 <div class="card-body p-3 text-center">
-                  <img [src]="sessionActivityImage"  alt="img-blur-shadow" class="text-center shadow border-radius-xl mb-2">
+                  <img [src]="sessionActivityImage"  alt="img-blur-shadow" height="150" width="250" class="text-center shadow border-radius-xl mb-2">
                   <p>
                     {{sessionActivity.actDescription}}
                   </p>
                 </div>
               </div>
-              
+
             </div>
           </div>
-  
 
-  
-  
+
+
+
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Gallerie</h2>
               <p class="text-sm">Notre gallerie des séances</p>
             </div>
-  
-  
+
+
             <div class="row">
-  
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -88,11 +88,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -100,11 +100,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -112,11 +112,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -124,22 +124,22 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
             </div>
           </div>
-  
-  
+
+
           <!--<div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Activités</h2>
               <p class="text-sm">Nos activités de {{ activityTitle }}</p>
             </div>
-  
-  
+
+
             <div class="row">
-  
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -147,11 +147,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -159,11 +159,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -171,11 +171,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -183,15 +183,15 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
             </div>
           </div>
-  
+
         </div>
       </div>
     </div>
   </div>-->
-  
+
 
