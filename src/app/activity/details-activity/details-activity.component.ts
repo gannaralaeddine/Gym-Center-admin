@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileHandle } from 'fs/promises';
 import { ActivityService } from '../../services/activity.service';
-import { NgOptimizedImage } from '@angular/common';
+import { NgFor, NgOptimizedImage } from '@angular/common';
 import { Category } from '../../category/category';
 import { CategoryService } from '../../services/category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from '../add-activity/add-activity.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { AddImagesComponent } from '../../add-images/add-images.component';
 
 @Component({
   selector: 'app-details-activity',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, MatGridListModule, NgFor],
   templateUrl: './details-activity.component.html',
   styleUrl: './details-activity.component.css'
 })
@@ -23,6 +25,7 @@ export class DetailsActivityComponent implements OnInit
   activityCategory!: Category
   activityCategoryImage!: string
   actImages!: FileHandle[]
+  activityImages!: [any]
   activityCategoryDescription!: string
   activityId!: number
 
@@ -36,12 +39,7 @@ constructor(
   {
     this.router.queryParams.subscribe( params => {
       this.activityId = params["actId"]
-      this.activityService.getActivity(this.activityId).subscribe(
-        {
-          next: (val) => this.populateActivityData(val),
-          error: (err) => console.error(err)
-        }
-      )
+      this.getActivityById()
     })
   }
 
@@ -50,7 +48,8 @@ constructor(
     this.activityTitle = activity.actName
     this.activityDescription = activity.actDescription
     this.activityImageUrl = this.activityService.getActivityImage(activity.actImage)
-    this.actImages = activity.actImage
+    this.actImages = activity.actImages
+    this.activityImages = activity.activityImages
     this.activityCategoryImage = this.categoryService.getCategoryImage(activity.category.catImage)
     this.activityCategoryDescription = activity.category.catDescription
   }
@@ -69,5 +68,45 @@ constructor(
         error: (err) => console.error(err)
       })
     })
+  }
+
+  addImages()
+  {
+    console.log(" click on addd images ")
+    const popup = this.dialogRef.open(AddImagesComponent, {
+      width: "50%",
+      height: "80%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      data: { imagesTag: "activity", id: this.activityId }
+    })
+    popup.afterClosed().subscribe(() =>{
+        this.getActivityById()  
+    })
+  }
+
+  getActivityById()
+  {
+    this.activityService.getActivity(this.activityId).subscribe(
+      {
+        next: (val) => this.populateActivityData(val),
+        error: (err) => console.error(err)
+      }
+    )
+  }
+
+  getActivityImage(imageName: string)
+  {
+      return this.activityService.getActivityImage(imageName)
+  }
+
+  mouseOver()
+  {
+    console.log("mouse mouseOver")
+  }
+
+  mouseOut()
+  {
+    console.log("mouse mouseOut")
   }
 }

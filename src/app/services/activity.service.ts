@@ -25,5 +25,10 @@ export class ActivityService
 
   public updateActivityData(id: any, activity:any) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/update-activity/" + id,activity) }
 
+
   public updateActivity(activity: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/update-activity", activity) }
+
+
+  public deleteActivityImage(activityId: number, imageName: string){ return this.http.delete(this.utils.API_GYM_CENTER + "/activity/delete-activity-image/" + activityId + "/" + imageName) }
+
 }

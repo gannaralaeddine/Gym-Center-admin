@@ -8,13 +8,15 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import {AuthInterceptor} from "./app/auth/auth.interceptor";
 import {AuthService} from "./app/auth/auth.service";
 import {AuthGuard} from "./app/auth/authGuard";
+import {MatGridListModule} from '@angular/material/grid-list';
+
 
 /*bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err))*/
 
   bootstrapApplication(AppComponent, {
     providers:[
-    importProvidersFrom(HttpClientModule),
+    importProvidersFrom(HttpClientModule, MatGridListModule),
     provideRouter(routes),
     provideAnimations(),
       // AuthGuard,
