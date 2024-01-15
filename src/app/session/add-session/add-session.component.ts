@@ -106,24 +106,9 @@ export class AddSessionComponent implements OnInit
 
   getAllCoaches()
   {
-    this.userService.getAllUsers().subscribe({
+    this.userService.getAllCoaches().subscribe({
       next: (user) => this.coaches = user,
-      error: (err) => console.error(err),
-      complete: () => {
-
-        let coachesArray = []
-
-        for (let i = 0; i < this.coaches.length; i++)
-        {
-          if ((this.coaches[i].roles.length !== 0) && (this.coaches[i].roles[0].roleName === "COACH"))
-          {
-            coachesArray.push(this.coaches[i])
-          }
-        }
-
-        this.coaches = coachesArray
-
-      }
+      error: (err) => console.error(err)
     })
   }
 
