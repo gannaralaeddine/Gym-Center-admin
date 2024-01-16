@@ -5,11 +5,11 @@
     </div>
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
-  
+
         <img [src]="activityImageUrl" height="600" width="500" alt="Activity Image">
-  
-  
-  
+
+
+
         <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
           <div class="nav-wrapper position-relative end-0">
             <ul class="nav nav-pills nav-fill p-1" role="tablist">
@@ -22,10 +22,10 @@
             </ul>
           </div>
         </div>
-  
+
       </div>
-  
-      
+
+
       <div class="row">
         <div class="row">
           <div class="row">
@@ -62,34 +62,35 @@
                   <p>{{activityCategoryDescription}}</p>
                 </div>
               </div>
-              
+
             </div>
           </div>
-  
 
-  
-  
+
+
+
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Album</h2>
               <input type="button" value="Ajouter des images" (click)="addImages()" style="position: absolute; right: 0;" />
-              <p class="text-sm">Notre album des activités</p>
+              <p class="text-sm">Notre album de {{ activityTitle }}</p>
             </div>
-  
-  
-            
-            
+
+
+
+
             <div class="row">
                 <mat-grid-list cols="4" rowHeight="2:1">
                   <mat-grid-tile *ngFor="let image of activityImages">
-                    <div style="position: relative">
-                        <img [src]="getActivityImage(image.imageName)" (mouseover)="mouseOver()" (mouseout)="mouseOut()" height="150" width="250" alt="Activity image" />
-                    </div>
+<!--                    <div style="position: relative">-->
+<!--                        <img [src]="getActivityImage(image.imageName)" (mouseover)="mouseOver()" (mouseout)="mouseOut()" height="150" width="250" alt="Activity image" />-->
+<!--                    </div>-->
+                    <app-card-flip [imageName]=image.imageName [classId]=activityId (onDataChange)="detectChanges($event)"></app-card-flip>
                   </mat-grid-tile>
-                  
+
                 </mat-grid-list>
-  
-  
+
+
               <!-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -99,20 +100,20 @@
                   </div>
                 </div>
               </div> -->
-            
+
             </div>
           </div>
-  
-  
+
+
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Activités</h2>
               <p class="text-sm">Nos activités de {{ activityTitle }}</p>
             </div>
-  
-  
+
+
             <div class="row">
-  
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -120,11 +121,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -132,11 +133,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -144,11 +145,11 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
-  
-  
+
+
               <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
                 <div class="card card-blog card-plain">
                   <div class="card-header p-0 mt-n4 mx-3">
@@ -156,14 +157,14 @@
                       <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
-  
+
                 </div>
               </div>
             </div>
           </div>
-  
+
         </div>
       </div>
     </div>
 </div>
-  
+

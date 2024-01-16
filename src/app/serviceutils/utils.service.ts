@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertSuccessComponent } from "../alert-success/alert-success.component";
 import { MatDialog } from '@angular/material/dialog';
+import {AlertDeleteComponent} from "../alert-delete/alert-delete.component";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,16 @@ export class UtilsService
     })
     popup.afterClosed().subscribe(item =>{
       // console.log("Popup has been closed !")
+    })
+  }
+
+
+  deletePopup(){
+    return  this.matDialog.open(AlertDeleteComponent, {
+      width: "40%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "500ms",
+      data: { title:  "Supprimer image", message: "Voulez-vous vraiment supprimer cette image ?" }
     })
   }
 

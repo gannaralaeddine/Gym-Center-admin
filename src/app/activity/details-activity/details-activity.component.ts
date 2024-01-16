@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileHandle } from 'fs/promises';
 import { ActivityService } from '../../services/activity.service';
@@ -9,16 +9,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from '../add-activity/add-activity.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AddImagesComponent } from '../../add-images/add-images.component';
+import {CardFlipComponent} from "../../card-flip/card-flip.component";
 
 @Component({
   selector: 'app-details-activity',
   standalone: true,
-  imports: [NgOptimizedImage, MatGridListModule, NgFor],
+  imports: [NgOptimizedImage, MatGridListModule, NgFor, CardFlipComponent],
   templateUrl: './details-activity.component.html',
   styleUrl: './details-activity.component.css'
 })
 export class DetailsActivityComponent implements OnInit
 {
+
   activityTitle!: string
   activityDescription!: string
   activityImageUrl!: string
@@ -81,7 +83,7 @@ constructor(
       data: { imagesTag: "activity", id: this.activityId }
     })
     popup.afterClosed().subscribe(() =>{
-        this.getActivityById()  
+        this.getActivityById()
     })
   }
 
@@ -100,13 +102,16 @@ constructor(
       return this.activityService.getActivityImage(imageName)
   }
 
-  mouseOver()
+  detectChanges(isDataChanges: boolean)
   {
-    console.log("mouse mouseOver")
-  }
-
-  mouseOut()
-  {
-    console.log("mouse mouseOut")
+      if (isDataChanges)
+      {
+          this.activityService.getActivity(this.activityId).subscribe(
+            {
+              next: (val) => this.activityImages = val.activityImages,
+              error: (err) => console.error(err)
+            }
+          )
+      }
   }
 }
