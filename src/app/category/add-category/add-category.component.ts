@@ -80,9 +80,9 @@ export class AddCategoryComponent implements OnInit
           this.categoryService.updateCategory(formData).subscribe({
             complete: () => {
               this.dialogRef.close()
-              this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+              this.utilsService.successDialog("Opération réussite", "Catégorie éditée avec succès", true)
             },
-            error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+            error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
           })
       }
       else
@@ -90,9 +90,9 @@ export class AddCategoryComponent implements OnInit
         this.categoryService.updateCategoryData(id, this.category).subscribe({
           complete: () => {
             this.dialogRef.close()
-            this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+            this.utilsService.successDialog("Opération réussite", "Catégorie éditée avec succès", true)
           },
-          error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+          error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
 
@@ -108,10 +108,10 @@ export class AddCategoryComponent implements OnInit
       this.categoryService.addCategoryWithOneImage(categoryFormData).subscribe({
         next:()=> {
           this.dialogRef.close()
-          this.utilsService.openDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
+          this.utilsService.successDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
 
         },
-        error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
       })
 
 
@@ -183,10 +183,10 @@ export class AddCategoryComponent implements OnInit
     this.categoryService.addImagesToCategory(categoryFormData).subscribe({
       next:()=> {
         this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Catégorie éditée avec succès", true)
+        this.utilsService.successDialog("Opération réussite", "Catégorie éditée avec succès", true)
 
       },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 

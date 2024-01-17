@@ -1,0 +1,20 @@
+.parent {
+  margin: 1rem;
+  text-align: center;
+}
+.child {
+  display: inline-block;
+  vertical-align: middle;
+  width: 40%;
+}
+
+.margin-center
+{
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.parent-child {
+  width: 80%;
+  vertical-align: middle;
+}

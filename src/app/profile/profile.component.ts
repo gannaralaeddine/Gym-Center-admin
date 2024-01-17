@@ -1,65 +1,82 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
-import {isPlatformBrowser} from "@angular/common";
+import {isPlatformBrowser, NgForOf} from "@angular/common";
 import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {RouterLink} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {CardFlipComponent} from "../card-flip/card-flip.component";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {AddImagesComponent} from "../add-images/add-images.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink,
+    CardFlipComponent,
+    MatGridListModule,
+    NgForOf
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent
 {
     user = new User()
-    email!: string
-    fullname!: string
     accountType!: string
-    phoneNumber!: string
-    country!: string
+    profilePicture!: string
+    userImages: any
 
     constructor(private userService: UserService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object,
-                private utilsService: UtilsService, private sanitizer: DomSanitizer) {
+                private utilsService: UtilsService, private sanitizer: DomSanitizer, private dialogRef: MatDialog) {
 
       if (isPlatformBrowser(this.platformId)) {
 
           // @ts-ignore
-          this.userService.retrieveUserByEmail(this.authService.getEmailLS()).subscribe(
-            {
-              next: (val) => this.populateUserData(val),
-              error: (err) => console.error(err)
-            }
-          )
+          this.user.userEmail = this.authService.getEmailLS()
+          this.getUserByEmail()
       }
     }
 
   populateUserData(user: any)
   {
-    this.email = user.userEmail
-    this.fullname = user.userFirstName+ " " + user.userLastName
+    this.profilePicture = this.userService.getImage(user.userPicture)
     this.accountType = user.roles[0].roleName
-    this.phoneNumber = user.userPhoneNumber
-    this.country = user.userCountry
+
+    this.user.userId = user.userId
+    this.user.userFirstName = user.userFirstName
+    this.user.userLastName = user.userLastName
+    this.user.userDescription = user.userDescription
+    this.user.userPhoneNumber = user.userPhoneNumber
+    this.user.userCountry = user.userCountry
+    this.user.userState = user.userState
+    this.user.userCity = user.userCity
+    this.user.userGender = user.userGender
+    this.user.userHeight = user.userHeight
+    this.user.userWeight = user.userWeight
+    this.user.userZipCode = user.userZipCode
+    this.user.userBirthDate = user.userBirthDate
+    this.user.userPicture = user.userPicture
+    this.userImages = user.userImages
+
   }
 
 
-  updateProfileImage(id: number)
+  updateProfileImage()
   {
-
-    this.user.userId = id
-
     const formData = this.prepareFormData(this.user)
 
     this.userService.updateProfilePicture(formData).subscribe({
       complete: () => {
-        this.utilsService.openDialog("Opération réussite", "Votre image a été éditer avec succès", true)
+        this.getUserByEmail()
+        this.utilsService.successDialog("Opération réussite", "Votre image a été éditer avec succès", true)
       },
-      error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
 
   }
@@ -84,14 +101,19 @@ export class ProfileComponent
     return formData
   }
 
-
+  getUserByEmail()
+  {
+    this.userService.retrieveUserByEmail(this.user.userEmail).subscribe(
+        {
+          next: (val) => this.populateUserData(val),
+          error: (err) => console.error(err)
+        }
+    )
+  }
 
   onFileSelected(event: any)
   {
-    console.log(event.target.files)
-
     this.user.userImages = []
-
 
     if (event.target.files)
     {
@@ -111,10 +133,34 @@ export class ProfileComponent
 
       }
     }
+
+    this.updateProfileImage()
   }
 
-  openFileSelect()
+  editProfile()
   {
+      const popup = this.dialogRef.open(EditProfileComponent, {
+        width: "60%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { userEmail: this.user.userEmail }
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.getUserByEmail()
+      })
+  }
 
+  addImages()
+  {
+    const popup = this.dialogRef.open(AddImagesComponent, {
+      width: "50%",
+      height: "80%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      data: { imagesTag: "userProfile", id: this.user.userId }
+    })
+    popup.afterClosed().subscribe(() =>{
+      this.getUserByEmail()
+    })
   }
 }

@@ -219,10 +219,10 @@ export class AddSessionComponent implements OnInit
     this.sessionService.addSessionWithOneImage(sessionFormData).subscribe({
       next:()=> {
         this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Séance ajoutée avec succès", true)
+        this.utilsService.successDialog("Opération réussite", "Séance ajoutée avec succès", true)
 
       },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 
