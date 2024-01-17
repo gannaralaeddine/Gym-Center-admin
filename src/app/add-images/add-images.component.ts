@@ -6,6 +6,7 @@ import { UtilsService } from '../serviceutils/utils.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgFor } from '@angular/common';
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-add-images',
@@ -16,32 +17,35 @@ import { NgFor } from '@angular/common';
 })
 export class AddImagesComponent
 {
-    activityId: number
+    classId: number
+    imagesTag!: string
     images!: FileHandleModule[]
 
-    constructor(private activityService: ActivityService, private utilsService: UtilsService,
+    constructor(private activityService: ActivityService, private userService: UserService, private utilsService: UtilsService,
        private sanitizer: DomSanitizer, private dialogRef: MatDialogRef<AddImagesComponent>,
        @Inject(MAT_DIALOG_DATA) public data: any)
     {
-        this.activityId = data.id
-        console.log("this.activityId: " + this.activityId)
+        this.classId = data.id
+        this.imagesTag = data.imagesTag
+        console.log("this.classId: " + this.classId)
+        console.log("this.imagesTag: " + this.imagesTag)
     }
 
     addImages(id: number)
     {
       if(this.images && this.images.length > 0)
       {
-        const activityFormData =  this.prepareFormData( id )
+        const formData =  this.prepareFormData( id )
 
-        this.activityService.addImagesToActivity(activityFormData).subscribe({
-          next:(val)=> {
-            console.log("Opération réussite: " + val)
-            this.dialogRef.close()
-            this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
-
-          },
-          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
-        })
+        switch(this.imagesTag)
+        {
+          case "activity":
+          { this.addImagesToActivity(formData); break }
+          case "userProfile":
+          { this.addImagesToUserProfile(formData); break }
+          default:
+          { console.log("images tag not specified"); break }
+        }
       }
       else
       {
@@ -114,6 +118,32 @@ export class AddImagesComponent
       event.preventDefault()
       event.stopPropagation()
 
+  }
+
+  addImagesToActivity(formData: FormData)
+  {
+      this.activityService.addImagesToActivity(formData).subscribe({
+      next:(val)=> {
+        console.log("Opération réussite: " + val)
+        this.dialogRef.close()
+        this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+    })
+  }
+
+  addImagesToUserProfile(formData: FormData)
+  {
+    this.userService.addImagesToUserProfile(formData).subscribe({
+      next:(val)=> {
+        console.log("Opération réussite: " + val)
+        this.dialogRef.close()
+        this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+    })
   }
 }
 

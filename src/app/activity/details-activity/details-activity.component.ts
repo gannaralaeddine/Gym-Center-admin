@@ -74,7 +74,6 @@ constructor(
 
   addImages()
   {
-    console.log(" click on addd images ")
     const popup = this.dialogRef.open(AddImagesComponent, {
       width: "50%",
       height: "80%",
