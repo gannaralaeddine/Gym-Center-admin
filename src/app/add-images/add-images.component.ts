@@ -32,15 +32,15 @@ export class AddImagesComponent
       if(this.images && this.images.length > 0)
       {
         const activityFormData =  this.prepareFormData( id )
-  
+
         this.activityService.addImagesToActivity(activityFormData).subscribe({
           next:(val)=> {
             console.log("Opération réussite: " + val)
             this.dialogRef.close()
-            this.utilsService.openDialog("Opération réussite", "Images ajoutée avec succès", true)
-    
+            this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
+
           },
-          error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
       else

@@ -80,8 +80,8 @@ export class RegisterComponent
       this.member.userPassword = this.userForm.value.userPassword
 
       this.userService.registerMember(this.member).subscribe({
-        next:()=> this.utilsService.openDialog("Opération réussite", "Compte MEMBRE a été créer avec succès", true),
-        error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false),
+        next:()=> this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créer avec succès", true),
+        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
       })
     }
 
@@ -93,8 +93,8 @@ export class RegisterComponent
       this.coach.userPassword = this.userForm.value.userPassword
 
         this.userService.registerCoach(this.coach).subscribe({
-          next:()=> this.utilsService.openDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
-          error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false),
+          next:()=> this.utilsService.successDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
+          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
         })
     }
 
@@ -106,8 +106,8 @@ export class RegisterComponent
         this.admin.userPassword = this.userForm.value.userPassword
 
         this.userService.registerAdmin(this.admin).subscribe({
-          next:()=> this.utilsService.openDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
-          error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false),
+          next:()=> this.utilsService.successDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
+          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
         })
     }
 

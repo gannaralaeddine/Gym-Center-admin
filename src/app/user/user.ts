@@ -5,17 +5,18 @@ export class User
 {
   userId?: number
   userEmail?: string
-  userFirstName?: string
-  userLastName?: string
-  userBirthDate? : string
+  userFirstName!: string
+  userLastName!: string
+  userBirthDate? : Date
   userPhoneNumber? : string
+  userDescription?: string
   userGender? : string
   userHeight? : string
   userWeight? : string
   userPicture? : string
-  userCity? : string
-  userState? : string
   userCountry? : string
+  userState? : string
+  userCity? : string
   userZipCode? : string
   userPassword? : string
   roles?: Array<Role>

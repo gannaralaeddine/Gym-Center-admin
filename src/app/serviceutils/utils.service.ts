@@ -13,15 +13,12 @@ export class UtilsService
 
   constructor( private matDialog: MatDialog ) { }
 
-  openDialog(title: string, message: string, operationStatus: boolean){
+  successDialog(title: string, message: string, operationStatus: boolean){
     const popup = this.matDialog.open(AlertSuccessComponent, {
       width: "40%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
       data: { title:  title, message: message, operationStatus: operationStatus }
-    })
-    popup.afterClosed().subscribe(item =>{
-      // console.log("Popup has been closed !")
     })
   }
 

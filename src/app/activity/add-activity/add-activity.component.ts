@@ -78,9 +78,9 @@ export class AddActivityComponent
         this.activityService.updateActivity(formData).subscribe({
           complete: () => {
             this.dialogRef.close()
-            this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
+            this.utilsService.successDialog("Opération réussite", "Activité éditée avec succès", true)
           },
-          error: (err) => this.utilsService.openDialog("Opération échouée", err.message, false)
+          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
     }
     else
@@ -88,9 +88,9 @@ export class AddActivityComponent
         this.activityService.updateActivityData(id, this.activity).subscribe({
           complete: () => {
             this.dialogRef.close()
-            this.utilsService.openDialog("Opération réussite", "Activité éditée avec succès", true)
+            this.utilsService.successDialog("Opération réussite", "Activité éditée avec succès", true)
           },
-          error: (err) => this.utilsService.openDialog("Opération échouée", err.message, false)
+          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
     }
   }
@@ -271,10 +271,10 @@ export class AddActivityComponent
       next:(val)=> {
         console.log("Opération réussite: " + val)
         this.dialogRef.close()
-        this.utilsService.openDialog("Opération réussite", "Activity ajoutée avec succès", true)
+        this.utilsService.successDialog("Opération réussite", "Activity ajoutée avec succès", true)
 
       },
-      error: (err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 

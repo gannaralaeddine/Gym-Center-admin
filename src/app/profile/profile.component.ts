@@ -6,11 +6,17 @@ import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {RouterLink} from "@angular/router";
+import {AddActivityComponent} from "../activity/add-activity/add-activity.component";
+import {MatDialog} from "@angular/material/dialog";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [],
+    imports: [
+        RouterLink
+    ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -19,29 +25,26 @@ export class ProfileComponent
     user = new User()
     email!: string
     fullname!: string
+    description!: string
     accountType!: string
     phoneNumber!: string
     country!: string
 
     constructor(private userService: UserService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object,
-                private utilsService: UtilsService, private sanitizer: DomSanitizer) {
+                private utilsService: UtilsService, private sanitizer: DomSanitizer, private dialogRef: MatDialog) {
 
       if (isPlatformBrowser(this.platformId)) {
 
           // @ts-ignore
-          this.userService.retrieveUserByEmail(this.authService.getEmailLS()).subscribe(
-            {
-              next: (val) => this.populateUserData(val),
-              error: (err) => console.error(err)
-            }
-          )
+          this.email = this.authService.getEmailLS()
+          this.getUserByEmail()
       }
     }
 
   populateUserData(user: any)
   {
-    this.email = user.userEmail
     this.fullname = user.userFirstName+ " " + user.userLastName
+    this.description = user.userDescription
     this.accountType = user.roles[0].roleName
     this.phoneNumber = user.userPhoneNumber
     this.country = user.userCountry
@@ -57,9 +60,9 @@ export class ProfileComponent
 
     this.userService.updateProfilePicture(formData).subscribe({
       complete: () => {
-        this.utilsService.openDialog("Opération réussite", "Votre image a été éditer avec succès", true)
+        this.utilsService.successDialog("Opération réussite", "Votre image a été éditer avec succès", true)
       },
-      error:(err)=> this.utilsService.openDialog("Opération échouée", err.message, false)
+      error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
 
   }
@@ -84,7 +87,15 @@ export class ProfileComponent
     return formData
   }
 
-
+  getUserByEmail()
+  {
+    this.userService.retrieveUserByEmail(this.email).subscribe(
+        {
+          next: (val) => this.populateUserData(val),
+          error: (err) => console.error(err)
+        }
+    )
+  }
 
   onFileSelected(event: any)
   {
@@ -116,5 +127,18 @@ export class ProfileComponent
   openFileSelect()
   {
 
+  }
+
+  editProfile()
+  {
+      const popup = this.dialogRef.open(EditProfileComponent, {
+        width: "60%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { userEmail: this.email }
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.getUserByEmail()
+      })
   }
 }

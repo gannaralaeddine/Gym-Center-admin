@@ -40,13 +40,13 @@
             <div class="card-header pb-0 p-3">
               <div class="row">
                 <div class="col-md-8 d-flex align-items-center">
-                  <h1 class="mb-0">Profile Information</h1>
+                  <h1 class="mb-0">Mes Informations</h1>
                 </div>
 
 
                 <div class="col-md-4 text-end">
-                  <a href="javascript:">
-                    <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                  <a (click)="editProfile()">
+                    <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier mes informations"></i>
                   </a>
                 </div>
               </div>
@@ -54,7 +54,7 @@
 
             <div class="card-body p-3">
               <p class="text-sm">
-                Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+                {{ description }}
               </p>
               <hr class="horizontal gray-light my-4">
               <ul class="list-group">

@@ -40,18 +40,18 @@ export class LoginComponent
           else
           {
 
-              this.utils.openDialog("Échec de connexion", "Vous n'avez pas les droit d'accès", false)
+              this.utils.successDialog("Échec de connexion", "Vous n'avez pas les droit d'accès", false)
           }
 
         },
         error: (err: any)  => {
           if (err.status == 401)
           {
-            this.utils.openDialog("Échec de connexion", "Vérifier vos informations d'identification", false)
+            this.utils.successDialog("Échec de connexion", "Vérifier vos informations d'identification", false)
           }
           else
           {
-            this.utils.openDialog("error is not 401", "error is not 401", false)
+            this.utils.successDialog("error is not 401", "error is not 401", false)
           }
 
         }

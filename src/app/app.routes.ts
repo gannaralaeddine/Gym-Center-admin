@@ -13,6 +13,7 @@ import {AppComponent} from "./app.component";
 import {AuthGuard} from "./auth/authGuard";
 import { DetailsSessionComponent } from './session/details-session/details-session.component';
 import { SessionComponent } from './session/session.component';
+import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 
 export const routes: Routes = [
 
