@@ -64,7 +64,6 @@ export class AddCategoryComponent implements OnInit
   {
     this.categoryFormValue.controls['categoryName'].setValue(category.catName)
     this.categoryFormValue.controls['categoryDescription'].setValue(category.catDescription)
-    this.categoryFormValue.controls['categoryImage'].setValue(category.catImage)
   }
 
   updateCategoryDetails(id: number)
