@@ -24,5 +24,5 @@ export class SessionService
 
   public updateSession(id: any, session:any) { return this.http.put(this.utils.API_GYM_CENTER + "/session/update-session/" + id,session) }
 
-
+  public updateSessionWithImage(session:FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/session/update-session-with-image", session) }
 }

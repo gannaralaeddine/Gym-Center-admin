@@ -66,7 +66,7 @@ export class AddSessionComponent implements OnInit
   {
     if (!id)
     {
-      // retrieve activity in add operation
+      // retrieve activity object in add operation
       this.activityService.getActivity(this.sessionFormValue.value.sessionActivity).subscribe({
         next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
         error: (err) => console.log(err)
@@ -74,7 +74,7 @@ export class AddSessionComponent implements OnInit
     }
     else
     {
-      // retrieve activity in update operation
+      // retrieve activity object in update operation
       this.activityService.getActivity(id).subscribe({
         next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
         error: (err) => console.log(err)
@@ -210,21 +210,36 @@ export class AddSessionComponent implements OnInit
   }
 
   updateSession()
-  {
-    console.log("in update: " + this.sessionObject)
-    
-    this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
-    // this.sessionObject.sessionActivity = this.activityObject
-    // this.sessionObject.sessionCoach = this.userObject
+  { 
+    if (this.sessionObject.sessionImages.length > 0)
+    {
+      this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+      const formData = this.prepareFormData(this.sessionObject)
+      
 
-    this.sessionService.updateSession(this.data.sessionId,this.sessionObject).subscribe({
-      next:()=> {
-        this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
+      this.sessionService.updateSessionWithImage(formData).subscribe({
+        next:()=> {
+          this.dialogRef.close()
+          this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
+  
+        },
+        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+      })
+    }
+    else
+    {
+      this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
 
-      },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
-    })
+      this.sessionService.updateSession(this.data.sessionId,this.sessionObject).subscribe({
+        next:()=> {
+          this.dialogRef.close()
+          this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
+  
+        },
+        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+      })
+    }
+  
   }
 
   getSessionById(sessionId: any)
@@ -237,6 +252,7 @@ export class AddSessionComponent implements OnInit
 
   populateUpdateForm(session: any)
   {
+    this.sessionObject.sessionId = session.sessionId
     this.sessionObject.sessionActivity = session.sessionActivity
     this.sessionObject.sessionCoach = session.sessionCoach
 
@@ -374,18 +390,13 @@ export class AddSessionComponent implements OnInit
   {
     const formData = new FormData()
 
-    formData.append(
-      "session", new Blob( [ JSON.stringify(session) ], { type: "application/json" } )
-    )
-    console.log("imageFile: "  + session.sessionImages.length)
+    formData.append("session", new Blob([JSON.stringify(session)], {type: "application/json"}))
+  
     for ( let i = 0 ; i < session.sessionImages.length ; i++ )
     {
-      formData.append(
-        "imageFile",
-        session.sessionImages[i].file,
-        session.sessionImages[i].file.name
-      )
+      formData.append("imageFile", session.sessionImages[i].file, session.sessionImages[i].file.name)
     }
+
     return formData
   }
 
