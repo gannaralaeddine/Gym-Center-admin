@@ -27,6 +27,7 @@ import {AddImagesComponent} from "../add-images/add-images.component";
 })
 export class ProfileComponent
 {
+    deleteTag = "deleteProfileImage"
     user = new User()
     accountType!: string
     profilePicture!: string
@@ -162,5 +163,13 @@ export class ProfileComponent
     popup.afterClosed().subscribe(() =>{
       this.getUserByEmail()
     })
+  }
+
+  detectChanges(isDataChanges: boolean)
+  {
+    if (isDataChanges)
+    {
+      this.getUserByEmail()
+    }
   }
 }

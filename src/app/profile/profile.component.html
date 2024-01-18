@@ -95,7 +95,7 @@
                 <!--                    <div style="position: relative">-->
                 <!--                        <img [src]="getActivityImage(image.imageName)" (mouseover)="mouseOver()" (mouseout)="mouseOut()" height="150" width="250" alt="Activity image" />-->
                 <!--                    </div>-->
-                <app-card-flip [imageName]=image.imageName ></app-card-flip>
+                <app-card-flip [imageName]=image.imageName [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
               </mat-grid-tile>
 
             </mat-grid-list>

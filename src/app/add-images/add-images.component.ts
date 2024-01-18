@@ -7,6 +7,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgFor } from '@angular/common';
 import {UserService} from "../services/user.service";
+import {SessionService} from "../services/session.service";
+import {Session} from "../session/session";
 
 @Component({
   selector: 'app-add-images',
@@ -21,14 +23,13 @@ export class AddImagesComponent
     imagesTag!: string
     images!: FileHandleModule[]
 
-    constructor(private activityService: ActivityService, private userService: UserService, private utilsService: UtilsService,
+    constructor(private activityService: ActivityService, private userService: UserService, private sessionService: SessionService,
+                private utilsService: UtilsService,
        private sanitizer: DomSanitizer, private dialogRef: MatDialogRef<AddImagesComponent>,
        @Inject(MAT_DIALOG_DATA) public data: any)
     {
         this.classId = data.id
         this.imagesTag = data.imagesTag
-        console.log("this.classId: " + this.classId)
-        console.log("this.imagesTag: " + this.imagesTag)
     }
 
     addImages(id: number)
@@ -43,6 +44,8 @@ export class AddImagesComponent
           { this.addImagesToActivity(formData); break }
           case "userProfile":
           { this.addImagesToUserProfile(formData); break }
+          case "session":
+          { this.addImagesToSession(formData); break }
           default:
           { console.log("images tag not specified"); break }
         }
@@ -138,6 +141,19 @@ export class AddImagesComponent
     this.userService.addImagesToUserProfile(formData).subscribe({
       next:(val)=> {
         console.log("Opération réussite: " + val)
+        this.dialogRef.close()
+        this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+    })
+  }
+
+  addImagesToSession(formData: FormData)
+  {
+    this.sessionService.addImagesToSession(formData).subscribe({
+      next:(val)=> {
+        console.log( val )
         this.dialogRef.close()
         this.utilsService.successDialog("Opération réussite", "Images ajoutée avec succès", true)
 

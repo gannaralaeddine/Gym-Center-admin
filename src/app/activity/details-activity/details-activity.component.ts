@@ -21,7 +21,7 @@ import { User } from '../../user/user';
 })
 export class DetailsActivityComponent implements OnInit
 {
-
+  deleteTag = "deleteActivityImage"
   activityTitle!: string
   activityDescription!: string
   activityImageUrl!: string
@@ -100,7 +100,7 @@ constructor(
     )
   }
 
-  getActivityImage(imageName: string)
+  getActivityImage(imageName: any)
   {
       return this.activityService.getActivityImage(imageName)
   }

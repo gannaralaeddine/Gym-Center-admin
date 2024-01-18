@@ -4,6 +4,8 @@ import {ActivityService} from "../services/activity.service";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {UtilsService} from "../serviceutils/utils.service";
+import {UserService} from "../services/user.service";
+import {SessionService} from "../services/session.service";
 
 @Component({
   imports: [
@@ -31,11 +33,13 @@ export class CardFlipComponent
 {
   @Input()imageName: any
   @Input()classId: any
+  @Input()classToDelete: any
   @Output() onDataChange = new EventEmitter<boolean>();
 
   flip: string = 'inactive';
 
-  constructor(private activityService: ActivityService, private matDialog: MatDialog, private utilsService: UtilsService) { }
+  constructor(private activityService: ActivityService, private userService: UserService, private sessionService: SessionService,
+              private matDialog: MatDialog, private utilsService: UtilsService) {  }
 
 
   toggleFlip() {
@@ -49,19 +53,49 @@ export class CardFlipComponent
   }
 
 
-  deleteActivityImage()
+  deleteImage()
   {
       this.utilsService.deletePopup()
         .afterClosed().subscribe(isDeleteOperation =>{
         if (isDeleteOperation)
         {
-          this.activityService.deleteActivityImage(this.classId, this.imageName).subscribe({
-            next: () => this.onDataChange.emit(true) ,
-            error: (err) => console.log("Error deleting activity image" + err)
-          })
+            switch (this.classToDelete)
+            {
+              case "deleteActivityImage":
+                  { this.deleteActivityImage(); break }
+              case "deleteProfileImage":
+                  { this.deleteProfileImage(); break }
+              case "deleteSessionImage":
+                  { this.deleteSessionImage(); break }
+              default:
+                  console.log("nothing to delete switch default case")
+            }
         }
       })
   }
 
 
+  deleteActivityImage()
+  {
+    this.activityService.deleteActivityImage(this.classId, this.imageName).subscribe({
+      next: () => this.onDataChange.emit(true) ,
+      error: (err) => console.log("Error deleting activity image" + err)
+    })
+  }
+
+  deleteSessionImage()
+  {
+    this.sessionService.deleteSessionImage(this.classId, this.imageName).subscribe({
+      next: () => this.onDataChange.emit(true) ,
+      error: (err) => console.log("Error deleting activity image" + err)
+    })
+  }
+
+  deleteProfileImage()
+  {
+    // this.userService.del(this.classId, this.imageName).subscribe({
+    //   next: () => this.onDataChange.emit(true) ,
+    //   error: (err) => console.log("Error deleting activity image" + err)
+    // })
+  }
 }
