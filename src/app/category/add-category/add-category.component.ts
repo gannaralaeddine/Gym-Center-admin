@@ -73,7 +73,7 @@ export class AddCategoryComponent implements OnInit
       this.category.catName = this.categoryFormValue.value.categoryName
       this.category.catDescription = this.categoryFormValue.value.categoryDescription
 
-      if (this.category.catImages.length > 0)
+      if ((this.category.catImages) && (this.category.catImages.length > 0))
       {
           const formData = this.prepareFormData(this.category)
 
@@ -215,7 +215,7 @@ export class AddCategoryComponent implements OnInit
     if (this.categoryId)
     {
       // enable or disable the update button
-      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid || this.category.catImages.length == 0)
+      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }

@@ -71,7 +71,7 @@ export class AddActivityComponent
       this.activity.category = this.categoryObject
 
 
-    if (this.activity.actImages.length > 0)
+    if ((this.activity.actImages) && (this.activity.actImages.length > 0))
     {
         const formData = this.prepareFormData(this.activity)
 
@@ -205,7 +205,7 @@ export class AddActivityComponent
 
   checkValidityForm()
   {
-    // check activity name and change borer color based on validity of input
+    // check activity name and change border color based on validity of input
     if (this.activityFormValue.controls['activityName'].invalid && this.activityFormValue.controls['activityName'].touched)
     {
       document.getElementById('activityNameInput')!.className = "form-control border border-danger pl-2 round"
@@ -215,7 +215,7 @@ export class AddActivityComponent
       document.getElementById('activityNameInput')!.className = "form-control border border-dark pl-2 round"
     }
 
-    // check activity description and change borer color based on validity of input
+    // check activity description and change bodrer color based on validity of input
     if (this.activityFormValue.controls['activityDescription'].invalid && this.activityFormValue.controls['activityDescription'].touched)
     {
       document.getElementById('activityDescriptionInput')!.className = "form-control border border-danger pl-2 round"
@@ -236,7 +236,7 @@ export class AddActivityComponent
 
     if (this.activityId) // enable or disable the update button
     {
-      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid || this.activity.actImages.length == 0)
+      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
