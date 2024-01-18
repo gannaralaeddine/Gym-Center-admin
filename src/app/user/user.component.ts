@@ -3,8 +3,6 @@ import {UserService} from "../services/user.service";
 import {AddCategoryComponent} from "../category/add-category/add-category.component";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {User} from "./user";
-import {UtilsService} from "../serviceutils/utils.service";
-import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-user',
@@ -25,7 +23,7 @@ export class UserComponent implements OnInit
     member = new User();
     usersList: any
 
-    public constructor(private userService: UserService, private utilsService: UtilsService, private sanitizer: DomSanitizer) {
+    public constructor(private userService: UserService) {
         this.getAllUsers()
     }
 
@@ -42,17 +40,17 @@ export class UserComponent implements OnInit
         })
     }
 
-  getUserImage(imageName: string): string
-  {
-      if (imageName)
-      {
-          return this.userService.getImage(imageName)
-      }
-      else
-      {
-          return "../assets/img/icons/ic_person.png"
-      }
-  }
+    getUserImage(imageName: string): string
+    {
+        if (imageName)
+        {
+            return this.userService.getImage(imageName)
+        }
+        else
+        {
+            return "../assets/img/icons/ic_user_tie.svg"
+        }
+    }
 
 
 }

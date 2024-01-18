@@ -106,7 +106,7 @@ export class RegisterComponent
         this.admin.userPassword = this.userForm.value.userPassword
 
         this.userService.registerAdmin(this.admin).subscribe({
-          next:()=> this.utilsService.successDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
+          next:()=> this.utilsService.successDialog("Opération réussite", "Compte ADMIN a été créer avec succès", true),
           error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
         })
     }

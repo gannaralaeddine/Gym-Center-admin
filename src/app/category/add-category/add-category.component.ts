@@ -171,24 +171,6 @@ export class AddCategoryComponent implements OnInit
   this.dialogRef.close();
 }
 
-
-  addImagesToCategory(catId: any)
-  {
-
-    this.category.catId = catId
-
-    const categoryFormData =  this.prepareFormData(this.category)
-
-    this.categoryService.addImagesToCategory(categoryFormData).subscribe({
-      next:()=> {
-        this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Catégorie éditée avec succès", true)
-
-      },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
-    })
-  }
-
   checkValidityForm()
   {
     // check category name and change borer color based on validity of input

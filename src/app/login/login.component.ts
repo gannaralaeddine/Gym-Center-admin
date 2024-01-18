@@ -28,7 +28,8 @@ export class LoginComponent
         next: (response: any)  => {
 
 
-          if ( (response.authorities[0].authority === "ROLE_ADMIN") || (response.authorities[0].authority === "ROLE_SUPER_ADMIN") )
+          if ( (response.authorities[0].authority === "ROLE_ADMIN") || (response.authorities[0].authority === "ROLE_SUPER_ADMIN")
+            || (response.authorities[0].authority === "ROLE_COACH") || (response.authorities[0].authority === "ROLE_USER"))
           {
             console.log("You are connected as admin !!!")
             this.authService.setRolesLS(response.authorities)
