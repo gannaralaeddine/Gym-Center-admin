@@ -48,7 +48,7 @@
                 <div class="col text-center">
                   <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
                   <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addSessionWithOneImage()" *ngIf="isAddOperation" id="addButton" disabled>Ajouter</button>
-                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateSession(undefined)" *ngIf="!isAddOperation" id="updateButton">Éditer</button>
+                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateSession()" *ngIf="!isAddOperation" id="updateButton">Éditer</button>
                 </div>
               </div>
 

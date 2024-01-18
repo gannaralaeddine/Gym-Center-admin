@@ -27,17 +27,6 @@ export class AddSessionComponent implements OnInit
   coaches: any
   isAddOperation = true
   sessionObject = new Session()
-  /*sessionObject = new Session("",
-  new Activity("", "", "", new Category("","","",[]), []),
-    new User(),
-    "",
-    []
-  )*/
-
-  activityObject!: Activity
-  userObject!: User
-
-
 
   constructor(private dialogRef: MatDialogRef<AddSessionComponent>,
     private sessionFormBuilder: FormBuilder,
@@ -79,18 +68,16 @@ export class AddSessionComponent implements OnInit
     {
       // retrieve activity in add operation
       this.activityService.getActivity(this.sessionFormValue.value.sessionActivity).subscribe({
-        next: (activity) => this.activityObject = activity as Activity,
-        error: (err) => console.log(err),
-        complete:()=> console.log(this.activityObject)
+        next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
+        error: (err) => console.log(err)
       })
     }
     else
     {
       // retrieve activity in update operation
       this.activityService.getActivity(id).subscribe({
-        next: (activity) => this.activityObject = activity as Activity,
-        error: (err) => console.log(err),
-        complete: ()=> console.log(this.activityObject)
+        next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
+        error: (err) => console.log(err)
       })
     }
 
@@ -118,18 +105,16 @@ export class AddSessionComponent implements OnInit
     {
       // retrieve coach in update operation
       this.userService.getUserById(id).subscribe({
-        next: (user) => this.userObject = user,
-        error: (err) => console.error(err),
-        complete: ()=> console.log(this.userObject)
+        next: (user) => this.sessionObject.sessionCoach = user,
+        error: (err) => console.error(err)
       })
     }
     else
     {
       // retrieve coach in update operation
       this.userService.getUserById(this.sessionFormValue.value.sessionCoach).subscribe({
-        next: (user) => this.userObject = user,
-        error: (err) => console.error(err),
-        complete: ()=> console.log(this.userObject)
+        next: (user) => this.sessionObject.sessionCoach = user,
+        error: (err) => console.error(err)
       })
     }
   }
@@ -211,8 +196,6 @@ export class AddSessionComponent implements OnInit
   addSessionWithOneImage()
   {
     this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
-    this.sessionObject.sessionActivity = this.activityObject
-    this.sessionObject.sessionCoach = this.userObject
 
     const sessionFormData = this.prepareFormData(this.sessionObject);
 
@@ -226,9 +209,22 @@ export class AddSessionComponent implements OnInit
     })
   }
 
-  updateSession(arg0: any)
+  updateSession()
   {
+    console.log("in update: " + this.sessionObject)
+    
+    this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+    // this.sessionObject.sessionActivity = this.activityObject
+    // this.sessionObject.sessionCoach = this.userObject
 
+    this.sessionService.updateSession(this.data.sessionId,this.sessionObject).subscribe({
+      next:()=> {
+        this.dialogRef.close()
+        this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
+
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+    })
   }
 
   getSessionById(sessionId: any)
@@ -241,8 +237,8 @@ export class AddSessionComponent implements OnInit
 
   populateUpdateForm(session: any)
   {
-    /*this.sessionObject.sessionActivity = session.sessionActivity
-    this.sessionObject.sessionCoach = session.sessionCoach*/
+    this.sessionObject.sessionActivity = session.sessionActivity
+    this.sessionObject.sessionCoach = session.sessionCoach
 
     this.sessionFormValue.controls['sessionName'].setValue(session.sessionName)
     this.populateActivitySelectList(session)
@@ -279,6 +275,7 @@ export class AddSessionComponent implements OnInit
     optionTag = document.createElement("option") //<option _ngcontent-ng-c1135787114="" value="4" ng-reflect-value="4">ala</option>
     optionTag.setAttribute(referenceActivity!,"")
     optionTag.setAttribute("value",session.sessionActivity.actId.toString())
+    optionTag.setAttribute("selected","")
     optionTag.textContent = session.sessionActivity.actName
     activitySelectList?.appendChild(optionTag)
 
@@ -333,6 +330,7 @@ export class AddSessionComponent implements OnInit
     optionTag = document.createElement("option") //<option _ngcontent-ng-c1135787114="" value="4" ng-reflect-value="4">ala</option>
     optionTag.setAttribute(referenceCoach!,"")
     optionTag.setAttribute("value",session.sessionCoach.userId.toString())
+    optionTag.setAttribute("selected","")
     optionTag.textContent = session.sessionCoach.userFirstName + " " + session.sessionCoach.userLastName
     coachSelectList?.appendChild(optionTag)
 
@@ -372,19 +370,6 @@ export class AddSessionComponent implements OnInit
     }
   }
 
-  /*prepareFormData(session: Session): FormData
-  {
-    const formData = new FormData()
-
-    formData.append("session", new Blob([JSON.stringify(session)],{type : "application/json"}))
-
-    for ( let i = 0 ; i < session.sessionImages.length ; i++ )
-    {
-      formData.append("imageFile", session.sessionImages[i].file)
-    }
-
-    return formData
-  }*/
   prepareFormData(session: Session): FormData
   {
     const formData = new FormData()
