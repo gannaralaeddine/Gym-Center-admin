@@ -26,7 +26,7 @@ export class SessionComponent implements OnInit
 {
   sessions: any
   dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Image','Titre', 'Activité', 'Coach','Gestion']
+  displayedColumns = ['Image','Titre', 'Activité', 'Coach','Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -37,14 +37,6 @@ export class SessionComponent implements OnInit
     private router: Router) {}
 
   ngOnInit() { this.getAllSessions() }
-
-  /*getAllSessions()
-  {
-    this.sessionService.getAllSessions().subscribe({
-      next :(session)=> this.sessions = session,
-      error: (err) => console.error(err)
-    })
-  }*/
 
   getAllSessions()
   {

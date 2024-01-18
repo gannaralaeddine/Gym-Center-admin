@@ -10,14 +10,8 @@ mat-label
     margin-top: auto;
 }
 
-.addDivButton
+.session-image
 {
-    margin-top: -7%;
-    margin-left: 4%;
-}
-
-.searchBar
-{
-    margin-top: -5%;
-    margin-left: 0.5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }

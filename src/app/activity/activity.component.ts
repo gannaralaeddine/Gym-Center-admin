@@ -1,15 +1,21 @@
-import { NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivityService } from '../services/activity.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from './add-activity/add-activity.component';
 import { Activity } from './activity';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.css'
 })
@@ -17,6 +23,11 @@ import { Router } from '@angular/router';
 export class ActivityComponent implements OnInit
 {
   activities: any
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns = ['Image','Titre', 'Description', 'Catégorie','Gestion']
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private activityService: ActivityService,
@@ -28,7 +39,11 @@ export class ActivityComponent implements OnInit
   getAllActivities()
   {
     this.activityService.getAllActivities().subscribe({
-      next :(val)=> this.activities = val,
+      next :(res) => {
+        this.dataSource = new MatTableDataSource(res as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+      },
       error: (err) => console.error(err)
     })
   }
@@ -61,7 +76,7 @@ export class ActivityComponent implements OnInit
     this.router.navigate(["activity-details"], { queryParams: params  })
   }
 
-  getCategoryImage(imageName: string): string
+  getActivityImage(imageName: string): string
   {
     if (imageName)
     {
@@ -71,5 +86,12 @@ export class ActivityComponent implements OnInit
     {
       return "../assets/img/icons/ic_activity.png"
     }
+  }
+
+  applyFilter(event: Event) 
+  {
+    const filterValue = (event.target as HTMLInputElement).value
+    this.dataSource.filter = filterValue.trim().toLowerCase()
+    if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
   }
 }

@@ -1,23 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { NgFor, NgIf } from '@angular/common';
 import { AddCategoryComponent } from "./add-category/add-category.component";
 import { Category } from './category';
 import { MatDialog } from '@angular/material/dialog';
 import {Router, RouterLink} from "@angular/router";
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
     selector: 'app-category',
     standalone: true,
     templateUrl: './category.component.html',
     styleUrl: './category.component.css',
-  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink]
+  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule]
 })
 export class CategoryComponent implements OnInit
 {
   categories: any
   isCategoryUpdated!: Boolean
   category!: Category
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns = ['Image','Titre', 'Description', 'Gestion']
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+  @ViewChild(MatSort) sort!: MatSort
 
   public constructor(
     private categoryService: CategoryService,
@@ -33,7 +44,11 @@ export class CategoryComponent implements OnInit
   getAllCategories()
   {
     this.categoryService.getAllCategories().subscribe({
-      next :(val)=> this.categories = val,
+      next :(res) => {
+        this.dataSource = new MatTableDataSource(res as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+      },
       error: (err) => console.error(err)
     })
   }
@@ -82,4 +97,10 @@ export class CategoryComponent implements OnInit
     this.router.navigate(["category-details"], { queryParams: params  })
   }
 
+  applyFilter(event: Event) 
+  {
+    const filterValue = (event.target as HTMLInputElement).value
+    this.dataSource.filter = filterValue.trim().toLowerCase()
+    if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+  }
 }

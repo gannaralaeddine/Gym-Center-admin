@@ -5,7 +5,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
             <div class="d-flex ml-6">
-              <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position">gestion des séances</h3></div>
+              <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position"><b>gestion des séances</b></h3></div>
               <div class="ml-auto transparent-color mr-4 pr-5 text-left"><button type="button" class="btn btn-dark mr-3 text-white add-category-position" (click)="addOrUpdateDialog()"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</button></div>
             </div>
           </div>
@@ -14,12 +14,12 @@
     </div>
   </div>
 
-  <mat-form-field>
+<mat-form-field>
     <mat-label>Chercher séance</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom de séance pour chercher" #input>
-  </mat-form-field>
+</mat-form-field>
 
-  <div class="main-body">
+<div class="main-body">
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
     
@@ -27,7 +27,7 @@
           <ng-container matColumnDef="Image">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Image</th>
             <td mat-cell *matCellDef="let session" class="text-center">
-              <img [src]="getSessionImage(session.sessionImage)" class="avatar avatar-sm me-3 border-radius-lg" alt="Session Image">
+              <img [src]="getSessionImage(session.sessionImage)" class="session-image avatar avatar-sm me-3 border-radius-lg" alt="Session Image">
             </td>
           </ng-container>
       
@@ -70,7 +70,7 @@
           </tr>
         </table>
       
-        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
 </div>
 
