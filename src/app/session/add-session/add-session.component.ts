@@ -211,7 +211,7 @@ export class AddSessionComponent implements OnInit
 
   updateSession()
   { 
-    if (this.sessionObject.sessionImages.length > 0)
+    if ((this.sessionObject.sessionImages) && (this.sessionObject.sessionImages.length > 0))
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
       const formData = this.prepareFormData(this.sessionObject)
