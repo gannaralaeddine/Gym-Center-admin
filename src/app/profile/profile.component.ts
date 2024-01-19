@@ -30,7 +30,6 @@ export class ProfileComponent
     deleteTag = "deleteProfileImage"
     user = new User()
     accountType!: string
-    profilePicture!: string
     userImages: any
 
     constructor(private userService: UserService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object,
@@ -46,7 +45,6 @@ export class ProfileComponent
 
   populateUserData(user: any)
   {
-    this.profilePicture = this.utilsService.getImage(user.userPicture)
     this.accountType = user.roles[0].roleName
 
     this.user.userId = user.userId
@@ -170,6 +168,18 @@ export class ProfileComponent
     if (isDataChanges)
     {
       this.getUserByEmail()
+    }
+  }
+
+  getProfilePicture(userPicture: any)
+  {
+    if (userPicture)
+    {
+      return this.utilsService.getImage(userPicture)
+    }
+    else
+    {
+        return "../assets/img/icons/ic_user_tie.svg"
     }
   }
 }

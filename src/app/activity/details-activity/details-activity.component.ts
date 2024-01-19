@@ -59,7 +59,7 @@ constructor(
     this.activityCoaches = activity.actCoaches
     console.log(this.activityCoaches)
 
-    delete this.activityImages[2]
+    // delete this.activityImages[2]
   }
 
   updateDialog(activityId: number)

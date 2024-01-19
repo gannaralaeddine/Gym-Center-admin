@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import {NgFor, NgIf} from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SessionService } from '../services/session.service';
 import { Session } from './session';
@@ -18,7 +18,7 @@ import {UtilsService} from "../serviceutils/utils.service";
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [NgFor, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule],
+  imports: [NgFor, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, NgIf],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css'
 })

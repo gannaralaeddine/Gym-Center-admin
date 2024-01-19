@@ -6,17 +6,16 @@
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
 
-        <img [src]="sessionImage" height="600" width="500" alt="Activity Image">
-
+        <img [src]="sessionImage" height="600" width="500" alt="Activity Image" class="mb-3">
 
 
         <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
           <div class="nav-wrapper position-relative end-0">
-            <ul class="nav nav-pills nav-fill p-1" role="tablist">
+            <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
               <li class="nav-item">
                 <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="updateDialog(sessionId)">
-                  <i class="material-icons text-lg position-relative">edit</i>
-                  <span class="ms-1">Modifier cette séance</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                  <span class="ms-1 text-white">Modifier cette séance</span>
                 </a>
               </li>
             </ul>
@@ -75,12 +74,13 @@
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Album</h2>
-              <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3" style="position: absolute; right: 0;">
-                <div class="nav-wrapper position-relative end-0">
-                  <ul class="nav nav-pills nav-fill p-1" role="tablist">
+              <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3" style="position: absolute; right: 0; ">
+                <div class="nav-wrapper position-relative end-0" >
+                  <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="addImages()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm480-480v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80ZM240-280h480L570-480 450-320l-90-120-120 160Zm-40-480v560-560Z"/></svg>                        <span class="ms-1">Ajouter des images</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm480-480v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80ZM240-280h480L570-480 450-320l-90-120-120 160Zm-40-480v560-560Z"/></svg>
+                        <span class="ms-1 text-white">Ajouter des images</span>
                       </a>
                     </li>
                   </ul>

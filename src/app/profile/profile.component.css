@@ -1,3 +1,8 @@
 .hand-pointer:hover{
   cursor: pointer;
 }
+
+.bg-color{
+  background-color: #EC407A;
+}
+
