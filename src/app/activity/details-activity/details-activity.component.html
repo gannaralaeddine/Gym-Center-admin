@@ -93,6 +93,14 @@
 
 
             <div class="row">
+              @if ((!activityImages) || (activityImages.length === 0))
+              {
+                <div class="d-flex justify-content-center">
+                  <h2 class="text-center">il n'y a pas encore des photos dans cet album</h2>
+                </div>
+              }
+              @else
+              {
                 <mat-grid-list cols="4" rowHeight="2:1">
                   <mat-grid-tile *ngFor="let image of activityImages">
 
@@ -101,6 +109,7 @@
                   </mat-grid-tile>
 
                 </mat-grid-list>
+              }
             </div>
           </div>
 

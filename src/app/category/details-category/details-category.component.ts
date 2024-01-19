@@ -25,6 +25,7 @@ export class DetailsCategoryComponent implements OnInit
     categoryImageUrl!: string
     catImages!: FileHandle[]
     categoryId: any
+    categoryActivities: any
 
     constructor(private router: ActivatedRoute, private categoryService: CategoryService, private utilsService: UtilsService, private dialogRef: MatDialog) 
     {
@@ -53,6 +54,8 @@ export class DetailsCategoryComponent implements OnInit
       this.categoryDescription = category.catDescription
       this.categoryImageUrl = this.utilsService.getImage(category.catImage)
       this.catImages = category.catImages
+      this.categoryActivities = category.categoryActivities
+      console.log(this.categoryActivities)
     }
 
   updateDialog(categoryId: any)

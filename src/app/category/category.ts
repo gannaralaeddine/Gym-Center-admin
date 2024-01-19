@@ -7,6 +7,7 @@ export class Category
     catDescription!: string
     catImage!: string
     catImages!: FileHandleModule[]
+    categoryActivities!: []
 
     // constructor(catName: string, catDescription: string, catImage: string, catImages: FileHandleModule[])
     // {
