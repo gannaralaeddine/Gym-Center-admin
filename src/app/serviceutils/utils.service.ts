@@ -35,5 +35,11 @@ export class UtilsService
     })
   }
 
+  public deleteItemFromArray(array: any, imageName: string)
+  {
+      return array.filter((element: any) => {
+        return element.imageName !== imageName;
+      });
+  }
 
 }

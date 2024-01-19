@@ -53,13 +53,10 @@ constructor(
     this.activityDescription = activity.actDescription
     this.activityImageUrl = this.utilsService.getImage(activity.actImage)
     this.actImages = activity.actImages
-    this.activityImages = activity.activityImages
     this.activityCategoryImage = this.utilsService.getImage(activity.category.catImage)
     this.activityCategoryDescription = activity.category.catDescription
     this.activityCoaches = activity.actCoaches
-    console.log(this.activityCoaches)
-
-    // delete this.activityImages[2]
+    this.activityImages = this.utilsService.deleteItemFromArray(activity.activityImages, activity.actImage)
   }
 
   updateDialog(activityId: number)
@@ -120,4 +117,15 @@ constructor(
       }
   }
 
+
+  deleteItemFromArray(item: any, array: any)
+  {
+      // const indexOfObject = activity.activityImages.findIndex((object: any) => {
+      //   return object.imageName == activity.actImage
+      // });
+      //
+      // if (indexOfObject !== -1) {
+      //   activity.activityImages.splice(indexOfObject, 1);
+      // }
+  }
 }
