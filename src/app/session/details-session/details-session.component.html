@@ -91,15 +91,21 @@
 
 
             <div class="row">
-
+              @if ((!sessionImages) || (sessionImages.length === 0))
+              {
+                <div class="d-flex justify-content-center">
+                  <h2 class="text-center">il n'y a pas encore des photos du séance</h2>
+                </div>
+              }
+              @else
+              {
                 <mat-grid-list cols="4" rowHeight="2:1">
                   <mat-grid-tile *ngFor="let image of sessionImages">
-
                     <app-card-flip [imageName]=image.imageName [classId]=sessionId [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
-
                   </mat-grid-tile>
-
                 </mat-grid-list>
+              }
+                
 
             </div>
           </div>

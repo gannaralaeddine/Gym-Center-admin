@@ -4,6 +4,8 @@ import {CategoryService} from "../../services/category.service";
 import {NgOptimizedImage} from "@angular/common";
 import {FileHandle} from "fs/promises";
 import {UtilsService} from "../../serviceutils/utils.service";
+import { AddCategoryComponent } from '../add-category/add-category.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -22,11 +24,18 @@ export class DetailsCategoryComponent implements OnInit
     categoryDescription!: string
     categoryImageUrl!: string
     catImages!: FileHandle[]
+    categoryId: any
 
-  constructor(private router: ActivatedRoute, private categoryService: CategoryService, private utilsService: UtilsService) {
-  }
+    constructor(private router: ActivatedRoute, private categoryService: CategoryService, private utilsService: UtilsService, private dialogRef: MatDialog) 
+    {
+      this.router.queryParams.subscribe( params => {
+        this.categoryId = params["catId"]
+        this.getCategoryById()
+      })
+    }
 
-    ngOnInit() {
+    ngOnInit() 
+    {
       this.router.queryParams.subscribe( params => {
 
         this.categoryService.getCategory(params["catId"]).subscribe(
@@ -46,4 +55,29 @@ export class DetailsCategoryComponent implements OnInit
       this.catImages = category.catImages
     }
 
+  updateDialog(categoryId: any)
+  {
+    const popup = this.dialogRef.open(AddCategoryComponent, {
+      width: "40%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      data: { categoryId: categoryId }
+    })
+    popup.afterClosed().subscribe(() =>{
+      this.categoryService.getCategory(this.categoryId).subscribe({
+        next: (val) => this.populateCategoryData(val),
+        error: (err) => console.error(err)
+      })
+    })
+  }
+
+  getCategoryById()
+  {
+    this.categoryService.getCategory(this.categoryId).subscribe(
+      {
+        next: (val) => {this.populateCategoryData(val)},
+        error: (err) => console.error(err)
+      }
+    )
+  }
 }

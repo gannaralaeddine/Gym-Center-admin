@@ -30,7 +30,7 @@ export class DetailsSessionComponent implements OnInit
   sessionCoach: any
   sessionImage: any
   sessionActivityImage: any
-  sessionImages!: [any]
+  sessionImages!: any
 
   constructor(
     private router: ActivatedRoute,
@@ -88,6 +88,7 @@ export class DetailsSessionComponent implements OnInit
       this.getSessionById()
     })
   }
+
   detectChanges(isDataChanges: boolean)
   {
     if (isDataChanges)
