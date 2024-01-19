@@ -61,7 +61,7 @@ export class ProfileComponent
     this.user.userZipCode = user.userZipCode
     this.user.userBirthDate = user.userBirthDate
     this.user.userPicture = user.userPicture
-    this.userImages = user.userImages
+    this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
 
   }
 
@@ -167,7 +167,12 @@ export class ProfileComponent
   {
     if (isDataChanges)
     {
-      this.getUserByEmail()
+      this.userService.getUserById(this.user.userId).subscribe(
+        {
+          next: (user) => this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture),
+          error: (err) => console.error(err)
+        }
+      )
     }
   }
 

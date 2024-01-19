@@ -93,9 +93,9 @@ export class CardFlipComponent
 
   deleteProfileImage()
   {
-    // this.userService.del(this.classId, this.imageName).subscribe({
-    //   next: () => this.onDataChange.emit(true) ,
-    //   error: (err) => console.log("Error deleting activity image" + err)
-    // })
+    this.userService.deleteUserImage(this.classId, this.imageName).subscribe({
+      next: () => this.onDataChange.emit(true) ,
+      error: (err) => console.log("Error deleting user image" + err)
+    })
   }
 }

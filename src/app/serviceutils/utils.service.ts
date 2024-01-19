@@ -35,7 +35,7 @@ export class UtilsService
     })
   }
 
-  public deleteItemFromArray(array: any, imageName: string)
+  public deleteItemFromArray(array: any, imageName: any)
   {
       return array.filter((element: any) => {
         return element.imageName !== imageName;
