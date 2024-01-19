@@ -33,11 +33,11 @@ export class DetailsActivityComponent implements OnInit
   activityCategoryDescription!: string
   activityId!: number
 
-constructor(
-  private router: ActivatedRoute,
-  private activityService: ActivityService,
-  private utilsService: UtilsService,
-  private dialogRef: MatDialog) {}
+  constructor(
+    private router: ActivatedRoute,
+    private activityService: ActivityService,
+    private utilsService: UtilsService,
+    private dialogRef: MatDialog) {}
 
   ngOnInit()
   {
@@ -51,9 +51,9 @@ constructor(
   {
     this.activityTitle = activity.actName
     this.activityDescription = activity.actDescription
-    this.activityImageUrl = this.utilsService.getImage(activity.actImage)
+    this.activityImageUrl = activity.actImage
     this.actImages = activity.actImages
-    this.activityCategoryImage = this.utilsService.getImage(activity.category.catImage)
+    this.activityCategoryImage = activity.category.catImage
     this.activityCategoryDescription = activity.category.catDescription
     this.activityCoaches = activity.actCoaches
     this.activityImages = this.utilsService.deleteItemFromArray(activity.activityImages, activity.actImage)
@@ -99,7 +99,7 @@ constructor(
     )
   }
 
-  getActivityImage(imageName: any)
+  getImage(imageName: any)
   {
       return this.utilsService.getImage(imageName)
   }
@@ -117,15 +117,4 @@ constructor(
       }
   }
 
-
-  deleteItemFromArray(item: any, array: any)
-  {
-      // const indexOfObject = activity.activityImages.findIndex((object: any) => {
-      //   return object.imageName == activity.actImage
-      // });
-      //
-      // if (indexOfObject !== -1) {
-      //   activity.activityImages.splice(indexOfObject, 1);
-      // }
-  }
 }
