@@ -113,13 +113,13 @@
 
 
             <div class="row">
-              @if (!activityCoaches)
+              @if ((!activityCoaches) || (activityCoaches.length === 0))
               {
-                <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                  <h2>il n y a pas des coaches disponible encore</h2>
+                <div class="d-flex justify-content-center">
+                  <h2 class="text-center">il n'y a pas encore des coaches disponibles</h2>
               </div>
               }
-              @else 
+              @else
               {
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4" *ngFor="let coach of activityCoaches">
                   <div  class="card card-blog card-plain">
@@ -134,10 +134,6 @@
                   </div>
                 </div>
               }
-              
-
-
-
             </div>
           </div>
 
