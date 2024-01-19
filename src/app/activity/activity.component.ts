@@ -10,13 +10,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule],
+  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.css'
 })

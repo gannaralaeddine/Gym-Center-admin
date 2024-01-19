@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 import { UtilsService } from "../serviceutils/utils.service";
 import { FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
@@ -25,7 +25,8 @@ import { ThemePalette } from '@angular/material/core';
     MatInputModule,
     MatIconModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ],
   providers: [UserService],
   templateUrl: './user.component.html',
@@ -48,7 +49,7 @@ export class UserComponent implements OnInit
 
     ngOnInit()
     {
-      
+
     }
 
     getAllUsers()

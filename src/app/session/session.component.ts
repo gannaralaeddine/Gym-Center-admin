@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
@@ -18,7 +18,7 @@ import {UtilsService} from "../serviceutils/utils.service";
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [NgFor, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, NgIf],
+  imports: [NgFor, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, NgIf, MatSortModule],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css'
 })

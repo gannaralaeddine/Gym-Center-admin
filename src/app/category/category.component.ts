@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {MatSort, MatSortModule} from '@angular/material/sort';
 import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
@@ -18,7 +18,7 @@ import {UtilsService} from "../serviceutils/utils.service";
     standalone: true,
     templateUrl: './category.component.html',
     styleUrl: './category.component.css',
-  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule]
+  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule]
 })
 export class CategoryComponent implements OnInit
 {
