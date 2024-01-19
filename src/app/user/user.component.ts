@@ -10,8 +10,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import { UtilsService } from "../serviceutils/utils.service";
-import { FormControl } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-user',
@@ -36,7 +34,6 @@ export class UserComponent implements OnInit
 {
     user = new User()
     member = new User();
-    usersList: any
     dataSource!: MatTableDataSource<any>;
     displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Gestion']
 
