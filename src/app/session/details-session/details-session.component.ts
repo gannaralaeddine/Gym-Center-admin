@@ -6,7 +6,7 @@ import { AddSessionComponent } from '../add-session/add-session.component';
 import { ActivityService } from '../../services/activity.service';
 import {CardFlipComponent} from "../../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {AddImagesComponent} from "../../add-images/add-images.component";
 import {UtilsService} from "../../serviceutils/utils.service";
 
@@ -16,7 +16,8 @@ import {UtilsService} from "../../serviceutils/utils.service";
   imports: [
     CardFlipComponent,
     MatGridListModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './details-session.component.html',
   styleUrl: './details-session.component.css'
@@ -72,7 +73,7 @@ export class DetailsSessionComponent implements OnInit
     this.sessionCoach = session.sessionCoach
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
     this.sessionImage = this.utilsService.getImage(session.sessionImage)
-    this.sessionImages = session.sessionImages
+    this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage)
   }
 
   addImages()
@@ -95,7 +96,7 @@ export class DetailsSessionComponent implements OnInit
     {
       this.sessionService.getSession(this.sessionId).subscribe(
         {
-          next: (session) => this.sessionImages = session.sessionImages,
+          next: (session) => this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage),
           error: (err) => console.error(err)
         }
       )
