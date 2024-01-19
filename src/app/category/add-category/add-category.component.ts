@@ -222,12 +222,15 @@ export class AddCategoryComponent implements OnInit
 
   onTouched()
   {
+    if (!this.categoryId)
+    {
       if (this.category.catImages.length == 0)
       {
           if (document.getElementById("formFile"))
           {
             document.getElementById("formFile")!.className = "form-control border border-danger pl-2 round"
           }
+
           if (document.getElementById("formMultipleFiles"))
           {
             document.getElementById("formMultipleFiles")!.className = "form-control border border-danger pl-2 round"
@@ -244,7 +247,7 @@ export class AddCategoryComponent implements OnInit
             document.getElementById("formMultipleFiles")!.className = "form-control border border-dark pl-2 round"
           }
       }
-
-
     }
+     
+  }
 }

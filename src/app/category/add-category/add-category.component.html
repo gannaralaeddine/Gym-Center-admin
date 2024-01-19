@@ -32,7 +32,7 @@
             <label for="formFile" class="text-dark font-weight-bold">Image Catégorie</label>
             <input type="file" class="form-control border border-secondary" #selectFile id="formFile" (blur)="onTouched()" (change)="onFileSelected($event)" formControlName="categoryImage" *ngIf="isAddOperation">
             <input type="file" class="form-control border border-secondary" #selectFile id="formMultipleFiles" (blur)="onTouched()" (close)="onTouched()" (change)="onFileSelected($event)" formControlName="categoryImage" *ngIf="!isAddOperation" multiple>
-            <h5 class="text-danger text-bold ml-2" *ngIf="category.catImages.length < 1 && categoryFormValue.controls['categoryImage'].touched">Merci de sélectionner une image</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="!categoryId && category.catImages.length < 1 && categoryFormValue.controls['categoryImage'].touched">Merci de sélectionner une image</h5>
           </div>
 
             <div class="row">
