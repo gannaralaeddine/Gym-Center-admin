@@ -6,7 +6,7 @@
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
 
-        <img [src]="activityImageUrl" height="600" width="500" alt="Activity Image" class="mb-3">
+        <img [src]="getImage(activityImageUrl)" height="600" width="500" alt="Activity Image" class="mb-3">
 
 
         <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
@@ -57,7 +57,7 @@
                   </div>
                 </div>
                 <div class="card-body p-3">
-                  <img [src]="activityCategoryImage" height="150" width="250"  alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
+                  <img [src]="getImage(activityCategoryImage)" height="150" width="250"  alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
                   <p>{{activityCategoryDescription}}</p>
                 </div>
               </div>
@@ -123,7 +123,7 @@
               {
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4" *ngFor="let coach of activityCoaches">
                   <div class="card" style="width: 14rem; margin-top: 5%;">
-                    <img class="card-img-top" [src]="getActivityImage(coach.userPicture)" height="150" width="288" alt="Card image cap">
+                    <img class="card-img-top" [src]="getImage(coach.userPicture)" height="150" width="288" alt="Card image cap">
                     <div class="card-body">
                       <a class="card-text" href="javascript:"><h3 class="text-center">{{coach.userFirstName + " " + coach.userLastName}}</h3></a>
                     </div>
