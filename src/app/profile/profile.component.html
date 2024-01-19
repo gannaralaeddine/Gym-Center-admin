@@ -98,12 +98,21 @@
           </div>
 
           <div class="row">
-            <mat-grid-list cols="4" rowHeight="2:1">
-              <mat-grid-tile *ngFor="let image of userImages">
-                <app-card-flip [imageName]=image.imageName [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
-              </mat-grid-tile>
-
-            </mat-grid-list>
+            @if ((!userImages) || (userImages.length === 0))
+            {
+              <div class="d-flex justify-content-center">
+                <h2 class="text-center">vous n'avez pas encore des photos</h2>
+              </div>
+            }
+            @else
+            {
+              <mat-grid-list cols="4" rowHeight="2:1">
+                <mat-grid-tile *ngFor="let image of userImages">
+                  <app-card-flip [imageName]=image.imageName [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
+                </mat-grid-tile>
+              </mat-grid-list>
+            }
+            
           </div>
         </div>
       </div>
