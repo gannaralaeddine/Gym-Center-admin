@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {Category} from "../category";
 import {CategoryService} from "../../services/category.service";
 import {NgOptimizedImage} from "@angular/common";
 import {FileHandle} from "fs/promises";
