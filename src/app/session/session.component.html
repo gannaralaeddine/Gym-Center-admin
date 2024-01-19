@@ -14,7 +14,7 @@
     </div>
   </div>
 
-<mat-form-field>
+<mat-form-field [color]="'accent'">
     <mat-label>Chercher séance</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom de séance pour chercher" #input>
 </mat-form-field>

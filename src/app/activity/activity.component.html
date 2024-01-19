@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<mat-form-field>
+<mat-form-field [color]="'accent'">
   <mat-label>Chercher activité</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom d'activité pour chercher" #input>
 </mat-form-field>

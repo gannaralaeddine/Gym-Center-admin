@@ -6,70 +6,11 @@
           <h3 class="text-white text-capitalize ps-3 "  style="font-weight: bold">Liste des utilisateurs</h3>
         </div>
       </div>
-
-      <!-- <div class="card-body px-0 pb-2">
-        <div class="table-responsive p-0">
-          <table class="table align-items-center mb-0">
-            <thead>
-            <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Image</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Type de compte</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">E-mail</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nom & Prénom</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gestion</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr *ngFor="let user of usersList">
-              <td class="text-center">
-                <div>
-                  <div>
-                    <img [src]="getUserImage(user.userPicture)" class="avatar avatar-sm me-3 border-radius-lg" alt="user1" height="400" width="400">
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div>
-                  <div>
-                    <h6 class="mb-0 text-sm">{{user.roles[0].roleName}}</h6>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div>
-                  <div>
-                    <h6 class="mb-0 text-sm">{{user.userEmail}}</h6>
-                  </div>
-                </div>
-              </td>
-
-              <td class="text-center">
-                <h6 class="mb-0 text-sm"> {{ user.userFirstName }} {{ user.userLastName }}</h6>
-              </td>
-
-              <td class="align-middle">
-                <div class="ms-auto text-center">
-                  <a class="btn btn-link px-3 mb-0" href="javascript:"><i class="material-icons text-sm me-2">assignment</i>Détails</a>
-                  <a class="btn btn-link text-dark px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">edit</i>Éditer</a>
-                  <a class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
-                </div>
-              </td>
-
-            </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div> -->
-
     </div>
   </div>
 </div>
 
-<mat-form-field>
+<mat-form-field [color]="'accent'">
   <mat-label>Chercher utilisateur</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom d'utilisateurpour chercher" #input>
 </mat-form-field>

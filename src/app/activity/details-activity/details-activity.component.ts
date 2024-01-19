@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileHandle } from 'fs/promises';
 import { ActivityService } from '../../services/activity.service';
-import { NgFor,NgOptimizedImage } from '@angular/common';
+import { NgFor,NgIf,NgOptimizedImage } from '@angular/common';
 import { Category } from '../../category/category';
 import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from '../add-activity/add-activity.component';
@@ -15,7 +15,7 @@ import {UtilsService} from "../../serviceutils/utils.service";
 @Component({
   selector: 'app-details-activity',
   standalone: true,
-  imports: [NgOptimizedImage, MatGridListModule, CardFlipComponent, NgFor],
+  imports: [NgOptimizedImage, MatGridListModule, CardFlipComponent, NgFor, NgIf],
   templateUrl: './details-activity.component.html',
   styleUrl: './details-activity.component.css'
 })

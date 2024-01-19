@@ -1,15 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserService} from "../services/user.service";
-import {AddCategoryComponent} from "../category/add-category/add-category.component";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {User} from "./user";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import  {UserService } from "../services/user.service";
+import { AddCategoryComponent } from "../category/add-category/add-category.component";
+import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { User } from "./user";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import {UtilsService} from "../serviceutils/utils.service";
+import { UtilsService } from "../serviceutils/utils.service";
+import { FormControl } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-user',
@@ -46,7 +48,7 @@ export class UserComponent implements OnInit
 
     ngOnInit()
     {
-
+      
     }
 
     getAllUsers()
