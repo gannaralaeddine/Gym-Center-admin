@@ -117,19 +117,15 @@
               {
                 <div class="d-flex justify-content-center">
                   <h2 class="text-center">il n'y a pas encore des coaches disponibles</h2>
-              </div>
+                </div>
               }
               @else
               {
                 <div class="col-xl-3 col-md-6 mb-xl-0 mb-4" *ngFor="let coach of activityCoaches">
-                  <div  class="card card-blog card-plain">
-                    <div class="card-header p-0 mt-n4 mx-3">
-                      <a class="d-block shadow-xl border-radius-xl">
-                        <img [src]="getActivityImage(coach.userPicture)" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
-                      </a>
-                    </div>
-                    <div class="card-body p-3 text-center">
-                      <a href="javascript:"><h5>{{coach.userFirstName + " " + coach.userLastName}}</h5></a>
+                  <div class="card" style="width: 14rem; margin-top: 5%;">
+                    <img class="card-img-top" [src]="getActivityImage(coach.userPicture)" height="150" width="288" alt="Card image cap">
+                    <div class="card-body">
+                      <a class="card-text" href="javascript:"><h3 class="text-center">{{coach.userFirstName + " " + coach.userLastName}}</h3></a>
                     </div>
                   </div>
                 </div>
