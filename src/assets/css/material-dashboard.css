@@ -20358,8 +20358,8 @@ fieldset:disabled .btn {
   justify-content: center;
   font-size: 1rem;
   border-radius: 50rem;
-  height: 48px;
-  width: 48px;
+  height: 100px;
+  width: 100px;
   transition: all .2s ease-in-out;
 }
 

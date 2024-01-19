@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
     selector: 'app-category',
@@ -32,6 +33,7 @@ export class CategoryComponent implements OnInit
 
   public constructor(
     private categoryService: CategoryService,
+    private utilsService: UtilsService,
     private dialogRef: MatDialog,
     private router: Router)
   {
@@ -66,7 +68,7 @@ export class CategoryComponent implements OnInit
   {
     if (imageName)
     {
-      return this.categoryService.getCategoryImage(imageName)
+      return this.utilsService.getImage(imageName)
     }
     else
     {
@@ -97,7 +99,7 @@ export class CategoryComponent implements OnInit
     this.router.navigate(["category-details"], { queryParams: params  })
   }
 
-  applyFilter(event: Event) 
+  applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()

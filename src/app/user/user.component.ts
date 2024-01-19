@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
   selector: 'app-user',
@@ -18,10 +19,10 @@ import { MatSort } from '@angular/material/sort';
     NgForOf,
     NgOptimizedImage,
     NgIf,
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatIconModule, 
-    MatPaginatorModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatPaginatorModule,
     MatTableModule
   ],
   providers: [UserService],
@@ -38,8 +39,8 @@ export class UserComponent implements OnInit
 
     @ViewChild(MatPaginator) paginator!: MatPaginator
     @ViewChild(MatSort) sort!: MatSort
-    
-    public constructor(private userService: UserService) {
+
+    public constructor(private userService: UserService, private utilsService: UtilsService) {
         this.getAllUsers()
     }
 
@@ -47,14 +48,6 @@ export class UserComponent implements OnInit
     {
 
     }
-
-    // getAllUsers()
-    // {
-    //     this.userService.getAllUsers().subscribe({
-    //       next :(val)=> this.usersList = val,
-    //       error: (err) => console.error(err)
-    //     })
-    // }
 
     getAllUsers()
     {
@@ -72,7 +65,7 @@ export class UserComponent implements OnInit
     {
         if (imageName)
         {
-            return this.userService.getImage(imageName)
+            return this.utilsService.getImage(imageName)
         }
         else
         {
@@ -80,7 +73,7 @@ export class UserComponent implements OnInit
         }
     }
 
-    applyFilter(event: Event) 
+    applyFilter(event: Event)
     {
       const filterValue = (event.target as HTMLInputElement).value
       this.dataSource.filter = filterValue.trim().toLowerCase()

@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
   selector: 'app-activity',
@@ -31,6 +32,7 @@ export class ActivityComponent implements OnInit
 
   constructor(
     private activityService: ActivityService,
+    private utilsService: UtilsService,
     private dialogRef: MatDialog,
     private router: Router) {}
 
@@ -80,7 +82,7 @@ export class ActivityComponent implements OnInit
   {
     if (imageName)
     {
-      return this.activityService.getActivityImage(imageName)
+      return this.utilsService.getImage(imageName)
     }
     else
     {
@@ -88,7 +90,7 @@ export class ActivityComponent implements OnInit
     }
   }
 
-  applyFilter(event: Event) 
+  applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()

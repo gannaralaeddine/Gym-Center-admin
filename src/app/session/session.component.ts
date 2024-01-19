@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import {UtilsService} from "../serviceutils/utils.service";
 
 @Component({
   selector: 'app-session',
@@ -30,9 +31,10 @@ export class SessionComponent implements OnInit
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  
+
   constructor(
     private sessionService: SessionService,
+    private utilsService: UtilsService,
     private dialogRef: MatDialog,
     private router: Router) {}
 
@@ -47,7 +49,7 @@ export class SessionComponent implements OnInit
         this.dataSource.paginator = this.paginator
       },
       error: (err) => console.error(err)
-    })  
+    })
   }
 
   goToSessionDetails(session: Session)
@@ -74,7 +76,7 @@ export class SessionComponent implements OnInit
   {
     if (imageName)
     {
-      return this.sessionService.getSessionImage(imageName)
+      return this.utilsService.getImage(imageName)
     }
     else
     {
@@ -82,7 +84,7 @@ export class SessionComponent implements OnInit
     }
   }
 
-  applyFilter(event: Event) 
+  applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()

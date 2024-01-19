@@ -9,8 +9,8 @@
     <div class="row gx-4 mb-2">
 
         <div class="col-auto">
-          <div class="avatar avatar-xl position-relative">
-            <img [src]="profilePicture" (click)="inputFile.click()" alt="profile_image" class="w-100 border-radius-lg shadow-sm" height="100" width="150">
+          <div class="avatar avatar-xl position-relative hand-pointer">
+            <img [src]="profilePicture" (click)="inputFile.click()" alt="profile_image" class="w-100 h-100 border-radius-lg shadow-sm" height="100" width="150" title="Cliquer pour modifier">
             <input type="file" id="profilePicture" #inputFile (change)="onFileSelected($event)" hidden="hidden">
 
           </div>
@@ -26,9 +26,6 @@
             </p>
           </div>
         </div>
-
-
-
     </div>
 
     <div class="row">
@@ -92,9 +89,6 @@
           <div class="row">
             <mat-grid-list cols="4" rowHeight="2:1">
               <mat-grid-tile *ngFor="let image of userImages">
-                <!--                    <div style="position: relative">-->
-                <!--                        <img [src]="getActivityImage(image.imageName)" (mouseover)="mouseOver()" (mouseout)="mouseOut()" height="150" width="250" alt="Activity image" />-->
-                <!--                    </div>-->
                 <app-card-flip [imageName]=image.imageName [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
               </mat-grid-tile>
 

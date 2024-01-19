@@ -8,6 +8,7 @@ import {CardFlipComponent} from "../../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {NgForOf} from "@angular/common";
 import {AddImagesComponent} from "../../add-images/add-images.component";
+import {UtilsService} from "../../serviceutils/utils.service";
 
 @Component({
   selector: 'app-details-session',
@@ -34,6 +35,7 @@ export class DetailsSessionComponent implements OnInit
   constructor(
     private router: ActivatedRoute,
     private sessionService: SessionService,
+    private utilsService: UtilsService,
     private activityService: ActivityService,
     private dialogRef: MatDialog) {}
 
@@ -68,8 +70,8 @@ export class DetailsSessionComponent implements OnInit
     this.sessionName = session.sessionName
     this.sessionActivity = session.sessionActivity
     this.sessionCoach = session.sessionCoach
-    this.sessionActivityImage = this.activityService.getActivityImage(session.sessionActivity.actImage)
-    this.sessionImage = this.activityService.getActivityImage(session.sessionImage)
+    this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
+    this.sessionImage = this.utilsService.getImage(session.sessionImage)
     this.sessionImages = session.sessionImages
   }
 

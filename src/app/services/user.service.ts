@@ -49,8 +49,6 @@ export class UserService {
 
     public getAllCoaches() {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-all-coaches")}
 
-    public getImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/image/get-image/" + imageName }
-
     public addImagesToUserProfile(formData: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/user/add-images-to-user", formData ) }
 
 }

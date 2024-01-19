@@ -13,6 +13,9 @@ export class UtilsService
 
   constructor( private matDialog: MatDialog ) { }
 
+  public getImage(imageName: string): string { return this.API_GYM_CENTER + "/image/get-image/" + imageName }
+
+
   successDialog(title: string, message: string, operationStatus: boolean){
     this.matDialog.open(AlertSuccessComponent, {
       width: "40%",

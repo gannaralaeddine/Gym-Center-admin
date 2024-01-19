@@ -4,13 +4,13 @@ import { FileHandle } from 'fs/promises';
 import { ActivityService } from '../../services/activity.service';
 import { NgFor,NgOptimizedImage } from '@angular/common';
 import { Category } from '../../category/category';
-import { CategoryService } from '../../services/category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddActivityComponent } from '../add-activity/add-activity.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AddImagesComponent } from '../../add-images/add-images.component';
 import {CardFlipComponent} from "../../card-flip/card-flip.component";
 import { User } from '../../user/user';
+import {UtilsService} from "../../serviceutils/utils.service";
 
 @Component({
   selector: 'app-details-activity',
@@ -36,8 +36,8 @@ export class DetailsActivityComponent implements OnInit
 constructor(
   private router: ActivatedRoute,
   private activityService: ActivityService,
-  private dialogRef: MatDialog,
-  private categoryService: CategoryService) {}
+  private utilsService: UtilsService,
+  private dialogRef: MatDialog) {}
 
   ngOnInit()
   {
@@ -51,13 +51,15 @@ constructor(
   {
     this.activityTitle = activity.actName
     this.activityDescription = activity.actDescription
-    this.activityImageUrl = this.activityService.getActivityImage(activity.actImage)
+    this.activityImageUrl = this.utilsService.getImage(activity.actImage)
     this.actImages = activity.actImages
     this.activityImages = activity.activityImages
-    this.activityCategoryImage = this.categoryService.getCategoryImage(activity.category.catImage)
+    this.activityCategoryImage = this.utilsService.getImage(activity.category.catImage)
     this.activityCategoryDescription = activity.category.catDescription
     this.activityCoaches = activity.actCoaches
     console.log(this.activityCoaches)
+
+    delete this.activityImages[2]
   }
 
   updateDialog(activityId: number)
@@ -102,7 +104,7 @@ constructor(
 
   getActivityImage(imageName: any)
   {
-      return this.activityService.getActivityImage(imageName)
+      return this.utilsService.getImage(imageName)
   }
 
   detectChanges(isDataChanges: boolean)

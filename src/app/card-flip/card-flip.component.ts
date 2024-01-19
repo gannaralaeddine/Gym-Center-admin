@@ -49,7 +49,7 @@ export class CardFlipComponent
 
   getActivityImage(imageName: string)
   {
-    return this.activityService.getActivityImage(imageName)
+    return this.utilsService.getImage(imageName)
   }
 
 

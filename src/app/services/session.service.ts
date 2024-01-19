@@ -18,8 +18,6 @@ export class SessionService
 
   public getSession(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/session/retrieve-session/" + id) }
 
-  public getSessionImage(imageName: string): string { return this.utils.API_GYM_CENTER + "/image/get-image/" + imageName }
-
   public deleteSession(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/session/delete-session/" + id) }
 
   public updateSession(id: any, session:any) { return this.http.put(this.utils.API_GYM_CENTER + "/session/update-session/" + id,session) }

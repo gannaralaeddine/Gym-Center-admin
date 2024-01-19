@@ -46,7 +46,7 @@ export class ProfileComponent
 
   populateUserData(user: any)
   {
-    this.profilePicture = this.userService.getImage(user.userPicture)
+    this.profilePicture = this.utilsService.getImage(user.userPicture)
     this.accountType = user.roles[0].roleName
 
     this.user.userId = user.userId

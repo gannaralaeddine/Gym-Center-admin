@@ -4,6 +4,7 @@ import {Category} from "../category";
 import {CategoryService} from "../../services/category.service";
 import {NgOptimizedImage} from "@angular/common";
 import {FileHandle} from "fs/promises";
+import {UtilsService} from "../../serviceutils/utils.service";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class DetailsCategoryComponent implements OnInit
     categoryImageUrl!: string
     catImages!: FileHandle[]
 
-  constructor(private router: ActivatedRoute, private categoryService: CategoryService) {
+  constructor(private router: ActivatedRoute, private categoryService: CategoryService, private utilsService: UtilsService) {
   }
 
     ngOnInit() {
@@ -42,7 +43,7 @@ export class DetailsCategoryComponent implements OnInit
     {
       this.categoryTitle = category.catName
       this.categoryDescription = category.catDescription
-      this.categoryImageUrl = this.categoryService.getCategoryImage(category.catImage)
+      this.categoryImageUrl = this.utilsService.getImage(category.catImage)
       this.catImages = category.catImages
     }
 

@@ -8,7 +8,6 @@ import { ActivityService } from '../../services/activity.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Session } from '../session';
 import { UserService } from '../../services/user.service';
-import { User } from '../../user/user';
 import { UtilsService } from '../../serviceutils/utils.service';
 
 @Component({
@@ -210,18 +209,18 @@ export class AddSessionComponent implements OnInit
   }
 
   updateSession()
-  { 
+  {
     if ((this.sessionObject.sessionImages) && (this.sessionObject.sessionImages.length > 0))
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
       const formData = this.prepareFormData(this.sessionObject)
-      
+
 
       this.sessionService.updateSessionWithImage(formData).subscribe({
         next:()=> {
           this.dialogRef.close()
           this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
-  
+
         },
         error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
       })
@@ -234,12 +233,12 @@ export class AddSessionComponent implements OnInit
         next:()=> {
           this.dialogRef.close()
           this.utilsService.successDialog("Opération réussite", "Séance mise à jour avec succès", true)
-  
+
         },
         error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
       })
     }
-  
+
   }
 
   getSessionById(sessionId: any)
@@ -391,7 +390,7 @@ export class AddSessionComponent implements OnInit
     const formData = new FormData()
 
     formData.append("session", new Blob([JSON.stringify(session)], {type: "application/json"}))
-  
+
     for ( let i = 0 ; i < session.sessionImages.length ; i++ )
     {
       formData.append("imageFile", session.sessionImages[i].file, session.sessionImages[i].file.name)
@@ -404,7 +403,7 @@ export class AddSessionComponent implements OnInit
   {
     if (imageName)
     {
-      return this.sessionService.getSessionImage(imageName)
+      return this.utilsService.getImage(imageName)
     }
     else
     {
