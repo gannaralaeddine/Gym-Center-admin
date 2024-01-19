@@ -130,9 +130,6 @@ export class AddSessionComponent implements OnInit
           file:event.target.files[i],
           url: this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(event.target.files[i]))
         })
-
-        this.checkValidityForm()
-        this.onTouched()
       }
     }
   }
@@ -168,6 +165,9 @@ export class AddSessionComponent implements OnInit
       document.getElementById('coachSelectList')!.className = "form-control border border-dark pl-2 round"
     }
 
+  
+
+
     if (this.data.sessionId) // enable or disable the update button
     {
       if (this.sessionFormValue.controls['sessionName'].invalid)
@@ -181,6 +181,15 @@ export class AddSessionComponent implements OnInit
     }
     else
     {
+      if (this.sessionFormValue.controls['sessionImage'].invalid)
+      {
+        document.getElementById('sessionImageInput')!.className = "form-control border border-danger pl-2 round"
+      }
+      else
+      {
+        document.getElementById('sessionImageInput')!.className = "form-control border border-dark pl-2 round"
+      }
+
       if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
@@ -371,18 +380,6 @@ export class AddSessionComponent implements OnInit
     },
       error: (err)=>console.error(err)
     })
-  }
-
-  onTouched()
-  {
-    if (this.sessionObject.sessionImages.length == 0)
-    {
-      document.getElementById("categoryImageInput")!.className = "form-control border border-danger pl-2 round"
-    }
-    else
-    {
-      document.getElementById("categoryImageInput")!.className = "form-control border border-dark pl-2 round"
-    }
   }
 
   prepareFormData(session: Session): FormData
