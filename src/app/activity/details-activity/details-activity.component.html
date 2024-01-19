@@ -6,17 +6,16 @@
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
 
-        <img [src]="activityImageUrl" height="600" width="500" alt="Activity Image">
-
+        <img [src]="activityImageUrl" height="600" width="500" alt="Activity Image" class="mb-3">
 
 
         <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
           <div class="nav-wrapper position-relative end-0">
-            <ul class="nav nav-pills nav-fill p-1" role="tablist">
+            <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
               <li class="nav-item">
                 <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="updateDialog(this.activityId)">
                   <i class="material-icons text-lg position-relative">edit</i>
-                  <span class="ms-1">Modifier cette activité</span>
+                  <span class="ms-1 text-white">Modifier cette activité</span>
                 </a>
               </li>
             </ul>
@@ -72,9 +71,23 @@
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Album</h2>
-              <input type="button" value="Ajouter des images" (click)="addImages()" style="position: absolute; right: 0;" />
+              <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3" style="position: absolute; right: 0; ">
+                <div class="nav-wrapper position-relative end-0" >
+                  <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="addImages()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm480-480v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80ZM240-280h480L570-480 450-320l-90-120-120 160Zm-40-480v560-560Z"/></svg>
+                        <span class="ms-1 text-white">Ajouter des images</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
               <p class="text-sm">Notre album de {{ activityTitle }}</p>
             </div>
+
+
 
 
 
@@ -95,7 +108,7 @@
           <div class="col-12 mt-4">
             <div class="mb-5 ps-3">
               <h2 class="mb-1">Les Coaches</h2>
-              <!-- <p class="text-sm">Nos activités de {{ activityTitle }}</p> -->
+               <p class="text-sm">Nos coaches de {{ activityTitle }}</p>
             </div>
 
 
@@ -115,40 +128,7 @@
               </div>
 
 
-              <!-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                <div class="card card-blog card-plain">
-                  <div class="card-header p-0 mt-n4 mx-3">
-                    <a class="d-block shadow-xl border-radius-xl">
-                      <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
-                    </a>
-                  </div>
 
-                </div>
-              </div> -->
-
-
-              <!-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                <div class="card card-blog card-plain">
-                  <div class="card-header p-0 mt-n4 mx-3">
-                    <a class="d-block shadow-xl border-radius-xl">
-                      <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
-                    </a>
-                  </div>
-
-                </div>
-              </div> -->
-
-
-              <!-- <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                <div class="card card-blog card-plain">
-                  <div class="card-header p-0 mt-n4 mx-3">
-                    <a class="d-block shadow-xl border-radius-xl">
-                      <img src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
-                    </a>
-                  </div>
-
-                </div>
-              </div> -->
             </div>
           </div>
 
