@@ -110,7 +110,7 @@ export class DetailsActivityComponent implements OnInit
       {
           this.activityService.getActivity(this.activityId).subscribe(
             {
-              next: (val) => this.activityImages = val.activityImages,
+              next: (activity) => this.activityImages = this.utilsService.deleteItemFromArray(activity.activityImages, activity.actImage),
               error: (err) => console.error(err)
             }
           )

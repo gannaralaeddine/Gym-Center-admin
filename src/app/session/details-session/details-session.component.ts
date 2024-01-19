@@ -72,7 +72,7 @@ export class DetailsSessionComponent implements OnInit
     this.sessionCoach = session.sessionCoach
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
     this.sessionImage = this.utilsService.getImage(session.sessionImage)
-    this.sessionImages = session.sessionImages
+    this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage)
   }
 
   addImages()
@@ -95,7 +95,7 @@ export class DetailsSessionComponent implements OnInit
     {
       this.sessionService.getSession(this.sessionId).subscribe(
         {
-          next: (session) => this.sessionImages = session.sessionImages,
+          next: (session) => this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage),
           error: (err) => console.error(err)
         }
       )
