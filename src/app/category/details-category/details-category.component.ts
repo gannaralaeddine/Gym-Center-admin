@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../../services/category.service";
 import {NgFor, NgOptimizedImage} from "@angular/common";
 import {FileHandle} from "fs/promises";
@@ -7,6 +7,7 @@ import {UtilsService} from "../../serviceutils/utils.service";
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivityService } from '../../services/activity.service';
+import { Activity } from '../../activity/activity';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class DetailsCategoryComponent implements OnInit
     private categoryService: CategoryService, 
     private utilsService: UtilsService, 
     private dialogRef: MatDialog, 
-    private activityService: ActivityService) 
+    private activityService: ActivityService,
+    private routerActivity: Router) 
     {
       this.router.queryParams.subscribe( params => {
         this.categoryId = params["catId"]
@@ -102,5 +104,11 @@ export class DetailsCategoryComponent implements OnInit
   getActivityImage(imageName: any)
   {
     return this.utilsService.getImage(imageName)
+  }
+
+  goToActivityDetails(activity: Activity)
+  {
+    const params = { actId: activity.actId }
+    this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 }
