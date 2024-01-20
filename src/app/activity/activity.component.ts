@@ -74,7 +74,6 @@ export class ActivityComponent implements OnInit
   goToActivityDetails(activity: Activity)
   {
     const params = { actId: activity.actId }
-
     this.router.navigate(["activity-details"], { queryParams: params  })
   }
 

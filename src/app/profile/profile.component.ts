@@ -6,7 +6,7 @@ import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
@@ -34,14 +34,24 @@ export class ProfileComponent
     userImages: any
 
     constructor(private userService: UserService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object,
-                private utilsService: UtilsService, private sanitizer: DomSanitizer, private dialogRef: MatDialog) {
+                private utilsService: UtilsService, private sanitizer: DomSanitizer, private dialogRef: MatDialog,
+                private router: ActivatedRoute) {  }
 
-      if (isPlatformBrowser(this.platformId)) {
+    ngOnInit()
+    {
+      this.router.queryParams.subscribe( params => {
 
-          // @ts-ignore
-          this.user.userEmail = this.authService.getEmailLS()
-          this.getUserByEmail()
-      }
+        if(params["userEmail"])
+        {
+            this.user.userEmail = params["userEmail"]
+        }
+        else
+        {
+            // @ts-ignore
+            this.user.userEmail = this.authService.getEmailLS()
+        }
+        this.getUserByEmail()
+      })
     }
 
   populateUserData(user: any)

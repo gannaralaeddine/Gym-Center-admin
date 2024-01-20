@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FileHandle } from 'fs/promises';
 import { ActivityService } from '../../services/activity.service';
 import { NgFor,NgIf,NgOptimizedImage } from '@angular/common';
@@ -37,7 +37,8 @@ export class DetailsActivityComponent implements OnInit
     private router: ActivatedRoute,
     private activityService: ActivityService,
     private utilsService: UtilsService,
-    private dialogRef: MatDialog) {}
+    private dialogRef: MatDialog,
+    private routerCoach: Router) {}
 
   ngOnInit()
   {
@@ -115,6 +116,12 @@ export class DetailsActivityComponent implements OnInit
             }
           )
       }
+  }
+
+  goToCoachProfile(user: User)
+  {
+    const params = { userEmail: user.userEmail }
+    this.routerCoach.navigate(["profile"], { queryParams: params  })
   }
 
 }
