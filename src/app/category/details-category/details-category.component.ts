@@ -1,18 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CategoryService} from "../../services/category.service";
-import {NgOptimizedImage} from "@angular/common";
+import {NgFor, NgOptimizedImage} from "@angular/common";
 import {FileHandle} from "fs/promises";
 import {UtilsService} from "../../serviceutils/utils.service";
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivityService } from '../../services/activity.service';
 
 
 @Component({
   selector: 'app-details-category',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgFor
   ],
   templateUrl: './details-category.component.html',
   styleUrl: './details-category.component.css'
@@ -27,7 +29,12 @@ export class DetailsCategoryComponent implements OnInit
     categoryId: any
     categoryActivities: any
 
-    constructor(private router: ActivatedRoute, private categoryService: CategoryService, private utilsService: UtilsService, private dialogRef: MatDialog) 
+    constructor(
+    private router: ActivatedRoute, 
+    private categoryService: CategoryService, 
+    private utilsService: UtilsService, 
+    private dialogRef: MatDialog, 
+    private activityService: ActivityService) 
     {
       this.router.queryParams.subscribe( params => {
         this.categoryId = params["catId"]
@@ -46,6 +53,8 @@ export class DetailsCategoryComponent implements OnInit
           }
         )
       })
+
+      this.getCategoryActivities()
     }
 
     populateCategoryData(category: any)
@@ -54,8 +63,6 @@ export class DetailsCategoryComponent implements OnInit
       this.categoryDescription = category.catDescription
       this.categoryImageUrl = this.utilsService.getImage(category.catImage)
       this.catImages = category.catImages
-      this.categoryActivities = category.categoryActivities
-      console.log(this.categoryActivities)
     }
 
   updateDialog(categoryId: any)
@@ -82,5 +89,18 @@ export class DetailsCategoryComponent implements OnInit
         error: (err) => console.error(err)
       }
     )
+  }
+
+  getCategoryActivities()
+  {
+    this.activityService.getAllCategoryActivities(this.categoryId).subscribe({
+      next: (activities) => this.categoryActivities = activities,
+      error: (err) => console.error(err)
+    })
+  }
+
+  getActivityImage(imageName: any)
+  {
+    return this.utilsService.getImage(imageName)
   }
 }
