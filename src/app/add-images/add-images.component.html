@@ -10,12 +10,12 @@
 
     <div class="drop-zone" appDrag (files)="fileDropped($event)" >
 
-      <div  class="modal-body  text-wrapper" (click)="selectFile.click()">
+      <div  class="modal-body  text-wrapper" (click)="selectFile.click()" >
         <span class="material-symbols-outlined">add_a_photo</span> Cliquer ou déposer vos images
       </div>
 
     </div>
-    <input type="file" style="display: none" class="form-control border border-secondary" #selectFile id="formFile" (change)="onFileSelected($event)" multiple>
+    <input type="file" style="display: none;" class="form-control border border-secondary" #selectFile id="formFile" (change)="onFileSelected($event)" multiple>
 </div>
 
 
@@ -33,7 +33,7 @@
 
 <div class="row mt-3">
   <div class="col text-center">
-    <button type="button" class="btn btn-primary mr-3" (click)="addImages(classId)" >Ajouter images</button>
+    <button type="button" class="btn btn-primary mr-3" id="addImages" (click)="addImages(classId)" disabled>Ajouter images</button>
   </div>
 </div>
 

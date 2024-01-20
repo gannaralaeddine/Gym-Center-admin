@@ -95,11 +95,14 @@ export class AddImagesComponent
 
         }
       }
+
+      this.checkImages()
     }
 
     removeImage(index: number)
     {
-        this.images.splice(index, 1)
+      this.images.splice(index, 1)
+      this.checkImages()
     }
 
     fileDropped(fileHandle: any)
@@ -160,6 +163,18 @@ export class AddImagesComponent
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
+  }
+
+  checkImages()
+  {
+    if (this.images && this.images.length > 0)
+    {
+      document.getElementById('addImages')?.removeAttribute('disabled')
+    }
+    else
+    {
+      document.getElementById('addImages')?.setAttribute('disabled','')
+    }
   }
 }
 

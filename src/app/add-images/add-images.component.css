@@ -40,3 +40,15 @@
   'GRAD' 0,
   'opsz' 24
 }
+
+.modal-body
+{
+    cursor: pointer;
+}
+
+button:hover
+{
+    cursor: pointer;
+}
+
+
