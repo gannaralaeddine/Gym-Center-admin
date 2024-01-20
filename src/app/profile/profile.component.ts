@@ -12,6 +12,7 @@ import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
+import {ImagesPopupComponent} from "../images-popup/images-popup.component";
 
 @Component({
   selector: 'app-profile',
@@ -47,8 +48,11 @@ export class ProfileComponent
         }
         else
         {
-            // @ts-ignore
-            this.user.userEmail = this.authService.getEmailLS()
+            if (isPlatformBrowser(this.platformId))
+            {
+              // @ts-ignore
+              this.user.userEmail = this.authService.getEmailLS()
+            }
         }
         this.getUserByEmail()
       })
@@ -199,4 +203,14 @@ export class ProfileComponent
     }
   }
 
+  displayImages(images: any)
+  {
+      this.dialogRef.open(ImagesPopupComponent, {
+        width: "60%",
+        height: "80%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { images: images }
+      })
+  }
 }
