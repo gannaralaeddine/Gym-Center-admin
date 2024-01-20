@@ -10,13 +10,4 @@ export class Session
     sessionCoach!: User
     sessionImage!: string
     sessionImages!: FileHandleModule[]
-
-    /*constructor(name:string, activity: Activity, coach: User, image: string, images: FileHandleModule[])
-    {
-        this.sessionName = name
-        this.sessionActivity = activity
-        this.sessionCoach = coach
-        this.sessionImage = image
-        this.sessionImages = images
-    }*/
 }

@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../services/session.service';
 import { AddSessionComponent } from '../add-session/add-session.component';
-import { ActivityService } from '../../services/activity.service';
 import {CardFlipComponent} from "../../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {NgForOf, NgIf} from "@angular/common";
@@ -37,7 +36,6 @@ export class DetailsSessionComponent implements OnInit
     private router: ActivatedRoute,
     private sessionService: SessionService,
     private utilsService: UtilsService,
-    private activityService: ActivityService,
     private dialogRef: MatDialog,
     private routerActivity: Router) {}
 
@@ -104,7 +102,6 @@ export class DetailsSessionComponent implements OnInit
     }
   }
 
-
   getSessionById()
   {
     this.sessionService.getSession(this.sessionId).subscribe({
@@ -113,14 +110,20 @@ export class DetailsSessionComponent implements OnInit
     })
   }
 
-  getImage() 
+  getCoachImage() 
   {
-    return this.utilsService.getImage(this.sessionActivityImage)
+    return this.utilsService.getImage(this.sessionCoach.userPicture)
   }
 
   goToActivityDetails() 
   {
     const params = { actId: this.sessionActivity.actId}
     this.routerActivity.navigate(["activity-details"], { queryParams: params  })
+  }
+
+  goToCoachProfile() 
+  {
+    const params = { userEmail: this.sessionCoach.userEmail}
+    this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
 }
