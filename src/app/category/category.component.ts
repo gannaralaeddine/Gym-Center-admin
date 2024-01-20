@@ -13,6 +13,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {UtilsService} from "../serviceutils/utils.service";
 
+
 @Component({
     selector: 'app-category',
     standalone: true,
