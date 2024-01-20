@@ -1,7 +1,7 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
-import {isPlatformBrowser, NgForOf} from "@angular/common";
+import {DatePipe, isPlatformBrowser, NgForOf} from "@angular/common";
 import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
@@ -20,7 +20,8 @@ import {AddImagesComponent} from "../add-images/add-images.component";
     RouterLink,
     CardFlipComponent,
     MatGridListModule,
-    NgForOf
+    NgForOf,
+    DatePipe
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -187,4 +188,5 @@ export class ProfileComponent
         return "../assets/img/icons/ic_user_tie.svg"
     }
   }
+
 }

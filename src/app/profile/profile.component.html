@@ -25,7 +25,41 @@
               {{ accountType }}
             </p>
           </div>
+
         </div>
+
+        <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3" style="position: absolute; right: 0; ">
+          <div class="nav-wrapper position-relative end-0" >
+            <ul class="nav p-1" role="tablist">
+              <li>
+                <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="35" width="35" viewBox="0 0 512 512"><path fill="#4267B2" d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"/></svg>
+                </a>&nbsp;
+                <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
+                  <img src="assets/img/icons/ic_instagram.png" alt="Icon Instagram" height="35" width="35" >
+                </a>&nbsp;
+                <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="35" width="35" viewBox="0 0 512 512"><path fill="#1DA1F2" d="M459.4 151.7c.3 4.5 .3 9.1 .3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53 51.7 63.7 129.3 105.3 216.4 109.8-1.6-7.8-2.6-15.9-2.6-24 0-57.8 46.8-104.9 104.9-104.9 30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3z"/></svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+    <div class="card-header pb-0 p-3 text-center">
+      <div class="row">
+        <div class="col-md-8 d-flex align-items-center">
+          <h1 class="mb-0">Mes Informations</h1>
+        </div>
+
+
+        <div class="col-md-4 text-end">
+          <a (click)="editProfile()">
+            <i class="fas fa-user-edit text-secondary text-sm hand-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier mes informations"></i>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="row">
@@ -34,49 +68,57 @@
         <div class="col-12 col-xl-4">
           <div class="card card-plain h-100">
 
-            <div class="card-header pb-0 p-3">
-              <div class="row">
-                <div class="col-md-8 d-flex align-items-center">
-                  <h1 class="mb-0">Mes Informations</h1>
-                </div>
-
-
-                <div class="col-md-4 text-end">
-                  <a (click)="editProfile()">
-                    <i class="fas fa-user-edit text-secondary text-sm hand-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier mes informations"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
             <div class="card-body p-3">
-              <p class="text-sm">
-                {{ user.userDescription }}
-              </p>
-              <hr class="horizontal gray-light my-4">
+              <div class="d-flex align-items-center">
+                <h3 class="mb-0">Informations personnelle</h3>
+              </div>
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; {{ user.userEmail }} </li>
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Nom complet:</strong> &nbsp; {{ user.userFirstName }} {{ user.userLastName }}</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Téléphone:</strong> &nbsp; {{ user.userPhoneNumber }}</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Gouvernorat:</strong> &nbsp; {{ user.userCountry }}</li>
-                <li class="list-group-item border-0 ps-0 pb-0">
-                  <strong class="text-dark text-sm">Réseaux sociaux:</strong> &nbsp;
-                  <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
-                    <i class="fab fa-facebook fa-lg"></i>
-                  </a>
-                  <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
-                    <i class="fab fa-twitter fa-lg"></i>
-                  </a>
-                  <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:">
-                    <i class="fab fa-instagram fa-lg"></i>
-                  </a>
-                </li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg> </strong> &nbsp; {{ user.userEmail }} </li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 -960 960 960" ><path d="M160-80q-33 0-56.5-23.5T80-160v-440q0-33 23.5-56.5T160-680h200v-120q0-33 23.5-56.5T440-880h80q33 0 56.5 23.5T600-800v120h200q33 0 56.5 23.5T880-600v440q0 33-23.5 56.5T800-80H160Zm80-160h240v-18q0-17-9.5-31.5T444-312q-20-9-40.5-13.5T360-330q-23 0-43.5 4.5T276-312q-17 8-26.5 22.5T240-258v18Zm320-60h160v-60H560v60Zm-200-60q25 0 42.5-17.5T420-420q0-25-17.5-42.5T360-480q-25 0-42.5 17.5T300-420q0 25 17.5 42.5T360-360Zm200-60h160v-60H560v60ZM440-600h80v-200h-80v200Z"/></svg></strong> &nbsp; {{ user.userFirstName }} {{ user.userLastName }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg"  height="25" width="25" viewBox="0 0 512 512"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg></strong> &nbsp; {{ user.userPhoneNumber }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark text-sm"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 448 512"><path d="M416 0c17.7 0 32 14.3 32 32c0 59.8-30.3 107.5-69.4 146.6c-28 28-62.5 53.5-97.3 77.4l-2.5 1.7c-11.9 8.1-23.8 16.1-35.5 23.9l0 0 0 0 0 0-1.6 1c-6 4-11.9 7.9-17.8 11.9c-20.9 14-40.8 27.7-59.3 41.5H283.3c-9.8-7.4-20.1-14.7-30.7-22.1l7-4.7 3-2c15.1-10.1 30.9-20.6 46.7-31.6c25 18.1 48.9 37.3 69.4 57.7C417.7 372.5 448 420.2 448 480c0 17.7-14.3 32-32 32s-32-14.3-32-32H64c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-59.8 30.3-107.5 69.4-146.6c28-28 62.5-53.5 97.3-77.4c-34.8-23.9-69.3-49.3-97.3-77.4C30.3 139.5 0 91.8 0 32C0 14.3 14.3 0 32 0S64 14.3 64 32H384c0-17.7 14.3-32 32-32zM338.6 384H109.4c-10.1 10.6-18.6 21.3-25.5 32H364.1c-6.8-10.7-15.3-21.4-25.5-32zM109.4 128H338.6c10.1-10.7 18.6-21.3 25.5-32H83.9c6.8 10.7 15.3 21.3 25.5 32zm55.4 48c18.4 13.8 38.4 27.5 59.3 41.5c20.9-14 40.8-27.7 59.3-41.5H164.7z"/></svg></strong>&nbsp; Bio:</li>
+                <li class="list-group-item border-0 ps-0 text-sm">{{ user.userDescription }}</li>
               </ul>
             </div>
 
           </div>
         </div>
 
+        <div class="col-12 col-xl-4">
+          <div class="card card-plain h-100">
+
+            <div class="card-body p-3">
+              <div class="d-flex align-items-center">
+                <h3 class="mb-0">Adresse</h3>
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"> <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 576 512"><path d="M408 120c0 54.6-73.1 151.9-105.2 192c-7.7 9.6-22 9.6-29.6 0C241.1 271.9 168 174.6 168 120C168 53.7 221.7 0 288 0s120 53.7 120 120zm8 80.4c3.5-6.9 6.7-13.8 9.6-20.6c.5-1.2 1-2.5 1.5-3.7l116-46.4C558.9 123.4 576 135 576 152V422.8c0 9.8-6 18.6-15.1 22.3L416 503V200.4zM137.6 138.3c2.4 14.1 7.2 28.3 12.8 41.5c2.9 6.8 6.1 13.7 9.6 20.6V451.8L32.9 502.7C17.1 509 0 497.4 0 480.4V209.6c0-9.8 6-18.6 15.1-22.3l122.6-49zM327.8 332c13.9-17.4 35.7-45.7 56.2-77V504.3L192 449.4V255c20.5 31.3 42.3 59.6 56.2 77c20.5 25.6 59.1 25.6 79.6 0zM288 152a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg></strong> &nbsp; {{ user.userCountry }} </li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark"> <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 384 512"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg> </strong> &nbsp; {{ user.userState }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg></strong> &nbsp; {{ user.userCity }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><img src="../assets/img/icons/ic_zip_code.png" alt="Zip Code" height="25" width="25" /></strong> &nbsp; {{ user.userZipCode }}</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4">
+          <div class="card card-plain h-100">
+
+            <div class="card-body p-3">
+              <div class="d-flex align-items-center">
+                <h3 class="mb-0">Caractéristiques corporelle</h3>
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 320 512"><path d="M160 0a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm8 352V128h6.9c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352h0zM58.2 182.3c19.9-33.1 55.3-53.5 93.8-54.3V384h0v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384H70.2c-10.9 0-18.6-10.7-15.2-21.1L93.3 248.1 59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l53.6-89.2z"/></svg></strong> &nbsp; {{ user.userGender }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"> <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 448 512"><path d="M86.4 5.5L61.8 47.6C58 54.1 56 61.6 56 69.2V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L105.6 5.5C103.6 2.1 100 0 96 0s-7.6 2.1-9.6 5.5zm128 0L189.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L233.6 5.5C231.6 2.1 228 0 224 0s-7.6 2.1-9.6 5.5zM317.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L361.6 5.5C359.6 2.1 356 0 352 0s-7.6 2.1-9.6 5.5L317.8 47.6zM128 176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48c-35.3 0-64 28.7-64 64v71c8.3 5.2 18.1 9 28.8 9c13.5 0 27.2-6.1 38.4-13.4c5.4-3.5 9.9-7.1 13-9.7c1.5-1.3 2.7-2.4 3.5-3.1c.4-.4 .7-.6 .8-.8l.1-.1 0 0 0 0s0 0 0 0s0 0 0 0c3.1-3.2 7.4-4.9 11.9-4.8s8.6 2.1 11.6 5.4l0 0 0 0 .1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c3-3.5 7.4-5.4 12-5.4s9 2 12 5.4l.1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c2.9-3.4 7.1-5.3 11.6-5.4s8.7 1.6 11.9 4.8l0 0 0 0 0 0 .1 .1c.2 .2 .4 .4 .8 .8c.8 .7 1.9 1.8 3.5 3.1c3.1 2.6 7.5 6.2 13 9.7c11.2 7.3 24.9 13.4 38.4 13.4c10.7 0 20.5-3.9 28.8-9V288c0-35.3-28.7-64-64-64V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H256V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H128V176zM448 394.6c-8.5 3.3-18.2 5.4-28.8 5.4c-22.5 0-42.4-9.9-55.8-18.6c-4.1-2.7-7.8-5.4-10.9-7.8c-2.8 2.4-6.1 5-9.8 7.5C329.8 390 310.6 400 288 400s-41.8-10-54.6-18.9c-3.5-2.4-6.7-4.9-9.4-7.2c-2.7 2.3-5.9 4.7-9.4 7.2C201.8 390 182.6 400 160 400s-41.8-10-54.6-18.9c-3.7-2.6-7-5.2-9.8-7.5c-3.1 2.4-6.8 5.1-10.9 7.8C71.2 390.1 51.3 400 28.8 400c-10.6 0-20.3-2.2-28.8-5.4V480c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V394.6z"/></svg></strong> &nbsp; {{ user.userBirthDate | date:"dd MMM yyyy" }} </li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" height="25" width="25"><path d="M480-120 320-280l56-56 64 63v-414l-64 63-56-56 160-160 160 160-56 57-64-64v414l64-63 56 56-160 160Z"/></svg> </strong> &nbsp; {{ user.userHeight }} cm</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 -960 960 960" ><path d="M240-200h480l-57-400H297l-57 400Zm240-480q17 0 28.5-11.5T520-720q0-17-11.5-28.5T480-760q-17 0-28.5 11.5T440-720q0 17 11.5 28.5T480-680Zm113 0h70q30 0 52 20t27 49l57 400q5 36-18.5 63.5T720-120H240q-37 0-60.5-27.5T161-211l57-400q5-29 27-49t52-20h70q-3-10-5-19.5t-2-20.5q0-50 35-85t85-35q50 0 85 35t35 85q0 11-2 20.5t-5 19.5ZM240-200h480-480Z"/></svg></strong> &nbsp; {{ user.userWeight }} Kg</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
 
         <div class="col-12 mt-4">
 
