@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../services/session.service';
 import { AddSessionComponent } from '../add-session/add-session.component';
 import { ActivityService } from '../../services/activity.service';
@@ -38,7 +38,8 @@ export class DetailsSessionComponent implements OnInit
     private sessionService: SessionService,
     private utilsService: UtilsService,
     private activityService: ActivityService,
-    private dialogRef: MatDialog) {}
+    private dialogRef: MatDialog,
+    private routerActivity: Router) {}
 
 
     ngOnInit()
@@ -110,5 +111,16 @@ export class DetailsSessionComponent implements OnInit
       next: (session) => this.populateSessionData(session),
       error: (err) => console.error(err)
     })
+  }
+
+  getImage() 
+  {
+    return this.utilsService.getImage(this.sessionActivityImage)
+  }
+
+  goToActivityDetails() 
+  {
+    const params = { actId: this.sessionActivity.actId}
+    this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 }
