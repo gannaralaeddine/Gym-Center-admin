@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AlertSuccessComponent } from "../alert-success/alert-success.component";
 import { MatDialog } from '@angular/material/dialog';
 import {AlertDeleteComponent} from "../alert-delete/alert-delete.component";
+import {ImagesPopupComponent} from "../images-popup/images-popup.component";
 
 @Injectable({
   providedIn: 'root'
@@ -42,4 +43,15 @@ export class UtilsService
       });
   }
 
+
+  displayImages(images: any, isOneImage: boolean)
+  {
+    return this.matDialog.open(ImagesPopupComponent, {
+      width: "60%",
+      height: "80%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      data: { images: images,  isOneImage: isOneImage}
+    })
+  }
 }

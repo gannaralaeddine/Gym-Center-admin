@@ -124,4 +124,9 @@ export class DetailsActivityComponent implements OnInit
     this.routerCoach.navigate(["profile"], { queryParams: params  })
   }
 
+
+  displayImages(images: any, isOneImage: boolean)
+  {
+      this.utilsService.displayImages(images, isOneImage)
+  }
 }

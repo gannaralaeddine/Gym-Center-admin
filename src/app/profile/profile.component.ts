@@ -203,14 +203,13 @@ export class ProfileComponent
     }
   }
 
-  displayImages(images: any)
+  displayImages(images: any, isOneImage: boolean)
   {
-      this.dialogRef.open(ImagesPopupComponent, {
-        width: "60%",
-        height: "80%",
-        enterAnimationDuration: "1000ms",
-        exitAnimationDuration: "1000ms",
-        data: { images: images }
-      })
+    this.utilsService.displayImages(images, isOneImage)
+  }
+
+  previewProfileImage(imageName: any, isOneImage: boolean)
+  {
+    this.utilsService.displayImages(imageName, isOneImage)
   }
 }
