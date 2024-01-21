@@ -112,20 +112,25 @@ export class DetailsSessionComponent implements OnInit
     })
   }
 
-  getCoachImage() 
+  getCoachImage()
   {
     return this.utilsService.getImage(this.sessionCoach.userPicture)
   }
 
-  goToActivityDetails() 
+  goToActivityDetails()
   {
     const params = { actId: this.sessionActivity.actId}
     this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 
-  goToCoachProfile() 
+  goToCoachProfile()
   {
     const params = { userEmail: this.sessionCoach.userEmail}
     this.routerActivity.navigate(["profile"], { queryParams: params  })
+  }
+
+  displayImages(images: any, isOneImage: boolean)
+  {
+    this.utilsService.displayImages(images, isOneImage)
   }
 }
