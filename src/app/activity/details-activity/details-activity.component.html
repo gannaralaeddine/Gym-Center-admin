@@ -8,17 +8,24 @@
 
         <img [src]="getImage(activityImageUrl)" height="600" width="500" alt="Activity Image" class="mb-3">
 
+        <div class="row">
+          <div class="col-lg-4 col-md-6 ml-4">
+            <div class="nav-wrapper position-relative">
+              <h2 class="mb-0">Activité: {{activityTitle}}</h2>
+            </div>
+          </div>
 
-        <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-          <div class="nav-wrapper position-relative end-0">
-            <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="updateDialog(this.activityId)">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                  <span class="ms-1 text-white">Modifier cette activité</span>
-                </a>
-              </li>
-            </ul>
+          <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            <div class="nav-wrapper position-relative end-0">
+              <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="updateDialog(this.activityId)">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                    <span class="ms-1 text-white">Modifier cette activité</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -30,38 +37,18 @@
           <div class="row">
 
             <div class="col-9">
-              <div class="card card-plain h-100">
-                <div class="card-header pb-0 p-3">
-                  <div class="row">
-                    <div class="col-md-8 d-flex align-items-center">
-                      <h1 class="mb-0 ml-8">{{ activityTitle }}</h1>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body p-3">
-                  <p class="text-sm">
-                    {{ activityDescription }}
-                  </p>
-                  <hr class="horizontal gray-light my-4">
-                </div>
-              </div>
+              <h2 style="margin-left: 3.5%; margin-top: 1.5%;">Description:</h2>
+              <h3 style="font-style: italic; font-family: Arial, Helvetica, sans-serif; margin-left: 3.5%; margin-top: -1%;">{{activityDescription}}</h3>
             </div>
 
             <div class="col-3 text-end">
-              <div class="card card-plain h-100">
-                <div class="card-header pb-0 p-3">
-                  <div class="row">
-                    <div class="col-md-8 d-flex align-items-center">
-                      <h1 class="mb-0 ml-4">Catégorie</h1>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body p-3">
-                  <img [src]="getImage(activityCategoryImage)" height="150" width="250"  alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
-                  <p>{{activityCategoryDescription}}</p>
+              <h2 class="mt-1 float-left">Catégorie</h2>
+              <div class="card" style="width: 14rem;">
+                <img [src]="getImage(activityCategoryImage)" height="150" width="250"  alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2" (click)="goToCategoryDetails(activityCategory)">
+                <div class="card-body">
+                  <a class="card-text" href="javascript:"><h3 class="text-center" (click)="goToCategoryDetails(activityCategory)">{{activityCategoryName}}</h3></a>
                 </div>
               </div>
-
             </div>
           </div>
 

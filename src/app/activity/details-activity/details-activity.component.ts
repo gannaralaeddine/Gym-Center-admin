@@ -21,12 +21,14 @@ import {UtilsService} from "../../serviceutils/utils.service";
 })
 export class DetailsActivityComponent implements OnInit
 {
+
   deleteTag = "deleteActivityImage"
   activityTitle!: string
   activityDescription!: string
   activityImageUrl!: string
   activityCategory!: Category
   activityCategoryImage!: string
+  activityCategoryName!: string
   actImages!: FileHandle[]
   activityImages!: any[]
   activityCoaches!: User[]
@@ -50,10 +52,12 @@ export class DetailsActivityComponent implements OnInit
 
   populateActivityData(activity: any)
   {
+    this.activityCategory = activity.category
     this.activityTitle = activity.actName
     this.activityDescription = activity.actDescription
     this.activityImageUrl = activity.actImage
     this.actImages = activity.actImages
+    this.activityCategoryName = activity.category.catName
     this.activityCategoryImage = activity.category.catImage
     this.activityCategoryDescription = activity.category.catDescription
     this.activityCoaches = activity.actCoaches
@@ -124,6 +128,11 @@ export class DetailsActivityComponent implements OnInit
     this.routerCoach.navigate(["profile"], { queryParams: params  })
   }
 
+  goToCategoryDetails(category: Category) 
+  {
+    const params = { catId: category.catId }
+    this.routerCoach.navigate(["category-details"], { queryParams: params  })
+  }
 
   displayImages(images: any, isOneImage: boolean)
   {
