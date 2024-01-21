@@ -1,12 +1,27 @@
+.parent-cell {
+  display: table;
+  margin: 1rem;
+  text-align: center;
+}
+
 .parent {
   margin: 1rem;
   text-align: center;
 }
-.child {
-  display: inline-block;
+
+
+.child-cell {
+  display: table-cell;
   vertical-align: middle;
-  width: 40%;
+  width: 33.3%;
 }
+
+.child {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
+}
+
 
 .margin-center
 {
@@ -17,4 +32,8 @@
 .parent-child {
   width: 80%;
   vertical-align: middle;
+}
+
+.inline-input input {
+  float:left;
 }

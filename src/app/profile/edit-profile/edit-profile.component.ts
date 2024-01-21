@@ -6,6 +6,8 @@ import {UtilsService} from "../../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {UserService} from "../../services/user.service";
 import {User} from "../../user/user";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,6 +17,8 @@ import {User} from "../../user/user";
     NgForOf,
     NgIf,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.css'
@@ -25,7 +29,7 @@ export class EditProfileComponent
   user = new User()
   userEmail!: string
   constructor(private userService: UserService, private utilsService: UtilsService, private dialogRef: MatDialogRef<EditProfileComponent>,private sanitizer: DomSanitizer,
-               @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder,) {
+               @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder, ) {
       this.userEmail = data.userEmail
       this.getUserByEmail()
   }
@@ -43,12 +47,21 @@ export class EditProfileComponent
         userZipCode:['',Validators.required],
         userHeight:['',Validators.required],
         userWeight:['',Validators.required],
+        userGender: "",
         userBirthDate: "",
         userPicture: ""
       })
   }
   populateForm(user: any)
   {
+      if (user.userGender == "Homme")
+      {
+        this.profileFormValue.controls['userGender'].setValue("Homme")
+      }
+      if (user.userGender == "Femme")
+      {
+        this.profileFormValue.controls['userGender'].setValue("Femme")
+      }
       this.profileFormValue.controls['userFirstName'].setValue(user.userFirstName)
       this.profileFormValue.controls['userLastName'].setValue(user.userLastName)
       this.profileFormValue.controls['userDescription'].setValue(user.userDescription)
@@ -59,8 +72,10 @@ export class EditProfileComponent
       this.profileFormValue.controls['userZipCode'].setValue(user.userZipCode)
       this.profileFormValue.controls['userHeight'].setValue(user.userHeight)
       this.profileFormValue.controls['userWeight'].setValue(user.userWeight)
-      this.profileFormValue.controls['userBirthDate'].setValue(user.userBirthDate)
-
+      if (user.userBirthDate)
+      {
+          this.profileFormValue.controls['userBirthDate'].setValue(this.parseDateString(user.userBirthDate))
+      }
   }
   updateProfile()
   {
@@ -76,6 +91,9 @@ export class EditProfileComponent
       this.user.userHeight =  this.profileFormValue.controls['userHeight'].value
       this.user.userWeight =  this.profileFormValue.controls['userWeight'].value
       this.user.userBirthDate =  this.profileFormValue.controls['userBirthDate'].value
+      this.user.userGender = this.profileFormValue.controls['userGender'].value
+
+    console.log("type of: " + typeof this.profileFormValue.controls['userBirthDate'].value)
 
       this.userService.updateUserData(this.user).subscribe({
         complete: () => {
@@ -101,6 +119,12 @@ export class EditProfileComponent
   closeDialog()
   {
       this.dialogRef.close()
+  }
+
+
+  parseDateString(dateString: string): string {
+    // Extract the date part in 'yyyy-MM-dd' format
+    return  dateString.split('T')[0];
   }
 }
 

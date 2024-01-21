@@ -12,7 +12,6 @@ import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
-import {ImagesPopupComponent} from "../images-popup/images-popup.component";
 
 @Component({
   selector: 'app-profile',
@@ -58,158 +57,159 @@ export class ProfileComponent
       })
     }
 
-  populateUserData(user: any)
-  {
-    this.accountType = user.roles[0].roleName
-
-    this.user.userId = user.userId
-    this.user.userFirstName = user.userFirstName
-    this.user.userLastName = user.userLastName
-    this.user.userDescription = user.userDescription
-    this.user.userPhoneNumber = user.userPhoneNumber
-    this.user.userCountry = user.userCountry
-    this.user.userState = user.userState
-    this.user.userCity = user.userCity
-    this.user.userGender = user.userGender
-    this.user.userHeight = user.userHeight
-    this.user.userWeight = user.userWeight
-    this.user.userZipCode = user.userZipCode
-    this.user.userBirthDate = user.userBirthDate
-    this.user.userPicture = user.userPicture
-    this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
-
-  }
-
-
-  updateProfileImage()
-  {
-    const formData = this.prepareFormData(this.user)
-
-    this.userService.updateProfilePicture(formData).subscribe({
-      complete: () => {
-        this.getUserByEmail()
-        this.utilsService.successDialog("Opération réussite", "Votre image a été éditer avec succès", true)
-      },
-      error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
-    })
-
-  }
-
-  prepareFormData(user: User): FormData
-  {
-    const formData = new FormData()
-
-    formData.append(
-      "user", new Blob( [ JSON.stringify(user) ], { type: "application/json" } )
-    )
-
-    for ( let i = 0 ; i < user.userImages.length ; i++ )
+    populateUserData(user: any)
     {
+      this.accountType = user.roles[0].roleName
+
+      this.user.userId = user.userId
+      this.user.userFirstName = user.userFirstName
+      this.user.userLastName = user.userLastName
+      this.user.userDescription = user.userDescription
+      this.user.userPhoneNumber = user.userPhoneNumber
+      this.user.userCountry = user.userCountry
+      this.user.userState = user.userState
+      this.user.userCity = user.userCity
+      this.user.userGender = user.userGender
+      this.user.userHeight = user.userHeight
+      this.user.userWeight = user.userWeight
+      this.user.userZipCode = user.userZipCode
+      this.user.userBirthDate = user.userBirthDate
+      this.user.userPicture = user.userPicture
+      this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
+
+    }
+
+
+    updateProfileImage()
+    {
+      const formData = this.prepareFormData(this.user)
+
+      this.userService.updateProfilePicture(formData).subscribe({
+        complete: () => {
+          this.getUserByEmail()
+          this.utilsService.successDialog("Opération réussite", "Votre image a été éditer avec succès", true)
+        },
+        error:(err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+      })
+
+    }
+
+    prepareFormData(user: User): FormData
+    {
+      const formData = new FormData()
+
       formData.append(
-        "imageFile",
-        user.userImages[i].file,
-        user.userImages[i].file.name
+        "user", new Blob( [ JSON.stringify(user) ], { type: "application/json" } )
+      )
+
+      for ( let i = 0 ; i < user.userImages.length ; i++ )
+      {
+        formData.append(
+          "imageFile",
+          user.userImages[i].file,
+          user.userImages[i].file.name
+        )
+      }
+
+      return formData
+    }
+
+    getUserByEmail()
+    {
+      this.userService.retrieveUserByEmail(this.user.userEmail).subscribe(
+          {
+            next: (val) => this.populateUserData(val),
+            error: (err) => console.error(err)
+          }
       )
     }
 
-    return formData
-  }
-
-  getUserByEmail()
-  {
-    this.userService.retrieveUserByEmail(this.user.userEmail).subscribe(
-        {
-          next: (val) => this.populateUserData(val),
-          error: (err) => console.error(err)
-        }
-    )
-  }
-
-  onFileSelected(event: any)
-  {
-    this.user.userImages = []
-
-    if (event.target.files)
+    onFileSelected(event: any)
     {
+      this.user.userImages = []
 
-      for (let i= 0 ; i < event.target.files.length ; i++)
+      if (event.target.files)
       {
-        const file = event.target.files[i]
 
-        const fileHandle: FileHandleModule = {
-          file: file,
-          url: this.sanitizer.bypassSecurityTrustUrl(
-            window.URL.createObjectURL(file)
-          )
+        for (let i= 0 ; i < event.target.files.length ; i++)
+        {
+          const file = event.target.files[i]
+
+          const fileHandle: FileHandleModule = {
+            file: file,
+            url: this.sanitizer.bypassSecurityTrustUrl(
+              window.URL.createObjectURL(file)
+            )
+          }
+
+          this.user.userImages.push(fileHandle)
+
         }
-
-        this.user.userImages.push(fileHandle)
-
       }
+
+      this.updateProfileImage()
     }
 
-    this.updateProfileImage()
-  }
+    editProfile()
+    {
+        const popup = this.dialogRef.open(EditProfileComponent, {
+          width: "60%",
+          height: "80%",
+          enterAnimationDuration: "1000ms",
+          exitAnimationDuration: "1000ms",
+          data: { userEmail: this.user.userEmail }
+        })
+        popup.afterClosed().subscribe(() =>{
+          this.getUserByEmail()
+        })
+    }
 
-  editProfile()
-  {
-      const popup = this.dialogRef.open(EditProfileComponent, {
-        width: "60%",
+    addImages()
+    {
+      const popup = this.dialogRef.open(AddImagesComponent, {
+        width: "50%",
+        height: "80%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
-        data: { userEmail: this.user.userEmail }
+        data: { imagesTag: "userProfile", id: this.user.userId }
       })
       popup.afterClosed().subscribe(() =>{
         this.getUserByEmail()
       })
-  }
-
-  addImages()
-  {
-    const popup = this.dialogRef.open(AddImagesComponent, {
-      width: "50%",
-      height: "80%",
-      enterAnimationDuration: "1000ms",
-      exitAnimationDuration: "1000ms",
-      data: { imagesTag: "userProfile", id: this.user.userId }
-    })
-    popup.afterClosed().subscribe(() =>{
-      this.getUserByEmail()
-    })
-  }
-
-  detectChanges(isDataChanges: boolean)
-  {
-    if (isDataChanges)
-    {
-      this.userService.getUserById(this.user.userId).subscribe(
-        {
-          next: (user) => this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture),
-          error: (err) => console.error(err)
-        }
-      )
     }
-  }
 
-  getProfilePicture(userPicture: any)
-  {
-    if (userPicture)
+    detectChanges(isDataChanges: boolean)
     {
-      return this.utilsService.getImage(userPicture)
+      if (isDataChanges)
+      {
+        this.userService.getUserById(this.user.userId).subscribe(
+          {
+            next: (user) => this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture),
+            error: (err) => console.error(err)
+          }
+        )
+      }
     }
-    else
+
+    getProfilePicture(userPicture: any)
     {
-        return "../assets/img/icons/ic_user_tie.svg"
+      if (userPicture)
+      {
+        return this.utilsService.getImage(userPicture)
+      }
+      else
+      {
+          return "../assets/img/icons/ic_user_tie.svg"
+      }
     }
-  }
 
-  displayImages(images: any, isOneImage: boolean)
-  {
-    this.utilsService.displayImages(images, isOneImage)
-  }
+    displayImages(images: any, isOneImage: boolean)
+    {
+      this.utilsService.displayImages(images, isOneImage)
+    }
 
-  previewProfileImage(imageName: any, isOneImage: boolean)
-  {
-    this.utilsService.displayImages(imageName, isOneImage)
-  }
+    previewProfileImage(imageName: any, isOneImage: boolean)
+    {
+      this.utilsService.displayImages(imageName, isOneImage)
+    }
 }
