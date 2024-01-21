@@ -146,7 +146,7 @@ export class AddSessionComponent implements OnInit
       document.getElementById('sessionNameInput')!.className = "form-control border border-dark pl-2 round"
     }
 
-    if (this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched)
+    if ((this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255))
     {
       document.getElementById('sessionDescriptionInput')!.className = "form-control border border-danger pl-2 round"
     }
@@ -180,7 +180,7 @@ export class AddSessionComponent implements OnInit
 
     if (this.data.sessionId) // enable or disable the update button
     {
-      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid))
+      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255))
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -200,7 +200,7 @@ export class AddSessionComponent implements OnInit
         document.getElementById('sessionImageInput')!.className = "form-control border border-dark pl-2 round"
       }
 
-      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid)
+      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid && this.sessionFormValue.controls['sessionDescription'].getRawValue().length <= 255)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -249,6 +249,7 @@ export class AddSessionComponent implements OnInit
     else
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+      this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
 
       this.sessionService.updateSession(this.data.sessionId,this.sessionObject).subscribe({
         next:()=> {
@@ -273,8 +274,6 @@ export class AddSessionComponent implements OnInit
   populateUpdateForm(session: any)
   {
     this.sessionObject.sessionId = session.sessionId
-    this.sessionObject.sessionName = session.sessionName
-    this.sessionObject.sessionDescription = session.sessionDescription
     this.sessionObject.sessionActivity = session.sessionActivity
     this.sessionObject.sessionCoach = session.sessionCoach
 

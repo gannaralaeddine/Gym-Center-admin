@@ -26,6 +26,7 @@ export class DetailsSessionComponent implements OnInit
   deleteTag = "deleteSessionImage"
   sessionId!: number
   sessionName: any
+  sessionDescription: any
   sessionActivity: any
   sessionCoach: any
   sessionImage: any
@@ -68,6 +69,7 @@ export class DetailsSessionComponent implements OnInit
   populateSessionData(session: any)
   {
     this.sessionName = session.sessionName
+    this.sessionDescription = session.sessionDescription
     this.sessionActivity = session.sessionActivity
     this.sessionCoach = session.sessionCoach
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)

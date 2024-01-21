@@ -26,6 +26,7 @@
               <div class="form-group">
                 <label for="sessionDescriptionInput" class="text-dark font-weight-bold">Description Session</label>
                 <textarea type="text" class="form-control border border-secondary pl-2 round" id="sessionDescriptionInput" placeholder="saisir description séance" formControlName="sessionDescription" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"></textarea>
+                <h5 class="text-danger text-bold ml-2" *ngIf="this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255">Le nombre maximum des caractères c'est 255</h5>
                 <h5 class="text-danger text-bold ml-2" *ngIf="this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched">Merci de saisir une description</h5>
               </div>
 
