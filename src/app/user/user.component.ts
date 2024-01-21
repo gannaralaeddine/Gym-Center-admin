@@ -10,6 +10,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import { UtilsService } from "../serviceutils/utils.service";
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-user',
@@ -40,7 +43,11 @@ export class UserComponent implements OnInit
     @ViewChild(MatPaginator) paginator!: MatPaginator
     @ViewChild(MatSort) sort!: MatSort
 
-    public constructor(private userService: UserService, private utilsService: UtilsService) {
+    public constructor(
+      private userService: UserService, 
+      private utilsService: UtilsService,
+      private router: Router,
+      private dialogRef: MatDialog) {
         this.getAllUsers()
     }
 
@@ -80,4 +87,22 @@ export class UserComponent implements OnInit
       if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
     }
 
+    goToUserProfile(user: User)
+    {
+      const params = { userEmail: user.userEmail }
+      this.router.navigate(["profile"], { queryParams: params  })
+    }
+
+    editProfile(user: any)
+    {
+        const popup = this.dialogRef.open(EditProfileComponent, {
+          width: "60%",
+          enterAnimationDuration: "1000ms",
+          exitAnimationDuration: "1000ms",
+          data: { userEmail: user.userEmail }
+        })
+        popup.afterClosed().subscribe(() =>{
+          this.getAllUsers()
+        })
+    }
 }

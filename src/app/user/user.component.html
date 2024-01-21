@@ -48,10 +48,10 @@
         <!-- Action Column -->
         <ng-container matColumnDef="Gestion">
           <th mat-header-cell *matHeaderCellDef  class="text-center">Gestion</th>
-          <td mat-cell *matCellDef="let activity" class="text-center">
+          <td mat-cell *matCellDef="let user" class="text-center">
 
-            <a class="btn btn-link px-3 mb-0" href="javascript:"><i class="material-icons text-sm me-2">assignment</i>Détails</a>
-            <a class="btn btn-link text-dark px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">edit</i>Éditer</a>
+            <a class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserProfile(user)"><i class="material-icons text-sm me-2">assignment</i>Détails</a>
+            <a class="btn btn-link text-dark px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal" (click)="editProfile(user)"><i class="material-icons text-sm me-2">edit</i>Éditer</a>
             <a class="btn btn-link text-danger px-3 mb-0" href="javascript:" data-toggle="modal" data-target="#exampleModal"><i class="material-icons text-sm me-2">delete</i>Supprimer</a>
 
           </td>
