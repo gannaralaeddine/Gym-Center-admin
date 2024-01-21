@@ -13,6 +13,7 @@ import { UtilsService } from "../serviceutils/utils.service";
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-user',
@@ -27,7 +28,9 @@ import { EditProfileComponent } from '../profile/edit-profile/edit-profile.compo
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [UserService],
   templateUrl: './user.component.html',
@@ -35,6 +38,7 @@ import { EditProfileComponent } from '../profile/edit-profile/edit-profile.compo
 })
 export class UserComponent implements OnInit
 {
+    allUsers: any
     user = new User()
     member = new User();
     dataSource!: MatTableDataSource<any>;
@@ -44,11 +48,11 @@ export class UserComponent implements OnInit
     @ViewChild(MatSort) sort!: MatSort
 
     public constructor(
-      private userService: UserService, 
+      private userService: UserService,
       private utilsService: UtilsService,
       private router: Router,
       private dialogRef: MatDialog) {
-        this.getAllUsers()
+        this.getAllUsersFromApi()
     }
 
     ngOnInit()
@@ -56,17 +60,20 @@ export class UserComponent implements OnInit
 
     }
 
-    getAllUsers()
+    getAllUsersFromApi()
     {
       this.userService.getAllUsers().subscribe({
         next :(res) => {
-          this.dataSource = new MatTableDataSource(res as any)
+          this.allUsers = res
+          this.dataSource = new MatTableDataSource(this.allUsers as any)
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
+          console.log("all users type: " + typeof this.allUsers)
         },
         error: (err) => console.error(err)
       })
     }
+
 
     getUserImage(imageName: string): string
     {
@@ -102,7 +109,79 @@ export class UserComponent implements OnInit
           data: { userEmail: user.userEmail }
         })
         popup.afterClosed().subscribe(() =>{
-          this.getAllUsers()
+          this.getAllUsersFromApi()
         })
+    }
+
+    filterByRole()
+    {
+        const rolesSelect = document.getElementById("userRoleSelect") as HTMLSelectElement
+
+
+        switch (rolesSelect.options.selectedIndex)
+        {
+            case 0:
+              { this.getAllUsers(); break }
+            case 1:
+              { this.getMembers(); break }
+            case 2:
+              { this.getCoaches(); break }
+            case 3:
+              { this.getAdmins(); break }
+            default:
+              { console.log(rolesSelect.options.selectedIndex); break }
+        }
+    }
+
+    getAllUsers()
+    {
+        this.dataSource = new MatTableDataSource(this.allUsers as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+    }
+
+    getAdmins()
+    {
+        let admins = []
+        for (let i = 0 ; i < this.allUsers.length ; i++)
+        {
+          if ( this.allUsers[i].roles[0].roleName == "ADMIN" )
+          {
+            admins.push(this.allUsers[i])
+          }
+        }
+        this.dataSource = new MatTableDataSource(admins as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+    }
+
+    getMembers()
+    {
+        let members = []
+        for (let i = 0 ; i < this.allUsers.length ; i++)
+        {
+            if ( this.allUsers[i].roles[0].roleName == "MEMBER" )
+            {
+              members.push(this.allUsers[i])
+            }
+        }
+        this.dataSource = new MatTableDataSource(members as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
+    }
+
+    getCoaches()
+    {
+        let coaches = []
+        for (let i = 0 ; i < this.allUsers.length ; i++)
+        {
+          if ( this.allUsers[i].roles[0].roleName == "COACH" )
+          {
+            coaches.push(this.allUsers[i])
+          }
+        }
+        this.dataSource = new MatTableDataSource(coaches as any)
+        this.dataSource.sort = this.sort
+        this.dataSource.paginator = this.paginator
     }
 }

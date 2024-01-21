@@ -10,10 +10,26 @@
   </div>
 </div>
 
-<mat-form-field [color]="'accent'">
-  <mat-label>Chercher utilisateur</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom d'utilisateurpour chercher" #input>
-</mat-form-field>
+<h2> Filtrer la recherche </h2>
+<div class="parent-cell mr-3 ml-3">
+
+  <div class="child-roles ">
+    <select class="form-control border border-primary pl-2 round select-picker" id="userRoleSelect" name="userRole" width="100%" (change)="filterByRole()">
+      <option >Tous les utilisateurs</option>
+      <option >MEMBRE</option>
+      <option >COACH</option>
+      <option >ADMIN</option>
+    </select>
+  </div>
+
+  <div class="child-search" >
+    <mat-form-field [color]="'accent'" width="100%">
+      <mat-label>Chercher utilisateur</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom d'utilisateurpour chercher" #input>
+    </mat-form-field>
+  </div>
+</div>
+
 
 <div class="main-body">
   <div class="mat-elevation-z8">

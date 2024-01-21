@@ -1,4 +1,4 @@
-.mat-mdc-form-field 
+.mat-mdc-form-field
 {
     font-size: 14px;
     width: 99%;
@@ -16,7 +16,26 @@ mat-label
     margin-bottom: 5%;
 }
 
-::ng-deep .mat-mdc-form-field 
+::ng-deep .mat-mdc-form-field
 {
     background-color: white;
+}
+
+.parent-cell {
+  display: table;
+  margin: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+.child-search {
+  display: table-cell;
+  vertical-align: middle;
+  width: 80%;
+}
+
+.child-roles {
+  display: table-cell;
+  vertical-align: middle;
+  width: 20%;
 }
