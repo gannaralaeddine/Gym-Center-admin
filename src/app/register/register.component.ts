@@ -34,6 +34,7 @@ export class RegisterComponent
     member = new MemberModule()
     coach = new CoachModule()
 
+    isPasswordVisible = false
 
     public constructor( private userFormBuilder: FormBuilder, private userService: UserService, private authService: AuthService,
                         private utilsService: UtilsService )
@@ -124,4 +125,14 @@ export class RegisterComponent
     {
         return this.authService.isRoleMatches(role)
     }
+
+  togglePasswordVisibility()
+  {
+      const showPassword = document.getElementById("showPassword") as HTMLInputElement
+
+      if (showPassword)
+      {
+           this.isPasswordVisible = showPassword.checked
+      }
+  }
 }

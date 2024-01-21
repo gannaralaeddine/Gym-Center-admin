@@ -19,6 +19,8 @@ import { NgIf } from '@angular/common';
 export class LoginComponent
 {
 
+  isPasswordVisible = false
+
   constructor( private authService: AuthService, private router: Router, private utils: UtilsService) {  }
 
   login(loginForm: NgForm )
@@ -60,5 +62,15 @@ export class LoginComponent
 
       })
 
+  }
+
+  togglePasswordVisibility()
+  {
+    const showPassword = document.getElementById("showPassword") as HTMLInputElement
+
+    if (showPassword)
+    {
+      this.isPasswordVisible = showPassword.checked
+    }
   }
 }

@@ -14,3 +14,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .hand-pointer:hover{
   cursor: pointer;
 }
+
+.accent-color-primary-color{
+  accent-color: #e91e63;
+}

@@ -50,8 +50,13 @@
 
                 <div class="form-group">
                   <label for="userPassword" class="text-primary font-weight-bold">Mot de passe</label>
-                  <input type="password" formControlName="userPassword" class="form-control border border-primary pl-2 round" id="userPassword" name="userPassword" placeholder="saisir votre mot de passe" >
+                  <input type="{{ isPasswordVisible ? 'text' : 'password' }}" formControlName="userPassword" class="form-control border border-primary pl-2 round" id="userPassword" name="userPassword" placeholder="saisir votre mot de passe" >
                   <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="userForm.controls['userPassword'].invalid && userForm.controls['userPassword'].touched">Merci de saisir un mot de passe</h5>
+                </div>
+
+                <div>
+                  <input type="checkbox" id="showPassword" name="showPassword" (click)="togglePasswordVisibility()" class="accent-color-primary-color"/>
+                  <label for="showPassword">Afficher le mot de passe</label>
                 </div>
 
                 <div class="row">

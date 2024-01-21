@@ -46,11 +46,16 @@
 
                 <div class="input-group input-group-outline mb-3">
                   <label class="form-label">Mot de passe</label>
-                  <input type="password" class="form-control" id="password" name="password" ngModel #password="ngModel" required>
+                  <input type="{{ isPasswordVisible ? 'text' : 'password' }}" class="form-control" id="password" name="password" ngModel #password="ngModel" required>
                 </div>
                 <span class="error" *ngIf="password.touched">
                   <h5 class="text-danger text-bold ml-1" style="margin-top: -10px;" *ngIf="password.errors?.['required']">Le champs mot de passe est obligatoire</h5>
                 </span>
+
+                <div>
+                  <input type="checkbox" id="showPassword" name="showPassword" (click)="togglePasswordVisibility()" class="accent-color-primary-color"/>
+                  <label for="showPassword">Afficher le mot de passe</label>
+                </div>
 
                 <p class="mt-4 text-sm text-center">
                   <a routerLink="/register" class="text-primary text-gradient font-weight-bold"> Mot de passe oublié</a>
