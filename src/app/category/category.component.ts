@@ -27,7 +27,7 @@ export class CategoryComponent implements OnInit
   isCategoryUpdated!: Boolean
   category!: Category
   dataSource!: MatTableDataSource<any>;
-  displayedColumns = ['Image','Titre', 'Description', 'Gestion']
+  displayedColumns = ['Image','Titre','Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
   @ViewChild(MatSort) sort!: MatSort

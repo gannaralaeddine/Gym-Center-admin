@@ -216,7 +216,7 @@ export class AddActivityComponent
     }
 
     // check activity description and change bodrer color based on validity of input
-    if (this.activityFormValue.controls['activityDescription'].invalid && this.activityFormValue.controls['activityDescription'].touched)
+    if ((this.activityFormValue.controls['activityDescription'].invalid && this.activityFormValue.controls['activityDescription'].touched) || (this.activityFormValue.controls['activityDescription'].getRawValue().length > 255))
     {
       document.getElementById('activityDescriptionInput')!.className = "form-control border border-danger pl-2 round"
     }
@@ -236,7 +236,7 @@ export class AddActivityComponent
 
     if (this.activityId) // enable or disable the update button
     {
-      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid)
+      if (this.activityFormValue.controls['activityName'].invalid || this.activityFormValue.controls['activityDescription'].invalid || this.activityFormValue.controls['activityDescription'].getRawValue().length > 255)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -247,7 +247,7 @@ export class AddActivityComponent
     }
     else
     {
-      if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid && this.activity.actImages.length > 0)
+      if (this.activityFormValue.controls['activityName'].valid && this.activityFormValue.controls['activityDescription'].valid && this.activityFormValue.controls['activityCategory'].valid && this.activity.actImages.length > 0 && this.activityFormValue.controls['activityDescription'].getRawValue().length <= 255)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }

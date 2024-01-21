@@ -37,16 +37,10 @@
           <td mat-cell *matCellDef="let category" class="text-center"> {{category.catName}} </td>
         </ng-container>
 
-        <!-- Description Column -->
-        <ng-container matColumnDef="Description">
-          <th mat-header-cell *matHeaderCellDef class="text-center" style="padding-left: 6%;">Description</th>
-          <td mat-cell *matCellDef="let category" class="text-center"style="padding-left: 6%;"> {{category.catDescription}} </td>
-        </ng-container>
-
         <!-- Action Column -->
         <ng-container matColumnDef="Gestion">
-          <th mat-header-cell *matHeaderCellDef class="text-center" style="padding-left: 10%;">Gestion</th>
-          <td mat-cell *matCellDef="let category" class="text-center" style="padding-left: 10%;">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Gestion</th>
+          <td mat-cell *matCellDef="let category" class="text-center">
 
             <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToCategoryDetails(category)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
             <button class="btn btn-link text-dark px-3 mb-0" (click)="addOrUpdateDialog(category.catId)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>

@@ -25,7 +25,7 @@ export class ActivityComponent implements OnInit
 {
   activities: any
   dataSource!: MatTableDataSource<any>;
-  displayedColumns = ['Image','Titre', 'Description', 'Catégorie','Gestion']
+  displayedColumns = ['Image','Titre','Catégorie','Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
