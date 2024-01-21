@@ -125,8 +125,8 @@ export class DetailsActivityComponent implements OnInit
   }
 
 
-  displayImages(images: any)
+  displayImages(images: any, isOneImage: boolean)
   {
-      this.utilsService.displayImages(images)
+      this.utilsService.displayImages(images, isOneImage)
   }
 }
