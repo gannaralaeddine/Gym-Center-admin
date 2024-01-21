@@ -47,6 +47,7 @@ export class AddSessionComponent implements OnInit
     }
     this.sessionFormValue = this.sessionFormBuilder.group({
       sessionName : ['',Validators.required],
+      sessionDescription : ['',Validators.required],
       sessionImage : ['',Validators.required],
       sessionActivity : ['',Validators.required],
       sessionCoach:['',Validators.required]
@@ -145,6 +146,15 @@ export class AddSessionComponent implements OnInit
       document.getElementById('sessionNameInput')!.className = "form-control border border-dark pl-2 round"
     }
 
+    if (this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched)
+    {
+      document.getElementById('sessionDescriptionInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('sessionDescriptionInput')!.className = "form-control border border-dark pl-2 round"
+    }
+
     // check activity description and change borer color based on validity of input
     if (this.sessionFormValue.controls['sessionActivity'].invalid && this.sessionFormValue.controls['sessionActivity'].touched)
     {
@@ -170,7 +180,7 @@ export class AddSessionComponent implements OnInit
 
     if (this.data.sessionId) // enable or disable the update button
     {
-      if (this.sessionFormValue.controls['sessionName'].invalid)
+      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid))
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -190,7 +200,7 @@ export class AddSessionComponent implements OnInit
         document.getElementById('sessionImageInput')!.className = "form-control border border-dark pl-2 round"
       }
 
-      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0)
+      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -204,6 +214,7 @@ export class AddSessionComponent implements OnInit
   addSessionWithOneImage()
   {
     this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+    this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
 
     const sessionFormData = this.prepareFormData(this.sessionObject);
 
@@ -222,6 +233,7 @@ export class AddSessionComponent implements OnInit
     if ((this.sessionObject.sessionImages) && (this.sessionObject.sessionImages.length > 0))
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
+      this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
       const formData = this.prepareFormData(this.sessionObject)
 
 
@@ -261,10 +273,13 @@ export class AddSessionComponent implements OnInit
   populateUpdateForm(session: any)
   {
     this.sessionObject.sessionId = session.sessionId
+    this.sessionObject.sessionName = session.sessionName
+    this.sessionObject.sessionDescription = session.sessionDescription
     this.sessionObject.sessionActivity = session.sessionActivity
     this.sessionObject.sessionCoach = session.sessionCoach
 
     this.sessionFormValue.controls['sessionName'].setValue(session.sessionName)
+    this.sessionFormValue.controls['sessionDescription'].setValue(session.sessionDescription)
     this.populateActivitySelectList(session)
     this.populateCoachSelectList(session)
   }

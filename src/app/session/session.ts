@@ -6,6 +6,7 @@ export class Session
 {
     sessionId!: number
     sessionName!: string
+    sessionDescription!: string
     sessionActivity!: Activity
     sessionCoach!: User
     sessionImage!: string

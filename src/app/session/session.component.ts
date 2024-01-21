@@ -27,7 +27,7 @@ export class SessionComponent implements OnInit
 {
   sessions: any
   dataSource!: MatTableDataSource<any>;
-  displayedColumns = ['Image','Titre', 'Activité', 'Coach','Gestion']
+  displayedColumns = ['Image', 'Titre', 'Description', 'Activité', 'Coach', 'Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
