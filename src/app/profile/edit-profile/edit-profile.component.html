@@ -14,7 +14,7 @@
 
           <div class="form-group child-cell">
             <label for="userFirstName" class="text-primary font-weight-bold">Prénom</label>
-            <input type="text" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" formControlName="userFirstName" class="form-control border border-primary pl-2 round" id="userFirstName" name="userFirstName" placeholder="saisir votre prénom" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
+            <input type="text" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" formControlName="userFirstName" class="form-control border border-primary pl-2 round" id="userFirstName" name="userFirstName" placeholder="saisir votre prénom" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" (focus)="checkValidityForm()">
             <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="profileFormValue.controls['userFirstName'].invalid && profileFormValue.controls['userFirstName'].touched">Merci de saisir un prénom valide</h5>
           </div>
           <span class="margin-center"  ></span>
@@ -103,7 +103,7 @@
         <div class="row">
           <div class="col text-center">
             <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
-            <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateProfile()">Éditer</button>
+            <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateProfile()" disabled>Éditer</button>
           </div>
         </div>
       </form>
