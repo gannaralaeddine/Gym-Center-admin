@@ -45,7 +45,7 @@
         <div class='parent-cell'>
           <div class="form-group child">
             <label for="userBirthDateInput" class="text-primary font-weight-bold" >Date de naissance</label>
-            <input type="date"  class="form-control border border-primary pl-2 round"  id="userBirthDateInput" formControlName="userBirthDate" (change)="checkValidityForm()"/>
+            <input type="date"  class="form-control border border-primary pl-2 round"  id="userBirthDateInput" formControlName="userBirthDate" (change)="checkValidityForm()" [max]="maxDateInput"/>
             <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userBirthDate'].invalid && profileFormValue.controls['userBirthDate'].touched">Merci de choisir une date de naissance</h5>
           </div>
           <span class="margin-center"></span>

@@ -27,7 +27,10 @@ export class EditProfileComponent
 {
   profileFormValue !: FormGroup
   user = new User()
+  systemDate = new Date()
+  maxDateInput: any
   userEmail!: string
+
   constructor(private userService: UserService, private utilsService: UtilsService, private dialogRef: MatDialogRef<EditProfileComponent>,private sanitizer: DomSanitizer,
                @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder, ) {
       this.userEmail = data.userEmail
@@ -53,6 +56,10 @@ export class EditProfileComponent
       })
 
       this.checkValidityForm()
+      
+      this.systemDate = new Date(this.systemDate.toISOString().split('T')[0])
+      this.maxDateInput = new Date(this.systemDate.getTime() - new Date(315569260000).getTime()).toISOString().split('T')[0]
+      
   }
   populateForm(user: any)
   {
@@ -131,12 +138,27 @@ export class EditProfileComponent
 
   checkValidityForm() 
   {
-    if (this.profileFormValue.controls['userFirstName'].valid && this.profileFormValue.controls['userLastName'].valid && this.profileFormValue.controls['userDescription'].valid && this.profileFormValue.controls['userBirthDate'].valid && this.profileFormValue.controls['userPhoneNumber'].valid && this.profileFormValue.controls['userCountry'].valid && this.profileFormValue.controls['userState'].valid && this.profileFormValue.controls['userCity'].valid && this.profileFormValue.controls['userZipCode'].valid && this.profileFormValue.controls['userHeight'].valid && this.profileFormValue.controls['userHeight'].getRawValue() !== '0' && this.profileFormValue.controls['userWeight'].valid && this.profileFormValue.controls['userWeight'].getRawValue() !== '0')
+
+    if ( this.profileFormValue.controls['userFirstName'].valid && this.profileFormValue.controls['userLastName'].valid 
+          && this.profileFormValue.controls['userDescription'].valid && this.profileFormValue.controls['userBirthDate'].valid 
+          && this.profileFormValue.controls['userPhoneNumber'].valid && this.profileFormValue.controls['userCountry'].valid 
+          && this.profileFormValue.controls['userState'].valid && this.profileFormValue.controls['userCity'].valid 
+          && this.profileFormValue.controls['userZipCode'].valid && this.profileFormValue.controls['userHeight'].valid 
+          && this.profileFormValue.controls['userHeight'].getRawValue() !== '0' && this.profileFormValue.controls['userWeight'].valid 
+          && this.profileFormValue.controls['userWeight'].getRawValue() !== '0' )
     {
       document.getElementById('updateButton')?.removeAttribute('disabled')
     }
 
-    if (this.profileFormValue.controls['userFirstName'].invalid || this.profileFormValue.controls['userLastName'].invalid || this.profileFormValue.controls['userDescription'].invalid || this.profileFormValue.controls['userBirthDate'].invalid || this.profileFormValue.controls['userPhoneNumber'].invalid || this.profileFormValue.controls['userCountry'].invalid || this.profileFormValue.controls['userState'].invalid || this.profileFormValue.controls['userCity'].invalid || this.profileFormValue.controls['userZipCode'].invalid || this.profileFormValue.controls['userHeight'].invalid || this.profileFormValue.controls['userHeight'].getRawValue() === '0'|| this.profileFormValue.controls['userWeight'].invalid || this.profileFormValue.controls['userWeight'].getRawValue() === '0')
+    if (
+    this.profileFormValue.controls['userFirstName'].invalid || this.profileFormValue.controls['userLastName'].invalid 
+    || this.profileFormValue.controls['userDescription'].invalid || this.profileFormValue.controls['userBirthDate'].invalid 
+    || this.profileFormValue.controls['userPhoneNumber'].invalid || this.profileFormValue.controls['userCountry'].invalid 
+    || this.profileFormValue.controls['userState'].invalid || this.profileFormValue.controls['userCity'].invalid 
+    || this.profileFormValue.controls['userZipCode'].invalid || this.profileFormValue.controls['userHeight'].invalid 
+    || this.profileFormValue.controls['userHeight'].getRawValue() === '0'|| this.profileFormValue.controls['userWeight'].invalid 
+    || this.profileFormValue.controls['userWeight'].getRawValue() === '0'
+    )
     { 
       document.getElementById('updateButton')?.setAttribute('disabled','')
     }
@@ -145,5 +167,6 @@ export class EditProfileComponent
       document.getElementById('updateButton')?.removeAttribute('disabled')
     }
   }
+
 }
 
