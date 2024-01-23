@@ -47,10 +47,12 @@ export class EditProfileComponent
         userZipCode:['',Validators.required],
         userHeight:['',Validators.required],
         userWeight:['',Validators.required],
-        userGender: "",
-        userBirthDate: "",
+        userGender: ['',Validators.required],
+        userBirthDate: ['',Validators.required],
         userPicture: ""
       })
+
+      this.checkValidityForm()
   }
   populateForm(user: any)
   {
@@ -125,6 +127,18 @@ export class EditProfileComponent
   parseDateString(dateString: string): string {
     // Extract the date part in 'yyyy-MM-dd' format
     return  dateString.split('T')[0];
+  }
+
+  checkValidityForm() 
+  {
+    if (this.profileFormValue.controls['userFirstName'].invalid || this.profileFormValue.controls['userLastName'].invalid || this.profileFormValue.controls['userDescription'].invalid || this.profileFormValue.controls['userBirthDate'].invalid || this.profileFormValue.controls['userPhoneNumber'].invalid || this.profileFormValue.controls['userCountry'].invalid || this.profileFormValue.controls['userState'].invalid || this.profileFormValue.controls['userCity'].invalid || this.profileFormValue.controls['userZipCode'].invalid || this.profileFormValue.controls['userHeight'].invalid || this.profileFormValue.controls['userHeight'].getRawValue() === '0'|| this.profileFormValue.controls['userWeight'].invalid || this.profileFormValue.controls['userWeight'].getRawValue() === '0')
+    { 
+      document.getElementById('updateButton')?.setAttribute('disabled','')
+    }
+    else
+    {
+      document.getElementById('updateButton')?.removeAttribute('disabled')
+    }
   }
 }
 
