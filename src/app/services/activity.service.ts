@@ -10,7 +10,6 @@ export class ActivityService
 
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
-
   public addActivityWithOneImage(activity: FormData) { return this.http.post(this.utils.API_GYM_CENTER + "/activity/create-activity", activity ) }
 
   public addImagesToActivity(activity: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/add-images-to-activity", activity ) }

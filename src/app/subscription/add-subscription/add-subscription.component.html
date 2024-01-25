@@ -1,0 +1,57 @@
+
+<div class="modal-content" style="margin: 10px">
+
+    <div class="modal-header">
+
+      <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Abonnement</h1>
+      <h1 class="modal-title pl-1" *ngIf="!isAddOperation" >Éditer Abonnement</h1>
+
+      <button type="button" class="close" (click)="closeDialog()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div>
+        <form [formGroup]="subscriptionFormValue">
+
+              <div class="form-group">
+                <label for="subscriptionNameInput" class="text-dark font-weight-bold" >Tarif Mensuelle</label>
+                <input type="text" pattern="^[0-9]*\.?[0-9]*" class="form-control border border-secondary pl-2 round"  id="subscriptionNameInput" placeholder="saisir tarif abonnement" formControlName="subscriptionPrice" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionPrice'].invalid && subscriptionFormValue.controls['subscriptionPrice'].touched">Merci de saisir un tarif valide</h5>
+              </div>
+
+              <div class="form-group">
+                <label for="subscriptionStartDateInput" class="text-dark font-weight-bold" >Date début</label>
+                <input type="date"  class="form-control border border-secondary pl-2 round"  id="subscriptionStartDateInput" formControlName="subscriptionStartDate" (change)="checkValidityForm()"/>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionStartDate'].invalid && subscriptionFormValue.controls['subscriptionStartDate'].touched">Merci de choisir une date valide</h5>
+              </div>
+
+              <div class="form-group">
+                <label for="subscriptionEndDateInput" class="text-dark font-weight-bold" >Date fin</label>
+                <input type="date"  class="form-control border border-secondary pl-2 round"  id="subscriptionEndDateInput" formControlName="subscriptionEndDate" (change)="checkValidityForm()"/>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionEndDate'].invalid && subscriptionFormValue.controls['subscriptionEndDate'].touched">Merci de choisir une date valide</h5>
+              </div>
+
+              <div class="form-group">
+                <label for="activitySelectList" class="text-dark font-weight-bold">Activité</label>
+                <select class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="subscriptionActivity" (change)="getActivity();checkValidityForm()" (blur)="checkValidityForm()">
+                  <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
+                </select>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionActivity'].invalid && subscriptionFormValue.controls['subscriptionActivity'].touched">Merci de choisir une catégorie</h5>
+              </div>
+
+              <div class="row">
+                <div class="col text-center">
+                  <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
+                  <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addSubscription()" *ngIf="isAddOperation" disabled>Ajouter</button>
+                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateSubscription(undefined)" *ngIf="!isAddOperation">Éditer</button>
+                </div>
+              </div>
+        </form>
+      </div>
+    </div>
+</div>
+
