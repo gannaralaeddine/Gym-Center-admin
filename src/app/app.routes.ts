@@ -13,6 +13,7 @@ import {AppComponent} from "./app.component";
 import { DetailsSessionComponent } from './session/details-session/details-session.component';
 import { SessionComponent } from './session/session.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
+import { SubscriptionDetailsComponent } from './subscription/subscription-details/subscription-details.component';
 
 export const routes: Routes = [
 
@@ -28,6 +29,7 @@ export const routes: Routes = [
   {path: 'category-details', component: DetailsCategoryComponent},
   {path: 'activity-details', component: DetailsActivityComponent},
   {path: 'session-details', component: DetailsSessionComponent},
+  {path: 'subscription-details', component: SubscriptionDetailsComponent},
   {path: 'session', component: SessionComponent},
   {path: 'subscription', component: SubscriptionComponent},
 ];

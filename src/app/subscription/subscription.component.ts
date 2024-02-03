@@ -81,7 +81,7 @@ export class SubscriptionComponent implements OnInit
   }
   goToSubscriptionDetails(subscription: any)
   {
-    const params = { subscription: subscription.subscriptionId }
+    const params = { subscriptionId: subscription.subscriptionId }
     this.router.navigate(["subscription-details"], { queryParams: params  })
   }
 }

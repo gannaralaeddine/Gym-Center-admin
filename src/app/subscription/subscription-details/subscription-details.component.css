@@ -1,0 +1,30 @@
+.bg-color
+{
+  background-color: #EC407A;
+}
+
+.act-img:hover
+{
+  cursor: pointer;
+}
+
+.mat-mdc-form-field 
+{
+    font-size: 14px;
+    width: 99%;
+    margin-top: 2%;
+}
+
+table 
+{
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th 
+{
+  border-bottom: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}

@@ -18,7 +18,7 @@
         <form [formGroup]="subscriptionFormValue">
 
               <div class="form-group">
-                <label for="subscriptionNameInput" class="text-dark font-weight-bold" >Tarif Mensuelle</label>
+                <label for="subscriptionNameInput" class="text-dark font-weight-bold" >Tarif Mensuel</label>
                 <input type="text" pattern="^[0-9]*\.?[0-9]*" class="form-control border border-secondary pl-2 round"  id="subscriptionNameInput" placeholder="saisir tarif abonnement" formControlName="subscriptionPrice" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
                 <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionPrice'].invalid && subscriptionFormValue.controls['subscriptionPrice'].touched">Merci de saisir un tarif valide</h5>
               </div>

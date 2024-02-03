@@ -9,3 +9,9 @@ mat-label
     margin-bottom: auto;
     margin-top: auto;
 }
+
+.activity-image
+{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
