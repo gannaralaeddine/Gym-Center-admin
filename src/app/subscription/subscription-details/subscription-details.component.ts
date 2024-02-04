@@ -3,18 +3,20 @@ import { SubscriptionService } from '../../services/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from '../subscription';
 import { UtilsService } from '../../serviceutils/utils.service';
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { AddSubscriptionComponent } from '../add-subscription/add-subscription.component';
 
 @Component({
   selector: 'app-subscription-details',
   standalone: true,
-  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule],
+  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule, DatePipe],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.css'
 })
@@ -29,6 +31,7 @@ export class SubscriptionDetailsComponent implements OnInit
   constructor(private router: ActivatedRoute,
     private subscriptionService: SubscriptionService,
     private utilsService: UtilsService,
+    private dialogRef: MatDialog,
     private routerActivity: Router) 
   {
     this.router.queryParams.subscribe( params => {
@@ -77,5 +80,22 @@ export class SubscriptionDetailsComponent implements OnInit
     const params = { userEmail: email }
     this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
+
+  updateDialog(subscriptionId: number)
+  {
+    const popup = this.dialogRef.open(AddSubscriptionComponent, {
+      width: "40%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      data: { subscriptionId: subscriptionId }
+    })
+    popup.afterClosed().subscribe(() =>{
+      this.subscriptionService.getSubscription(this.subscriptionId).subscribe({
+        next: () => this.getSubscription(),
+        error: (err) => console.error(err)
+      })
+    })
+  }
+
 
 }

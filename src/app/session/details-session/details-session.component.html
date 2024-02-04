@@ -36,7 +36,38 @@
           <h3 style="font-style: italic; font-family: Arial, Helvetica, sans-serif; margin-left: 2.5%; margin-top: -1%;">{{sessionDescription}}</h3>
         </div>
 
-        <div class="row">
+        <div class="row mt-2 mb-2">
+
+          <div class="col-md-4">
+            <div class="card" style="width: 14rem; margin-left: 7%;">
+              <div class="card-body">
+                <h2 class="card-title text-center">Date planification</h2>
+                <p class="card-text text-center" style="font-family: Arial, Helvetica, sans-serif;">{{sessionStartDate | date: "dd MMM yyyy"}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card" style="width: 14rem; margin-left: 12%;">
+              <div class="card-body">
+                <h2 class="card-title text-center">Nombre total</h2>
+                <p class="card-text text-center" style="font-family: Arial, Helvetica, sans-serif;">{{sessionTotalPlaces}} Places</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card" style="width: 14rem; margin-left: 23%;">
+              <div class="card-body">
+                <h2 class="card-title text-center">Places réservées</h2>
+                <p class="card-text text-center" style="font-family: Arial, Helvetica, sans-serif;">{{sessionReservedPlaces}} Places</p>
+              </div>
+            </div>
+          </div>
+
+        </div>  
+
+        <div class="row mt-2">
           <div class="col">
             <!-- Coach Card -->
             <div class="nav-wrapper position-relative float-left">
@@ -65,6 +96,55 @@
         </div>
       </div>
 
+      
+      <!-- <div class="main-body">
+        <div class="mat-elevation-z8">
+          <table class="mt-2">
+
+            <thead>
+              <tr>
+                <th class="text-start"><span class="ml-3">Image</span></th>
+                <th  class="text-center">Nom & Prénom</th>
+                <th class="text-center" style="margin-left: -5%;">Gestion</th>
+              </tr>
+            </thead>
+            
+            <tbody *ngFor="let member of sessionMembers">
+              <tr>
+                <td class=""><img [src]="getUserImage(member.userPicture)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(member.userEmail)"></td>
+                <td  class="text-center"> {{member.userLastName}} {{member.userFirstName}} </td>
+                <td class="text-center">
+                  <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserProfileDetails(member.userEmail)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> -->
+      <h2 class="mt-3" style="margin-left: 3%">Liste des membres</h2>
+      <div class="main-body">
+        <div class="mat-elevation-z8 ml-4 mr-4">
+          <table class="mt-2">
+            <thead>
+              <tr>
+                <th class="text-start"><span class="ml-3">Image</span></th>
+                <th  class="text-center">Nom & Prénom</th>
+                <th class="text-center" style="margin-left: -5%;">Gestion</th>
+              </tr>
+            </thead>
+            
+            <tbody *ngFor="let member of sessionMembers">
+              <tr>
+                <td class=""><img [src]="getUserImage(member.userPicture)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(member.userEmail)"></td>
+                <td  class="text-center"> {{member.userLastName}} {{member.userFirstName}} </td>
+                <td class="text-center">
+                  <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserProfileDetails(member.userEmail)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
 
       <div class="row">
         <div class="row">

@@ -5,7 +5,7 @@ import { SessionService } from '../../services/session.service';
 import { AddSessionComponent } from '../add-session/add-session.component';
 import {CardFlipComponent} from "../../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {AddImagesComponent} from "../../add-images/add-images.component";
 import {UtilsService} from "../../serviceutils/utils.service";
 
@@ -16,7 +16,8 @@ import {UtilsService} from "../../serviceutils/utils.service";
     CardFlipComponent,
     MatGridListModule,
     NgForOf,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   templateUrl: './details-session.component.html',
   styleUrl: './details-session.component.css'
@@ -32,6 +33,10 @@ export class DetailsSessionComponent implements OnInit
   sessionImage: any
   sessionActivityImage: any
   sessionImages!: any
+  sessionTotalPlaces: any
+  sessionStartDate: any
+  sessionMembers: any
+  sessionReservedPlaces: any
 
   constructor(
     private router: ActivatedRoute,
@@ -72,9 +77,14 @@ export class DetailsSessionComponent implements OnInit
     this.sessionDescription = session.sessionDescription
     this.sessionActivity = session.sessionActivity
     this.sessionCoach = session.sessionCoach
+    this.sessionTotalPlaces = session.sessionTotalPlaces
+    this.sessionReservedPlaces = session.sessionReservedPlaces
+    this.sessionStartDate = session.sessionStartDate
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
     this.sessionImage = this.utilsService.getImage(session.sessionImage)
     this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage)
+    this.sessionMembers = session.sessionMembers
+    console.log(this.sessionMembers)
   }
 
   addImages()
@@ -132,5 +142,23 @@ export class DetailsSessionComponent implements OnInit
   displayImages(images: any, isOneImage: boolean)
   {
     this.utilsService.displayImages(images, isOneImage)
+  }
+
+  getUserImage(imageName: string): string
+  {
+      if (imageName)
+      {
+          return this.utilsService.getImage(imageName)
+      }
+      else
+      {
+          return "../assets/img/icons/ic_user_tie.svg"
+      }
+  }
+
+  goToUserProfileDetails(email:any) 
+  {
+    const params = { userEmail: email }
+    this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
 }
