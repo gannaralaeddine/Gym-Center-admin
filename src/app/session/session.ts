@@ -10,5 +10,8 @@ export class Session
     sessionActivity!: Activity
     sessionCoach!: User
     sessionImage!: string
+    sessionTotalPlaces!: number
+    sessionReservedPlaces!: number
+    sessionStartDate!: string
     sessionImages!: FileHandleModule[]
 }

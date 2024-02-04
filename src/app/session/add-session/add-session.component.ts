@@ -26,6 +26,7 @@ export class AddSessionComponent implements OnInit
   coaches: any
   isAddOperation = true
   sessionObject = new Session()
+  minDate = new Date().toISOString().split('T')[0]
 
   constructor(private dialogRef: MatDialogRef<AddSessionComponent>,
     private sessionFormBuilder: FormBuilder,
@@ -50,7 +51,9 @@ export class AddSessionComponent implements OnInit
       sessionDescription : ['',Validators.required],
       sessionImage : ['',Validators.required],
       sessionActivity : ['',Validators.required],
-      sessionCoach:['',Validators.required]
+      sessionCoach: ['',Validators.required],
+      sessionTotalPlaces: ['',Validators.required],
+      sessionStartDate: ['',Validators.required]
     })
 
     this.getAllActivities()
@@ -146,6 +149,24 @@ export class AddSessionComponent implements OnInit
       document.getElementById('sessionNameInput')!.className = "form-control border border-dark pl-2 round"
     }
 
+    if (this.sessionFormValue.controls['sessionTotalPlaces'].invalid && this.sessionFormValue.controls['sessionTotalPlaces'].touched)
+    {
+      document.getElementById('sessionTotalPlacesInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('sessionTotalPlacesInput')!.className = "form-control border border-dark pl-2 round"
+    }
+
+    if (this.sessionFormValue.controls['sessionStartDate'].invalid && this.sessionFormValue.controls['sessionStartDate'].touched)
+    {
+      document.getElementById('sessionStartDateInput')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('sessionStartDateInput')!.className = "form-control border border-dark pl-2 round"
+    }
+
     if ((this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255))
     {
       document.getElementById('sessionDescriptionInput')!.className = "form-control border border-danger pl-2 round"
@@ -180,7 +201,7 @@ export class AddSessionComponent implements OnInit
 
     if (this.data.sessionId) // enable or disable the update button
     {
-      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255))
+      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255) || (this.sessionFormValue.controls['sessionTotalPlaces'].invalid) || (this.sessionFormValue.controls['sessionStartDate'].invalid))
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -200,7 +221,7 @@ export class AddSessionComponent implements OnInit
         document.getElementById('sessionImageInput')!.className = "form-control border border-dark pl-2 round"
       }
 
-      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid && this.sessionFormValue.controls['sessionDescription'].getRawValue().length <= 255)
+      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid && this.sessionFormValue.controls['sessionDescription'].getRawValue().length <= 255 && this.sessionFormValue.controls['sessionStartDate'].valid && this.sessionFormValue.controls['sessionTotalPlaces'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -215,6 +236,8 @@ export class AddSessionComponent implements OnInit
   {
     this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
     this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
+    this.sessionObject.sessionTotalPlaces = this.sessionFormValue.value.sessionTotalPlaces
+    this.sessionObject.sessionStartDate = this.sessionFormValue.value.sessionStartDate
 
     const sessionFormData = this.prepareFormData(this.sessionObject);
 
@@ -234,6 +257,8 @@ export class AddSessionComponent implements OnInit
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
       this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
+      this.sessionObject.sessionTotalPlaces = this.sessionFormValue.value.sessionTotalPlaces
+      this.sessionObject.sessionStartDate = this.sessionFormValue.value.sessionStartDate
       const formData = this.prepareFormData(this.sessionObject)
 
 
@@ -250,6 +275,8 @@ export class AddSessionComponent implements OnInit
     {
       this.sessionObject.sessionName = this.sessionFormValue.value.sessionName
       this.sessionObject.sessionDescription = this.sessionFormValue.value.sessionDescription
+      this.sessionObject.sessionTotalPlaces = this.sessionFormValue.value.sessionTotalPlaces
+      this.sessionObject.sessionStartDate = this.sessionFormValue.value.sessionStartDate
 
       this.sessionService.updateSession(this.data.sessionId,this.sessionObject).subscribe({
         next:()=> {
@@ -279,6 +306,8 @@ export class AddSessionComponent implements OnInit
 
     this.sessionFormValue.controls['sessionName'].setValue(session.sessionName)
     this.sessionFormValue.controls['sessionDescription'].setValue(session.sessionDescription)
+    this.sessionFormValue.controls['sessionTotalPlaces'].setValue(session.sessionTotalPlaces)
+    this.sessionFormValue.controls['sessionStartDate'].setValue(new Date(session.sessionStartDate).toISOString().split('T')[0])
     this.populateActivitySelectList(session)
     this.populateCoachSelectList(session)
   }
