@@ -26,7 +26,7 @@ export class AddSessionComponent implements OnInit
   coaches: any
   isAddOperation = true
   sessionObject = new Session()
-  minDate = new Date().toISOString().split('T')[0]
+  minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
 
   constructor(private dialogRef: MatDialogRef<AddSessionComponent>,
     private sessionFormBuilder: FormBuilder,
