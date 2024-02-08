@@ -19,11 +19,12 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.css'
 })
+
 export class OfferComponent
 {
-  activities: any
+
   dataSource!: MatTableDataSource<any>
-  displayedColumns = ['Tarif','Titre','Activité','Gestion']
+  displayedColumns = ['Image','Titre','Activité','Tarif','Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
@@ -54,6 +55,17 @@ export class OfferComponent
         this.getAllOffers()
       })
     }
+    else
+    {
+      const popup = this.dialogRef.open(AddOfferComponent, {
+        width: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.getAllOffers()
+      })
+    }
   }
 
   getAllOffers() 
@@ -73,6 +85,24 @@ export class OfferComponent
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()
     if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+  }
+
+  goToOfferDetails(offer: any)
+  {
+    const params = { offerId: offer.offerId }
+    this.router.navigate(["offer-details"], { queryParams: params  })
+  }
+
+  getActivityImage(imageName: string): string
+  {
+    if (imageName)
+    {
+      return this.utilsService.getImage(imageName)
+    }
+    else
+    {
+      return "../assets/img/icons/ic_activity.png"
+    }
   }
 }
 
