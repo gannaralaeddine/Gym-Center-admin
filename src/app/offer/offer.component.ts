@@ -7,11 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Router } from 'express';
-import { AddActivityComponent } from '../activity/add-activity/add-activity.component';
-import { ActivityService } from '../services/activity.service';
 import { UtilsService } from '../serviceutils/utils.service';
 import { OfferService } from '../services/offer.service.';
+import { Router } from '@angular/router';
+import { AddOfferComponent } from './add-offer/add-offer.component';
 
 @Component({
   selector: 'app-offer',
@@ -20,7 +19,7 @@ import { OfferService } from '../services/offer.service.';
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.css'
 })
-export class OfferComponent implements OnInit 
+export class OfferComponent
 {
   activities: any
   dataSource!: MatTableDataSource<any>
@@ -32,25 +31,31 @@ export class OfferComponent implements OnInit
     private offerService: OfferService,
     private utilsService: UtilsService,
     private dialogRef: MatDialog,
-    private router: Router) {}
+    private router: Router
+    ) {}
+
+    
   ngOnInit()
-  {this.getAllOffers()}
+  {
+    this.getAllOffers()
+  }
 
   addOrUpdateDialog(id?: number)
   {
     if (id)
     { 
-      const popup = this.dialogRef.open(AddActivityComponent, {
+      const popup = this.dialogRef.open(AddOfferComponent, {
         width: "40%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
-        data: { activityId: id }
+        data: { offerId: id }
       })
       popup.afterClosed().subscribe(() =>{
         this.getAllOffers()
       })
     }
   }
+
   getAllOffers() 
   {
     this.offerService.getAllOffers().subscribe({
@@ -62,6 +67,7 @@ export class OfferComponent implements OnInit
         error: (err) => console.error(err)
       })
   }
+  
   applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value

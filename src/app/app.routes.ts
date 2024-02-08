@@ -35,5 +35,5 @@ export const routes: Routes = [
   {path: 'subscription-details', component: SubscriptionDetailsComponent},
   {path: 'session', component: SessionComponent},
   {path: 'subscription', component: SubscriptionComponent},
-  {path: 'offer', component: OfferComponent}
+  {path: 'offer', component: OfferComponent },
 ];
