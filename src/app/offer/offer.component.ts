@@ -43,8 +43,6 @@ export class OfferComponent
 
   addOrUpdateDialog(id?: number)
   {
-    if (id)
-    { 
       const popup = this.dialogRef.open(AddOfferComponent, {
         width: "40%",
         enterAnimationDuration: "1000ms",
@@ -54,18 +52,7 @@ export class OfferComponent
       popup.afterClosed().subscribe(() =>{
         this.getAllOffers()
       })
-    }
-    else
-    {
-      const popup = this.dialogRef.open(AddOfferComponent, {
-        width: "40%",
-        enterAnimationDuration: "1000ms",
-        exitAnimationDuration: "1000ms",
-      })
-      popup.afterClosed().subscribe(() =>{
-        this.getAllOffers()
-      })
-    }
+    
   }
 
   getAllOffers() 

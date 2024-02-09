@@ -1,1 +1,64 @@
-<p>add-offer works!</p>
+
+<div class="modal-content" style="margin: 10px">
+
+    <div class="modal-header">
+
+      <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Offre</h1>
+      <h1 class="modal-title pl-1" *ngIf="!isAddOperation" >Éditer Offre</h1>
+
+      <button type="button" class="close" (click)="closeDialog()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div>
+        <form [formGroup]="offerFormValue">
+
+              <div class="form-group">
+                <label for="offerTitleInput" class="text-dark font-weight-bold" >Titre Offre</label>
+                <input type="text" pattern="^[A-Za-zéèçïîô _]*[A-Za-zéèçïîô][A-Za-zéèçïîô _]*$" class="form-control border border-secondary pl-2 round"  id="offerTitleInput" placeholder="saisir nom offre" formControlName="offerTitle" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
+                <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerTitle'].invalid && offerFormValue.controls['offerTitle'].touched">Merci de saisir un nom valide</h5>
+              </div>
+
+              <div class="form-group">
+                <label for="offerPeriodInput" class="text-dark font-weight-bold" >Période Offre</label>
+                <select class="form-control border border-dark pl-2 round" id="periodSelectList" formControlName="offerPeriod" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+                  <option value="1">1 jour</option>
+                  <option value="2">1 mois</option>
+                  <option value="3">3 mois</option>
+                  <option value="4">6 mois</option>
+                  <option value="5">1 an</option>
+                  <option value="6">2 ans</option>
+                </select>
+                <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerPeriod'].invalid && offerFormValue.controls['offerPeriod'].touched">Merci de choisir une période valide</h5>
+              </div>
+              
+              <div class="form-group">
+                <label for="offerPriceInput" class="text-dark font-weight-bold" >Tatif Offre</label>
+                <input type="number" class="form-control border border-secondary pl-2 round"  id="offerPriceInput" placeholder="saisir tarif offre" formControlName="offerPrice" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"> 
+                <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerPrice'].invalid && offerFormValue.controls['offerPrice'].touched">Merci de saisir un tarif valide</h5>
+              </div>
+
+              <div class="form-group">
+                <label for="activitySelectList" class="text-dark font-weight-bold">Activité Offre</label>
+                <select class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="offerActivity" (change)="getActivity();checkValidityForm()" (blur)="checkValidityForm()">
+                  <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
+                </select>
+                <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerActivity'].invalid && offerFormValue.controls['offerActivity'].touched">Merci de choisir une activité</h5>
+              </div>
+
+              <div class="row">
+                <div class="col text-center">
+                  <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
+                  <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addOffer()" *ngIf="isAddOperation" disabled>Ajouter</button>
+                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateOffer()" *ngIf="!isAddOperation">Éditer</button>
+                </div>
+              </div>
+        </form>
+      </div>
+    </div>
+</div>
+

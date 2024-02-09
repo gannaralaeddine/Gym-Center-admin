@@ -265,7 +265,7 @@ export class AddActivityComponent
       next:(val)=> {
         console.log("Opération réussite: " + val)
         this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Activity ajoutée avec succès", true)
+        this.utilsService.successDialog("Opération réussite", "Activité ajoutée avec succès", true)
 
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
