@@ -42,6 +42,7 @@ export class AddOfferComponent implements OnInit
     {
       this.isAddOperation = false;
       this.getOffer(this.offerId)
+      this.getAllActivities()
     }
 
     this.offerFormValue = this.offerFormBuilder.group({
@@ -58,11 +59,13 @@ export class AddOfferComponent implements OnInit
   {
     this.offerService.getOffer(offerId).subscribe({
       next: (offer) => {
+
         this.offerFormValue.controls['offerTitle'].setValue(offer.offerTitle)
-        //this.offerFormValue.controls['offerPeriod'].setValue(offer.offerPeriod)
+        this.offerFormValue.controls['offerPeriod'].setValue(offer.offerPeriod)
         this.offerFormValue.controls['offerPrice'].setValue(offer.offerPrice)
+        this.populateActivitiesList(offer)
+  
         this.offer = offer as Offer
-        console.log(offer)
       },
       error: (err) => console.error(err)
     })
@@ -134,7 +137,7 @@ export class AddOfferComponent implements OnInit
 
     if (this.offerId)
     {
-      if (this.offerFormValue.controls['offerTitle'].invalid || this.offerFormValue.controls['offerPeriod'].invalid || this.offerFormValue.controls['offerPrice'].invalid || this.offerFormValue.controls['offerActivity'].invalid)
+      if (this.offerFormValue.controls['offerTitle'].invalid || this.offerFormValue.controls['offerPrice'].invalid)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -158,13 +161,17 @@ export class AddOfferComponent implements OnInit
 
   updateOffer() 
   {
-    // this.offerService.updateOffer(this.offerId,this.offer).subscribe({
-    //   next:() => {
-    //     this.closeDialog()
-    //     this.utilsService.successDialog("Opération réussite", "Offre ajouté avec succès", true)
-    //   },
-    //   error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
-    // })
+    this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
+    this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
+    this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
+
+    this.offerService.updateOffer(this.offerId,this.offer).subscribe({
+      next:() => {
+        this.closeDialog()
+        this.utilsService.successDialog("Opération réussite", "Offre mise à jour avec succès", true)
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
+    })
   }
 
   addOffer() 
@@ -187,4 +194,45 @@ export class AddOfferComponent implements OnInit
     this.dialogRef.close()
   }
 
+  populateActivitiesList(offer: any)
+  {
+    let optionTag!: HTMLOptionElement
+    let selectTag!: HTMLSelectElement
+
+    let formGroupActivitySelectList = document.getElementById("activitySelectList")?.parentElement
+    document.getElementById("activitySelectList")?.remove()
+
+    selectTag = document.createElement("select") 
+    selectTag.setAttribute("formcontrolname","offerActivity")
+    selectTag.setAttribute("class","form-control border border-dark pl-2 round")
+    selectTag.setAttribute("id","activitySelectList")
+    selectTag.addEventListener('change',()=>{
+      this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
+    })
+    formGroupActivitySelectList?.appendChild(selectTag)
+
+    let activitySelectList = document.getElementById("activitySelectList")
+    optionTag = document.createElement("option")
+    optionTag.setAttribute("value",offer.offerActivity.actId.toString())
+    optionTag.textContent = offer.offerActivity.actName
+    activitySelectList?.appendChild(optionTag)
+
+    this.activityService.getAllActivities().subscribe({
+      next: (activities) => {
+        for (let i = 0; i < activities.length; i++)
+        {
+          if (activities[i].actId != offer.offerActivity.actId)
+          {
+            optionTag = document.createElement("option")
+            optionTag.setAttribute("value",this.activities[i].actId.toString())
+            optionTag.textContent = this.activities[i].actName
+            activitySelectList?.appendChild(optionTag)
+          }
+        }
+      },
+      error: (err) => console.error(err)
+    })
+
+   
+  }
 }
