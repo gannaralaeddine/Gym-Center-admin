@@ -1,0 +1,11 @@
+.mat-mdc-form-field 
+{
+    font-size: 14px;
+    width: 100%;
+}
+
+mat-label
+{
+    margin-bottom: auto;
+    margin-top: auto;
+}

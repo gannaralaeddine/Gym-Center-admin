@@ -16,6 +16,7 @@ import { SubscriptionComponent } from './subscription/subscription.component';
 import { SubscriptionDetailsComponent } from './subscription/subscription-details/subscription-details.component';
 import { OfferDetailsComponent } from './offer/offer-details/offer-details.component';
 import { OfferComponent } from './offer/offer.component';
+import { OptionComponent } from './option/option.component';
 
 export const routes: Routes = [
 
@@ -36,4 +37,5 @@ export const routes: Routes = [
   {path: 'session', component: SessionComponent},
   {path: 'subscription', component: SubscriptionComponent},
   {path: 'offer', component: OfferComponent },
+  {path: 'option', component: OptionComponent }
 ];

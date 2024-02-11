@@ -25,7 +25,6 @@ export class OfferComponent
 
   dataSource!: MatTableDataSource<any>
   displayedColumns = ['Image','Titre','Activité','Tarif','Gestion']
-
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(
