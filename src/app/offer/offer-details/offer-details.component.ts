@@ -32,7 +32,7 @@ export class OfferDetailsComponent implements OnInit
     private dialogRef: MatDialog,
     private routerActivity: Router) {}
 
-  ngOnInit() 
+  ngOnInit()
   {
     this.router.queryParams.subscribe( params => {
       this.offerId = params["offerId"]
@@ -41,26 +41,26 @@ export class OfferDetailsComponent implements OnInit
           this.offer = offerObject as Offer
           switch(this.offer.offerPeriod)
           {
-            case 1: 
+            case 1:
               this.period = "1 jour";
               break;
 
-            case 2: 
+            case 2:
               this.period = "1 mois";
               break;
 
-            case 3: 
+            case 3:
               this.period = "3 mois";
               break;
 
-            case 4: 
+            case 4:
               this.period = "6 mois";
               break;
-            
+
             case 5:
               this.period = "1 an";
               break;
-            
+
             case 6:
               this.period = "2 ans";
               break;
@@ -71,7 +71,7 @@ export class OfferDetailsComponent implements OnInit
     })
   }
 
-  updateDialog() 
+  updateDialog()
   {
     const popup = this.dialogRef.open(AddOfferComponent, {
       width: "40%",
@@ -90,13 +90,13 @@ export class OfferDetailsComponent implements OnInit
       })
     })
   }
-    
-  getImage(imageName: any) 
+
+  getImage(imageName: any)
   {
     return this.utilsService.getImage(imageName)
   }
 
-  goToCategoryDetails() 
+  goToCategoryDetails()
   {
     this.routerActivity.navigate(["activity-details"], { queryParams: { actId: this.offer.offerActivity.actId }  })
   }

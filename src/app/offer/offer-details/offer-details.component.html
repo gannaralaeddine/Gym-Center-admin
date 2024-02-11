@@ -34,7 +34,7 @@
 
             <div class="col-4">
                 <h2 class="mt-1 float-left">Période</h2>
-                <div class="card" style="width: 14rem;">
+                <div class="card" style="width: 14rem;margin-top: 18%;">
                 <img src="../../../assets/img/period.jpg" height="180" width="250" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
                 <div class="card-body" style="padding-bottom: 18.5%; padding-top: 18.5%;">
                     <a class="card-text"><h3 class="text-center">{{period}}</h3></a>
@@ -54,7 +54,7 @@
 
             <div class="col-4 text-end">
                 <h2 class="mt-1 float-left" style="margin-bottom: 4.5%;">Activité</h2>
-                <div class="card" style="width: 14rem;">
+                <div class="card" style="width: 14rem;margin-top: 18%;">
                 <span style="height: 40%;"><img [src]="getImage(offer.offerActivity.actImage)"   alt="img-blur-shadow" class="img-activity img-fluid shadow border-radius-xl mb-2" (click)="goToCategoryDetails()"></span>
                 <div class="card-body" style="padding-bottom: 11%;padding-top: 11%;">
                     <a class="card-text" href="javascript:"><h3 class="text-center" (click)="goToCategoryDetails()">{{offer.offerActivity.actName}}</h3></a>
@@ -64,4 +64,4 @@
         </div>
 
     </div>
-</div>    
+</div>
