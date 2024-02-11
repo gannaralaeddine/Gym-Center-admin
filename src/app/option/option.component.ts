@@ -58,7 +58,8 @@ export class OptionComponent implements OnInit
 
   addOption()
   {
-    this.option.optionName = (document.getElementById('optionSearch') as HTMLInputElement).value
+    this.option.optionName = (document.getElementById('optionSearch') as HTMLInputElement).value;
+    (document.getElementById('optionSearch') as HTMLInputElement).value = ''
     this.optionService.addOption(this.option).subscribe({
       next:() => {
         //this.dialogRef.close()
