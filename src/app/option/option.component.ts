@@ -24,6 +24,7 @@ export class OptionComponent implements OnInit
   displayedColumns = ['Titre', 'Gestion']
   @ViewChild(MatPaginator) paginator!: MatPaginator
   option = new Option()
+  isValid = true
   
   constructor(private optionService: OptionService,private utilsService: UtilsService) {}
 
@@ -31,16 +32,10 @@ export class OptionComponent implements OnInit
   {
     this.optionService.getAllOptions().subscribe({
       next: (options) => {
-        console.log(options)
         this.dataSource = new MatTableDataSource(options)
         this.dataSource.paginator = this.paginator
       },
       error: (err) => console.error(err)
-    })
-
-    document.addEventListener("keyup", function(event)
-    {
-      console.log(event)
     })
   }
 
@@ -58,18 +53,33 @@ export class OptionComponent implements OnInit
 
   addOption()
   {
-    this.option.optionName = (document.getElementById('optionSearch') as HTMLInputElement).value;
-    (document.getElementById('optionSearch') as HTMLInputElement).value = ''
-    this.optionService.addOption(this.option).subscribe({
-      next:() => {
-        //this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Option ajoutée avec succès", true)
-        this.ngOnInit()
-      },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
-    })
-
+    if (this.isValid)
+    {
+      this.option.optionName = (document.getElementById('optionSearch') as HTMLInputElement).value;
+      (document.getElementById('optionSearch') as HTMLInputElement).value = ''
+      this.optionService.addOption(this.option).subscribe({
+        next:() => {
+          this.utilsService.successDialog("Opération réussite", "Option ajoutée avec succès", true)
+          this.ngOnInit()
+        },
+        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
+      })
+    }
   }
 
-
+  isValidName()
+  {
+    
+      if ((document.getElementById('optionSearch') as HTMLInputElement).value.length === 0)
+      {
+        this.isValid = false
+        document.getElementById("addButton")?.setAttribute("disabled","")
+      }
+      else
+      {
+        this.isValid = true
+        document.getElementById("addButton")?.removeAttribute("disabled")
+      }
+   
+  }
 }

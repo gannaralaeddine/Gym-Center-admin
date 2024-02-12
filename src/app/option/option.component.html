@@ -6,7 +6,7 @@
           <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
             <div class="d-flex ml-6">
               <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position"><b>gestion des options</b></h3></div>
-              <!-- <div class="ml-auto transparent-color mr-4 pr-5 text-left"><button type="button" class="btn btn-dark mr-3 text-white add-category-position" (click)="addOrUpdateDialog(undefined)"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</button></div> -->
+              <!-- <div class="ml-auto transparent-color mr-4 pr-5 text-left" *ngIf=""><button type="button" class="btn btn-dark mr-3 text-white add-category-position" (click)="addOption()"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</button></div> -->
             </div>
           </div>
         </div>
@@ -19,10 +19,10 @@
 
         <mat-form-field [color]="'accent'">
             <mat-label>Saisir Titre option</mat-label>
-            <input matInput id="optionSearch" (keyup)="applyFilter()" #input>
+            <input matInput id="optionSearch" (keyup)="applyFilter()" (input)="isValidName()" #input>
         </mat-form-field>
+        <h5 class="text-danger text-bold ml-2" *ngIf="!isValid" style="margin-top: -1.5%;">Merci de saisir un titre valide</h5>
   
-
 
 
 
@@ -52,7 +52,8 @@
 
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell text-center" colspan="2" *ngIf="dataSource.data.length === 0">Il n'y a pas encore des options</td>
+          <td class="mat-cell text-center" *ngIf="dataSource.data.length === 0">Il n'y a pas encore des options, merci de <strong>saisir</strong> le titre dans le champs <strong>ci-dessus</strong></td>
+          <td class="mat-cell text-center" *ngIf="dataSource.data.length === 0"><button class="btn btn-link text-danger px-3 mb-0" id="addButton" (click)="addOption()" disabled><i class="material-icons text-sm me-2">add</i>Ajouter</button></td>
           <td class="mat-cell text-center" *ngIf="dataSource.data.length > 0 && dataSource.filteredData.length ===  0 ">Il n'y a pas des options avec le nom: <strong style="font-size: medium; color: #F44335;">{{input.value}}</strong>, vous pouvez l'ajouter</td>
           <td *ngIf="dataSource.data.length > 0 && dataSource.filteredData.length ===  0 "><button class="btn btn-link text-danger px-3 mb-0" (click)="addOption()"><i class="material-icons text-sm me-2">add</i>Ajouter</button></td>
         </tr>
