@@ -34,7 +34,7 @@ export class DetailsSessionComponent implements OnInit
   sessionActivityImage: any
   sessionImages!: any
   sessionTotalPlaces: any
-  sessionStartDate: any
+  sessionDeadline: any
   sessionMembers: any
   sessionReservedPlaces: any
 
@@ -79,7 +79,7 @@ export class DetailsSessionComponent implements OnInit
     this.sessionCoach = session.sessionCoach
     this.sessionTotalPlaces = session.sessionTotalPlaces
     this.sessionReservedPlaces = session.sessionReservedPlaces
-    this.sessionStartDate = session.sessionStartDate
+    this.sessionDeadline = session.sessionDeadline
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
     this.sessionImage = this.utilsService.getImage(session.sessionImage)
     this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage)
