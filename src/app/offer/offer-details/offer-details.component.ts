@@ -6,11 +6,13 @@ import { UtilsService } from '../../serviceutils/utils.service';
 import { Offer } from '../offer';
 import { OfferService } from '../../services/offer.service.';
 import { AddOfferComponent } from '../add-offer/add-offer.component';
+import { NgFor } from '@angular/common';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-offer-details',
   standalone: true,
-  imports: [],
+  imports: [NgFor, MatListModule],
   templateUrl: './offer-details.component.html',
   styleUrl: './offer-details.component.css'
 })

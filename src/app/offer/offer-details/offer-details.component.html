@@ -64,4 +64,12 @@
         </div>
 
     </div>
+    <div class="mt-2">
+      <h2>Options:</h2>
+      <mat-list style="margin-top: -2%;">
+        <mat-list-item *ngFor="let option of offer.offerOption" style="font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem; font-style: italic;">
+          <span matListItemTitle><svg xmlns="http://www.w3.org/2000/svg" height="6" width="6" viewBox="0 0 512 512"><path fill="black" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>  {{option.optionName}}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
 </div>
