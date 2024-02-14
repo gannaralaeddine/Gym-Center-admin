@@ -49,6 +49,17 @@
                 </select>
                 <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerActivity'].invalid && offerFormValue.controls['offerActivity'].touched">Merci de choisir une activité</h5>
               </div>
+              <div class="form-group">
+                <mat-form-field>
+                  <mat-label>Options</mat-label>
+                  <mat-select [formControl]="selectedOptions" multiple (ngModelChange)="showOptions()">
+                    @for (option of allOptionsList; track option) 
+                    {
+                      <mat-option [value]="option.optionId">{{option.optionName}}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
               <div class="row">
                 <div class="col text-center">

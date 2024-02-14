@@ -1,6 +1,6 @@
 import { NgIf, NgFor } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -8,11 +8,15 @@ import { UtilsService } from '../../serviceutils/utils.service';
 import { OfferService } from '../../services/offer.service.';
 import { Offer } from '../offer';
 import { Activity } from '../../activity/activity';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { OptionService } from '../../services/option.service';
+import { Option } from '../../option/option';
 
 @Component({
   selector: 'app-add-offer',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,NgFor],
+  imports: [ReactiveFormsModule,NgIf,NgFor,MatFormFieldModule, MatSelectModule, FormsModule],
   templateUrl: './add-offer.component.html',
   styleUrl: './add-offer.component.css'
 })
@@ -26,11 +30,15 @@ export class AddOfferComponent implements OnInit
   activityId: any
   isAddOperation = true
   minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
-
+  selectedOptions = new FormControl('');
+  allOptionsList: any
+  selectedOptionsList = new Array<Option>()
+  
   constructor(
     private offerFormBuilder: FormBuilder,
     private activityService: ActivityService,
     private offerService: OfferService,
+    private optionService: OptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddOfferComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -53,19 +61,20 @@ export class AddOfferComponent implements OnInit
     })
 
     this.getAllActivities()
+    this.getAllOptions()
   }
 
   getOffer(offerId: any) 
   {
     this.offerService.getOffer(offerId).subscribe({
-      next: (offer) => {
+      next: (offerObject) => {
 
-        this.offerFormValue.controls['offerTitle'].setValue(offer.offerTitle)
-        this.offerFormValue.controls['offerPeriod'].setValue(offer.offerPeriod)
-        this.offerFormValue.controls['offerPrice'].setValue(offer.offerPrice)
-        this.populateActivitiesList(offer)
+        this.offerFormValue.controls['offerTitle'].setValue(offerObject.offerTitle)
+        this.offerFormValue.controls['offerPeriod'].setValue(offerObject.offerPeriod)
+        this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
+        this.populateActivitiesList(offerObject)
   
-        this.offer = offer as Offer
+        this.offer = offerObject as Offer
       },
       error: (err) => console.error(err)
     })
@@ -77,14 +86,14 @@ export class AddOfferComponent implements OnInit
     {
       this.activityService.getActivity(this.offerFormValue.value.offerActivity).subscribe({
         next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
-        error: (err) => console.log(err)
+        error: (err) => console.error(err)
       })
     }
     else
     {
       this.activityService.getActivity(id).subscribe({
         next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
-        error: (err) => console.log(err)
+        error: (err) => console.error(err)
       })
     }
   }
@@ -97,6 +106,14 @@ export class AddOfferComponent implements OnInit
     })
   }
 
+  getAllOptions() 
+  {
+    this.optionService.getAllOptions().subscribe({
+      next: (options) =>{ this.allOptionsList = options
+      },
+      error: (err) => console.error(err)
+    })
+  }
   checkValidityForm() 
   {
     if (this.offerFormValue.controls['offerTitle'].invalid && this.offerFormValue.controls['offerTitle'].touched)
@@ -179,7 +196,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    
+    console.log(this.offer)
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {
         this.closeDialog()
@@ -232,7 +249,20 @@ export class AddOfferComponent implements OnInit
       },
       error: (err) => console.error(err)
     })
+  }
 
-   
+  showOptions()
+  {
+    this.offer.offerOption = []
+    if (this.selectedOptions.value)
+    {
+      for (let i = 0; i < this.selectedOptions.value?.length; i++) 
+      {
+          this.optionService.getOption(this.selectedOptions.value[i]).subscribe({
+            next: (optionObject) => this.offer.offerOption.push(optionObject),
+            error: (err) => console.error(err)
+          })
+      }
+    }
   }
 }
