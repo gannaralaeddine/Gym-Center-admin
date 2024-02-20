@@ -32,7 +32,6 @@ export class AddOfferComponent implements OnInit
   minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
   selectedOptions = new FormControl('');
   allOptionsList: any
-  selectedOptionsList = new Array<Option>()
   
   constructor(
     private offerFormBuilder: FormBuilder,

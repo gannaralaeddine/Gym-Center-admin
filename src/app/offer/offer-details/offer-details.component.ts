@@ -41,6 +41,7 @@ export class OfferDetailsComponent implements OnInit
       this.offerService.getOffer(this.offerId).subscribe({
         next: (offerObject) => {
           this.offer = offerObject as Offer
+          console.log('offer.offerOption: ' + this.offer.offerOption.length)
           switch(this.offer.offerPeriod)
           {
             case 1:
