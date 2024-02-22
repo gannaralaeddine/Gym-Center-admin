@@ -32,7 +32,7 @@ export class EditProfileComponent
   userEmail!: string
 
   constructor(private userService: UserService, private utilsService: UtilsService, private dialogRef: MatDialogRef<EditProfileComponent>,private sanitizer: DomSanitizer,
-               @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder, ) {
+               @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder ) {
       this.userEmail = data.userEmail
       this.getUserByEmail()
   }

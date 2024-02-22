@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Role} from "../user/role";
 import {UtilsService} from "../serviceutils/utils.service";
 import { User } from '../user/user';
+import {Coach} from "../user/coach";
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +54,5 @@ export class UserService {
 
     public deleteUserImage(userId: number, imageName: string){ return this.http.delete(this.utils.API_GYM_CENTER + "/user/delete-user-image/" + userId + "/" + imageName) }
 
+    public updateCoachSpecialities(coachId: any, specialities: []) { return this.http.put(this.utils.API_GYM_CENTER + "/coach/add-coach-to-activity/" + coachId, specialities) }
 }

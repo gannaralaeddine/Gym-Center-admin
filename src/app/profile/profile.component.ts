@@ -12,6 +12,7 @@ import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
+import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-specialities.component";
 
 @Component({
   selector: 'app-profile',
@@ -211,5 +212,16 @@ export class ProfileComponent
     previewProfileImage(imageName: any, isOneImage: boolean)
     {
       this.utilsService.displayImages(imageName, isOneImage)
+    }
+
+    addSpecialities(user: any)
+    {
+      this.dialogRef.open(AddCoachSpecialitiesComponent, {
+        width: "40%",
+        height: "80%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { user: user }
+      })
     }
 }

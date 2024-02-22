@@ -23,7 +23,8 @@
                     <option value="0" selected>Choisir le type de compte</option>
                     <option value="1" >MEMBRE</option>
                     <option value="2">COACH</option>
-                    <option value="3" *ngIf="isRoleMatches('ROLE_ADMIN')">ADMIN</option>
+                    <option value="3">ADMIN</option>
+<!--                    <option value="3" *ngIf="isRoleMatches('ROLE_ADMIN')">ADMIN</option>-->
                   </select>
 
                   <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="userForm.controls['userRole'].getRawValue() === '0'">Merci de choisir un type de compte</h5>

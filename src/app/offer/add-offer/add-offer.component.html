@@ -35,10 +35,10 @@
                 </select>
                 <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerPeriod'].invalid && offerFormValue.controls['offerPeriod'].touched">Merci de choisir une période valide</h5>
               </div>
-              
+
               <div class="form-group">
                 <label for="offerPriceInput" class="text-dark font-weight-bold" >Tarif Offre</label>
-                <input type="number" class="form-control border border-secondary pl-2 round" min="1" id="offerPriceInput" placeholder="saisir tarif offre" formControlName="offerPrice" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"> 
+                <input type="number" class="form-control border border-secondary pl-2 round" min="1" id="offerPriceInput" placeholder="saisir tarif offre" formControlName="offerPrice" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
                 <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerPrice'].invalid && offerFormValue.controls['offerPrice'].touched">Merci de saisir un tarif valide</h5>
               </div>
 
@@ -52,8 +52,8 @@
               <div class="form-group">
                 <mat-form-field>
                   <mat-label>Options</mat-label>
-                  <mat-select [formControl]="selectedOptions" multiple (ngModelChange)="showOptions()">
-                    @for (option of allOptionsList; track option) 
+                  <mat-select [formControl]="selectedOptions" multiple (selectionChange)="showOptions()">
+                    @for (option of allOptionsList; track option)
                     {
                       <mat-option [value]="option.optionId">{{option.optionName}}</mat-option>
                     }
