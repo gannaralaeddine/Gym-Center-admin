@@ -1,12 +1,12 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
-import {DatePipe, isPlatformBrowser, NgForOf} from "@angular/common";
+import {DatePipe, isPlatformBrowser, NgFor, NgForOf} from "@angular/common";
 import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
@@ -21,7 +21,7 @@ import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-
     RouterLink,
     CardFlipComponent,
     MatGridListModule,
-    NgForOf,
+    NgFor,
     DatePipe
   ],
   templateUrl: './profile.component.html',
@@ -29,14 +29,22 @@ import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-
 })
 export class ProfileComponent
 {
+
     deleteTag = "deleteProfileImage"
     user = new User()
     accountType!: string
     userImages: any
+    coachSpecialities: any
 
-    constructor(private userService: UserService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object,
-                private utilsService: UtilsService, private sanitizer: DomSanitizer, private dialogRef: MatDialog,
-                private router: ActivatedRoute) {  }
+    constructor(private userService: UserService, 
+      private authService: AuthService, 
+      @Inject(PLATFORM_ID) 
+      private platformId: Object,
+      private utilsService: UtilsService, 
+      private sanitizer: DomSanitizer, 
+      private dialogRef: MatDialog,
+      private activityRouter: Router,
+      private router: ActivatedRoute) {  }
 
     ngOnInit()
     {
@@ -77,7 +85,10 @@ export class ProfileComponent
       this.user.userBirthDate = user.userBirthDate
       this.user.userPicture = user.userPicture
       this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
-
+      this.userService.retrieveCoachSpecialities(user.userId).subscribe({
+        next: (specialities) => this.coachSpecialities = specialities,
+        error: (err) => console.error(err)
+      })
     }
 
 
@@ -223,5 +234,22 @@ export class ProfileComponent
         exitAnimationDuration: "1000ms",
         data: { user: user }
       })
+    }
+
+    getImage(imageName: string): string
+    {
+      if (imageName)
+      {
+        return this.utilsService.getImage(imageName)
+      }
+      else
+      {
+        return "../assets/img/icons/ic_activity.png"
+      }
+    }
+
+    goToActivityDetails(activity: any) 
+    {
+      this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
     }
 }

@@ -1,4 +1,8 @@
-
+.add-speciality-btn
+{
+  padding-right: 68%; 
+  margin-left: 0.25%;
+}
 
 .bg-color{
   background-color: #EC407A;
@@ -16,4 +20,9 @@
   height: auto;
   text-align: center;
   padding: 5px;
+}
+
+.speciality-image
+{
+  cursor: pointer;
 }
