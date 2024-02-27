@@ -25,4 +25,25 @@
 .speciality-image
 {
   cursor: pointer;
+  margin-top: -22%;
+}
+
+.topright 
+{
+  position: sticky;
+  margin-left: 95.3%;
+  margin-top: 1%;
+  z-index: 1;
+  cursor: pointer; 
+
+}
+
+.card
+{
+  z-index: 2;
+}
+
+.delete-speciality
+{
+  margin-bottom: 300%;
 }

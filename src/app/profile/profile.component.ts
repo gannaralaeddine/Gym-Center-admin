@@ -13,6 +13,8 @@ import {CardFlipComponent} from "../card-flip/card-flip.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
 import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-specialities.component";
+import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
+import { title } from 'process';
 
 @Component({
   selector: 'app-profile',
@@ -251,5 +253,19 @@ export class ProfileComponent
     goToActivityDetails(activity: any) 
     {
       this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
+    }
+
+    deleteSpeciality(activityId: any)
+    {
+      const popup = this.dialogRef.open(AlertDeleteComponent, {
+        width: "50%",
+        height: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { message: "Êtes-vous sûr de supprimer cette spécialité ?"}
+      })
+      popup.afterClosed().subscribe(() =>{
+        
+      })
     }
 }
