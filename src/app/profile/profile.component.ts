@@ -15,6 +15,7 @@ import {AddImagesComponent} from "../add-images/add-images.component";
 import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-specialities.component";
 import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
 import { title } from 'process';
+import { error } from 'console';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +39,8 @@ export class ProfileComponent
     userImages: any
     coachSpecialities: any
 
-    constructor(private userService: UserService, 
+    constructor(
+      private userService: UserService, 
       private authService: AuthService, 
       @Inject(PLATFORM_ID) 
       private platformId: Object,
@@ -46,7 +48,8 @@ export class ProfileComponent
       private sanitizer: DomSanitizer, 
       private dialogRef: MatDialog,
       private activityRouter: Router,
-      private router: ActivatedRoute) {  }
+      private router: ActivatedRoute
+      ) {}
 
     ngOnInit()
     {
@@ -264,8 +267,17 @@ export class ProfileComponent
         exitAnimationDuration: "1000ms",
         data: { message: "Êtes-vous sûr de supprimer cette spécialité ?"}
       })
-      popup.afterClosed().subscribe(() =>{
-        
+      popup.afterClosed().subscribe((isDeleteOperation) =>{
+        if (isDeleteOperation)
+        {
+          this.userService.deleteCoachSpeciality(this.user.userId!,activityId).subscribe({
+            error: (err) => console.error(err),
+            complete: () => {
+              this.utilsService.successDialog("Opération réussite", "Activité supprimée avec succès", true)
+              this.getUserByEmail()
+            }
+          })
+        }
       })
     }
 }

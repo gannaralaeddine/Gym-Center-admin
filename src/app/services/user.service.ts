@@ -52,6 +52,8 @@ export class UserService {
 
     public retrieveCoachSpecialities(id: number) {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-coach-specialities/"+ id)}
 
+    public deleteCoachSpeciality(coachId: number, activityId: number) {return this.http.delete(this.utils.API_GYM_CENTER + "/coach/delete-coach-activities/"+ coachId + "/"+ activityId)}
+
     public addImagesToUserProfile(formData: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/user/add-images-to-user", formData ) }
 
     public deleteUserImage(userId: number, imageName: string){ return this.http.delete(this.utils.API_GYM_CENTER + "/user/delete-user-image/" + userId + "/" + imageName) }

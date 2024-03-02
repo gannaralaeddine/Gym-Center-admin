@@ -8,6 +8,7 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {Coach} from "../../user/coach";
 import {Activity} from "../../activity/activity";
 import {UserService} from "../../services/user.service";
+import { error } from 'console';
 
 @Component({
   selector: 'app-add-coach-specialities',
@@ -25,21 +26,56 @@ import {UserService} from "../../services/user.service";
 export class AddCoachSpecialitiesComponent
 {
   optionsList = new FormControl([]);
-  activities: any
+  activities!: Activity[]
+  coachSpecialities!: Activity []
   coach = new Coach()
 
-  constructor(private activityService: ActivityService, private userService: UserService, @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
+  constructor(
+    private activityService: ActivityService, 
+    private userService: UserService, 
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) {}
 
-  ngOnInit(){
+  ngOnInit()
+  {
     this.coach = this.data.user
     this.getAllActivities()
+    this.userService.retrieveCoachSpecialities(this.coach.userId!).subscribe({
+      next: (specialities) => {
+        this.coachSpecialities = specialities as Array<Activity>
+        let different!: boolean
+        let specialitiesList = new Array<Activity>()
+        if (this.activities)
+        {
+          this.activities.forEach((activity: Activity) => {
+            different = true
+  
+            for (let i = 0; i < this.coachSpecialities.length; i++) 
+            {
+              if (activity.actId === this.coachSpecialities[i].actId)
+              {
+                different = false
+                break
+              }
+            }
+  
+            if (different)
+            {
+              specialitiesList.push(activity)
+            }
+          })
+          this.activities = specialitiesList
+        }
+      },
+      error: (err) => console.error(err)
+    })
+    console.log(this.coachSpecialities)
   }
 
   getAllActivities()
   {
     this.activityService.getAllActivities().subscribe({
-      next :(activities) => this.activities = activities ,
+      next :(activities) => this.activities = activities,
       error: (err) => console.error(err)
     })
     console.log("user: " + this.coach.userEmail)
