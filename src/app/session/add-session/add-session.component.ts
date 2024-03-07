@@ -27,6 +27,7 @@ export class AddSessionComponent implements OnInit
   isAddOperation = true
   sessionObject = new Session()
   minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
+  sessionPlaces = 2
 
   constructor(private dialogRef: MatDialogRef<AddSessionComponent>,
     private sessionFormBuilder: FormBuilder,
@@ -303,6 +304,8 @@ export class AddSessionComponent implements OnInit
     this.sessionObject.sessionId = session.sessionId
     this.sessionObject.sessionActivity = session.sessionActivity
     this.sessionObject.sessionCoach = session.sessionCoach
+    if (session.sessionReservedPlaces) { this.sessionPlaces = session.sessionReservedPlaces + 1 }
+    console.log(session.sessionReservedPlaces)
 
     this.sessionFormValue.controls['sessionName'].setValue(session.sessionName)
     this.sessionFormValue.controls['sessionDescription'].setValue(session.sessionDescription)
