@@ -1,7 +1,7 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
-import {DatePipe, isPlatformBrowser, NgFor, NgForOf} from "@angular/common";
+import {DatePipe, isPlatformBrowser, NgFor, NgForOf, NgIf} from "@angular/common";
 import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
@@ -14,8 +14,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
 import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-specialities.component";
 import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
-import { title } from 'process';
-import { error } from 'console';
+
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +24,7 @@ import { error } from 'console';
     CardFlipComponent,
     MatGridListModule,
     NgFor,
+    NgIf,
     DatePipe
   ],
   templateUrl: './profile.component.html',
@@ -40,12 +40,12 @@ export class ProfileComponent
     coachSpecialities: any
 
     constructor(
-      private userService: UserService, 
-      private authService: AuthService, 
-      @Inject(PLATFORM_ID) 
+      private userService: UserService,
+      private authService: AuthService,
+      @Inject(PLATFORM_ID)
       private platformId: Object,
-      private utilsService: UtilsService, 
-      private sanitizer: DomSanitizer, 
+      private utilsService: UtilsService,
+      private sanitizer: DomSanitizer,
       private dialogRef: MatDialog,
       private activityRouter: Router,
       private router: ActivatedRoute
@@ -253,7 +253,7 @@ export class ProfileComponent
       }
     }
 
-    goToActivityDetails(activity: any) 
+    goToActivityDetails(activity: any)
     {
       this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
     }

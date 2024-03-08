@@ -64,7 +64,7 @@
             </div>
           </div>
 
-        </div>  
+        </div>
 
         <div class="row mt-2">
           <div class="col">
@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      
+
       <!-- <div class="main-body">
         <div class="mat-elevation-z8">
           <table class="mt-2">
@@ -107,7 +107,7 @@
                 <th class="text-center" style="margin-left: -5%;">Gestion</th>
               </tr>
             </thead>
-            
+
             <tbody *ngFor="let member of sessionMembers">
               <tr>
                 <td class=""><img [src]="getUserImage(member.userPicture)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(member.userEmail)"></td>
@@ -132,7 +132,7 @@
                 <th class="text-center" style="margin-left: -5%;">Gestion</th>
               </tr>
             </thead>
-            
+
             <tbody *ngFor="let member of sessionMembers">
               <tr>
                 <td class=""><img [src]="getUserImage(member.userPicture)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(member.userEmail)"></td>
@@ -182,22 +182,15 @@
 
 
             <div class="row">
-              @if ((!sessionImages) || (sessionImages.length === 0))
-              {
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center" *ngIf="!sessionImages || sessionImages.length === 0">
                   <h2 class="text-center">Il n'y a pas encore des photos du séance</h2>
                 </div>
-              }
-              @else
-              {
-                <mat-grid-list cols="4" rowHeight="2:1">
+
+                <mat-grid-list cols="4" rowHeight="2:1" *ngIf="sessionImages && sessionImages.length != 0">
                   <mat-grid-tile *ngFor="let image of sessionImages">
                     <app-card-flip [imageName]=image.imageName [classId]=sessionId [classToDelete]=deleteTag (onDataChange)="detectChanges($event)"></app-card-flip>
                   </mat-grid-tile>
                 </mat-grid-list>
-              }
-
-
             </div>
           </div>
           </div>
