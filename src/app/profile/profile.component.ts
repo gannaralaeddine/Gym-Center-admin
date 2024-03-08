@@ -238,6 +238,8 @@ export class ProfileComponent
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
         data: { user: user }
+      }).afterClosed().subscribe(()=>{
+        this.getUserByEmail()
       })
     }
 

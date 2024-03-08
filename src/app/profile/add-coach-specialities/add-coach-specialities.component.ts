@@ -3,12 +3,14 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {ActivityService} from "../../services/activity.service";
 import {NgForOf, NgIf} from "@angular/common";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {Coach} from "../../user/coach";
 import {Activity} from "../../activity/activity";
 import {UserService} from "../../services/user.service";
 import { error } from 'console';
+import { UtilsService } from '../../serviceutils/utils.service';
+import { ProfileComponent } from '../profile.component';
 
 @Component({
   selector: 'app-add-coach-specialities',
@@ -25,15 +27,18 @@ import { error } from 'console';
 })
 export class AddCoachSpecialitiesComponent
 {
-  optionsList = new FormControl([]);
+  optionsList = new FormControl([])
   activities!: Activity[]
   coachSpecialities!: Activity []
   coach = new Coach()
 
   constructor(
     private activityService: ActivityService, 
-    private userService: UserService, 
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private userService: UserService,
+    private utilsService: UtilsService,
+    private dialogRef: MatDialogRef<AddCoachSpecialitiesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public dataSuccess: any
     ) {}
 
   ngOnInit()
@@ -95,7 +100,10 @@ export class AddCoachSpecialitiesComponent
   {
       // @ts-ignore
       this.userService.updateCoachSpecialities(this.coach.userId, this.optionsList.value).subscribe({
-        next: () => console.log("specialities updated successfully !"),
+        next: () => {
+          this.utilsService.successDialog("Opération réussite", "Activité ajoutée avec succès", true)
+          this.dialogRef.close()
+        },
         error: (err) => console.log("Error: " + err)
       })
   }
