@@ -27,12 +27,22 @@ export class UtilsService
   }
 
 
-  deletePopup(){
+  deletePopup(title?: string, message?: string, operationType?: string)
+  {
+    if (title && message && operationType)
+    {
+      return  this.matDialog.open(AlertDeleteComponent, {
+        width: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "500ms",
+        data: { title: title, message: message, operationType: operationType }
+      })
+    }
     return  this.matDialog.open(AlertDeleteComponent, {
       width: "40%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      data: { title:  "Supprimer image", message: "Voulez-vous vraiment supprimer cette image ?" }
+      data: { title:  "Supprimer image", message: "Voulez-vous vraiment supprimer cette image ?", operationType: "deleteOperation" }
     })
   }
 

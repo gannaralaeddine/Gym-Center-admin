@@ -24,7 +24,8 @@ export class SessionService
 
   public updateSessionWithImage(session:FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/session/update-session-with-image", session) }
 
-
+  public removeMemberFromSession(email: string, sessionId: number) { return this.http.put(this.utils.API_GYM_CENTER + "/session/remove-member-from-session/" + email + "/" + sessionId, email ) }
+  
   public deleteSessionImage(SessionId: number, imageName: string){ return this.http.delete(this.utils.API_GYM_CENTER + "/session/delete-session-image/" + SessionId + "/" + imageName) }
 
 }

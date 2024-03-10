@@ -161,4 +161,20 @@ export class DetailsSessionComponent implements OnInit
     const params = { userEmail: email }
     this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
+
+  removeMemberFromSession(memberEmail: string, sessionId: number)
+  {
+    this.utilsService.deletePopup("Retirer participation", "Êtes-vous sûr de retirer sa participation ?", "removeOperation").afterClosed().subscribe((isDeleteOperation)=>{
+      if (isDeleteOperation)
+      {
+        this.sessionService.removeMemberFromSession(memberEmail, sessionId).subscribe({
+          error: (err) => console.error(err),
+          complete: () => {
+            this.utilsService.successDialog("Opéation réussite", "participation retirée avec succès", true)
+            this.ngOnInit()
+          }
+        })
+      }
+    })
+  }
 }
