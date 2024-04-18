@@ -4,6 +4,8 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { AuthService } from "../auth/auth.service";
 import {UtilsService} from "../serviceutils/utils.service";
 import { NgIf } from '@angular/common';
+import {UserService} from "../services/user.service";
+import {User} from "../user/user";
 
 @Component({
   selector: 'app-login',
@@ -18,33 +20,48 @@ import { NgIf } from '@angular/common';
 })
 export class LoginComponent
 {
-
+  isEnabled = false
   isPasswordVisible = false
 
-  constructor( private authService: AuthService, private router: Router, private utils: UtilsService) {  }
+  constructor( private authService: AuthService, private router: Router, private utils: UtilsService, private userService: UserService) {  }
 
   login(loginForm: NgForm )
   {
-
       this.authService.login(loginForm.value).subscribe({
         next: (response: any)  => {
 
+          this.userService.retrieveUserByEmail(response.email).subscribe(
+            {
+              next: (val) => {
+                const user = val as User
+                this.isEnabled = user.userIsEnabled
 
-          if ( (response.authorities[0].authority === "ROLE_ADMIN") || (response.authorities[0].authority === "ROLE_SUPER_ADMIN")
-            || (response.authorities[0].authority === "ROLE_COACH") || (response.authorities[0].authority === "ROLE_USER"))
-          {
-            console.log("You are connected as admin !!!")
-            this.authService.setRolesLS(response.authorities)
-            this.authService.setTokenLS(response.token)
-            this.authService.setEmailLS(response.email)
+                if(!user.userIsEnabled)
+                {
+                  this.utils.successDialog("Échec de connexion", "Vous devez valider votre compte en cliquant sur le lien envoyé par mail !", false)
+                }
+                else if ( (response.authorities[0].authority === "ROLE_ADMIN") || (response.authorities[0].authority === "ROLE_SUPER_ADMIN")
+                  || (response.authorities[0].authority === "ROLE_COACH") || (response.authorities[0].authority === "ROLE_USER"))
+                {
+                  console.log("You are connected as admin !!!")
+                  this.authService.setRolesLS(response.authorities)
+                  this.authService.setTokenLS(response.token)
+                  this.authService.setEmailLS(response.email)
 
-            this.router.navigate(["app-component"])
-          }
-          else
-          {
+                  this.router.navigate(["app-component"])
+                }
+                else
+                {
+                  this.utils.successDialog("Échec de connexion", "Vous n'avez pas les droit d'accès", false)
+                }
 
-              this.utils.successDialog("Échec de connexion", "Vous n'avez pas les droit d'accès", false)
-          }
+              },
+              error: (err) => console.error(err)
+            }
+          )
+
+
+
 
         },
         error: (err: any)  => {
@@ -56,12 +73,8 @@ export class LoginComponent
           {
             this.utils.successDialog("error is not 401", "error is not 401", false)
           }
-
         }
-
-
       })
-
   }
 
   togglePasswordVisibility()
