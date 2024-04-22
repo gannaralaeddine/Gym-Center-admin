@@ -69,7 +69,6 @@ export class RegisterComponent
             break;
           default:
             console.log(this.selectedOptionValue)
-
         }
     }
 
@@ -82,7 +81,15 @@ export class RegisterComponent
 
       this.userService.registerMember(this.member).subscribe({
         next:()=> this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créer avec succès", true),
-        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
+        error: (err)=> {
+          switch (err.status)
+          {
+            case 302:
+            { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+            default:
+            { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+          }
+        },
       })
     }
 
@@ -95,7 +102,15 @@ export class RegisterComponent
 
         this.userService.registerCoach(this.coach).subscribe({
           next:()=> this.utilsService.successDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
-          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
+          error: (err)=> {
+            switch (err.status)
+            {
+              case 302:
+              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+              default:
+              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+            }
+          },
         })
     }
 
@@ -108,7 +123,16 @@ export class RegisterComponent
 
         this.userService.registerAdmin(this.admin).subscribe({
           next:()=> this.utilsService.successDialog("Opération réussite", "Compte ADMIN a été créer avec succès", true),
-          error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false),
+          error: (err)=> {
+            console.log("status: "+err.status)
+            switch (err.status)
+            {
+             case 302:
+              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+              default:
+              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+            }
+          },
         })
     }
 

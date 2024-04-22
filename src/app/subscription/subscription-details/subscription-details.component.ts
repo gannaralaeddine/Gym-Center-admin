@@ -7,9 +7,9 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSubscriptionComponent } from '../add-subscription/add-subscription.component';
 
@@ -32,13 +32,13 @@ export class SubscriptionDetailsComponent implements OnInit
     private subscriptionService: SubscriptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialog,
-    private routerActivity: Router) 
+    private routerActivity: Router)
   {
     this.router.queryParams.subscribe( params => {
       this.subscriptionId = params["subscriptionId"]
     })
   }
-  ngOnInit() 
+  ngOnInit()
   {
     this.getSubscription()
   }
@@ -68,14 +68,14 @@ export class SubscriptionDetailsComponent implements OnInit
           return "../assets/img/icons/ic_user_tie.svg"
       }
   }
-  
-  goToActivityDetails() 
+
+  goToActivityDetails()
   {
     const params = { actId: this.subscription.subscriptionActivity.actId }
     this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 
-  goToUserProfileDetails(email:any) 
+  goToUserProfileDetails(email:any)
   {
     const params = { userEmail: email }
     this.routerActivity.navigate(["profile"], { queryParams: params  })
