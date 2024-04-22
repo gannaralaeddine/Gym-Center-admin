@@ -42,7 +42,7 @@ export class UserComponent implements OnInit
     user = new User()
     member = new User();
     dataSource!: MatTableDataSource<any>;
-    displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Gestion']
+    displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Gestion', 'État']
 
     @ViewChild(MatPaginator) paginator!: MatPaginator
     @ViewChild(MatSort) sort!: MatSort

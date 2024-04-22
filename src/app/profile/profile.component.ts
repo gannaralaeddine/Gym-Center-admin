@@ -1,7 +1,7 @@
 import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
-import {DatePipe, isPlatformBrowser, NgFor, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, isPlatformBrowser, NgFor, NgIf} from "@angular/common";
 import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
