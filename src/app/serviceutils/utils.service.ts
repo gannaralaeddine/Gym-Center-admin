@@ -3,6 +3,7 @@ import { AlertSuccessComponent } from "../alert-success/alert-success.component"
 import { MatDialog } from '@angular/material/dialog';
 import {AlertDeleteComponent} from "../alert-delete/alert-delete.component";
 import {ImagesPopupComponent} from "../images-popup/images-popup.component";
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,17 @@ export class UtilsService
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
       data: { images: images,  isOneImage: isOneImage}
+    })
+  }
+
+  loadingSpinnerDialog()
+  {
+    return this.matDialog.open(LoadingSpinnerComponent, {
+      width: "60%",
+      height: "80%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms",
+      // data: { images: images,  isOneImage: isOneImage}
     })
   }
 }

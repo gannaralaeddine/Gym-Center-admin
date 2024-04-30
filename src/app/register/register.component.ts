@@ -8,7 +8,8 @@ import {NgForOf, NgIf} from "@angular/common";
 import {CoachModule} from "../user/coach.module";
 import {MemberModule} from "../user/member.module";
 import {AuthService} from "../auth/auth.service";
-
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -29,15 +30,18 @@ export class RegisterComponent
     roles: any
     selectList!: HTMLSelectElement
     selectedOptionValue!: string
-
+    dialogRef!: MatDialogRef<LoadingSpinnerComponent>
     admin = new User()
     member = new MemberModule()
     coach = new CoachModule()
 
     isPasswordVisible = false
 
-    public constructor( private userFormBuilder: FormBuilder, private userService: UserService, private authService: AuthService,
-                        private utilsService: UtilsService )
+    public constructor( 
+      private userFormBuilder: FormBuilder, 
+      private userService: UserService, 
+      private authService: AuthService,
+      private utilsService: UtilsService)
     {
       this.getAllRoles()
 
@@ -54,10 +58,9 @@ export class RegisterComponent
     createUser()
     {
         console.log("email: " + this.userForm.value.userEmail)
-
         this.selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
-
         this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
+        this.dialogRef = this.utilsService.loadingSpinnerDialog()
 
         switch (this.selectedOptionValue)
         {
@@ -80,15 +83,30 @@ export class RegisterComponent
       this.member.userPassword = this.userForm.value.userPassword
 
       this.userService.registerMember(this.member).subscribe({
-        next:()=> this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créer avec succès", true),
-        error: (err)=> {
-          switch (err.status)
+        next:(statusCode)=> {
+          if (statusCode == 200)
           {
-            case 302:
-            { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
-            default:
-            { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+            this.dialogRef.close()
+            this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créé avec succès", true)
           }
+        },
+        error: (err)=> {
+          this.dialogRef.afterOpened().subscribe(() => {
+            if (err.status)
+            {
+              this.dialogRef.close()
+            }
+          })
+
+          this.dialogRef.afterClosed().subscribe(() => {
+            switch (err.status)
+            {
+              case 302:
+              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+              default:
+              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+            }
+          })
         },
       })
     }
@@ -101,15 +119,30 @@ export class RegisterComponent
       this.coach.userPassword = this.userForm.value.userPassword
 
         this.userService.registerCoach(this.coach).subscribe({
-          next:()=> this.utilsService.successDialog("Opération réussite", "Compte COACH a été créer avec succès", true),
-          error: (err)=> {
-            switch (err.status)
+          next:(statusCode)=> {
+            if (statusCode == 200)
             {
-              case 302:
-              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
-              default:
-              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+              this.dialogRef.close()
+              this.utilsService.successDialog("Opération réussite", "Compte COACH a été créé avec succès", true)
             }
+          },
+          error: (err)=> {
+            this.dialogRef.afterOpened().subscribe(() => {
+              if (err.status)
+              {
+                this.dialogRef.close()
+              }
+            })
+  
+            this.dialogRef.afterClosed().subscribe(() => {
+              switch (err.status)
+              {
+                case 302:
+                { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+                default:
+                { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+              }
+            })
           },
         })
     }
@@ -122,16 +155,30 @@ export class RegisterComponent
         this.admin.userPassword = this.userForm.value.userPassword
 
         this.userService.registerAdmin(this.admin).subscribe({
-          next:()=> this.utilsService.successDialog("Opération réussite", "Compte ADMIN a été créer avec succès", true),
-          error: (err)=> {
-            console.log("status: "+err.status)
-            switch (err.status)
+          next:(statusCode)=> {
+            if (statusCode == 200)
             {
-             case 302:
-              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
-              default:
-              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+              this.dialogRef.close()
+              this.utilsService.successDialog("Opération réussite", "Compte ADMIN a été créé avec succès", true)
             }
+          },
+          error: (err)=> {
+            this.dialogRef.afterOpened().subscribe(() => {
+              if (err.status)
+              {
+                this.dialogRef.close()
+              }
+            })
+  
+            this.dialogRef.afterClosed().subscribe(() => {
+              switch (err.status)
+              {
+                case 302:
+                { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+                default:
+                { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+              }
+            })
           },
         })
     }

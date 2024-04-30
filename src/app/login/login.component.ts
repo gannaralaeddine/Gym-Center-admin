@@ -38,7 +38,7 @@ export class LoginComponent
 
                 if(!user.userIsEnabled)
                 {
-                  this.utils.successDialog("Échec de connexion", "Vous devez valider votre compte en cliquant sur le lien envoyé par mail !", false)
+                  this.utils.successDialog("Échec de connexion", "Vous devez valider votre compte en cliquant sur le lien envoyé par e-mail !", false)
                 }
                 else if ( (response.authorities[0].authority === "ROLE_ADMIN") || (response.authorities[0].authority === "ROLE_SUPER_ADMIN")
                   || (response.authorities[0].authority === "ROLE_COACH") || (response.authorities[0].authority === "ROLE_USER"))

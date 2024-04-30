@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient } from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {Role} from "../user/role";
 import {UtilsService} from "../serviceutils/utils.service";
 import { User } from '../user/user';
@@ -23,19 +23,25 @@ export class UserService {
     public registerMember(member: any): Observable<Object>
     {
       member.roles = [ new Role("MEMBER") ]
-      return this.http.post<object>(this.utils.API_GYM_CENTER + "/member/register-member", member)
+      return this.http.post<object>(this.utils.API_GYM_CENTER + "/member/register-member", member, {observe: 'response'}).pipe(map((response)=>{
+        return response.status
+      }))
     }
 
     public registerCoach(coach: any): Observable<Object>
     {
       coach.roles = [ new Role("COACH") ]
-      return this.http.post<object>(this.utils.API_GYM_CENTER + "/coach/register-coach", coach)
+      return this.http.post<object>(this.utils.API_GYM_CENTER + "/coach/register-coach", coach,{observe: 'response'}).pipe(map((response)=>{
+        return response.status
+      }))
     }
 
     public registerAdmin(admin: any): Observable<Object>
     {
       admin.roles = [ new Role("ADMIN") ]
-      return this.http.post<object>(this.utils.API_GYM_CENTER + "/user/register-user", admin)
+      return this.http.post<object>(this.utils.API_GYM_CENTER + "/user/register-user", admin,{observe: 'response'}).pipe(map((response)=>{
+        return response.status
+      }))
     }
 
     public getAllRoles()  { return this.http.get(this.utils.API_GYM_CENTER + "/user/retrieve-all-roles") }
