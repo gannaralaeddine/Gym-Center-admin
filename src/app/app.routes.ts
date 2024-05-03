@@ -17,11 +17,13 @@ import { SubscriptionDetailsComponent } from './subscription/subscription-detail
 import { OfferDetailsComponent } from './offer/offer-details/offer-details.component';
 import { OfferComponent } from './offer/offer.component';
 import { OptionComponent } from './option/option.component';
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 
 export const routes: Routes = [
   {path: 'app-component', component: AppComponent},
   {path: '', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'home', component: HomeComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'profile', component: ProfileComponent},

@@ -1,5 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+.enableBlur>*{
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.disableBlur{
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+
+.blur-background:after{
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(5px);
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -19,7 +38,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   accent-color: #e91e63;
 }
 
-.mat-mdc-form-field 
+.mat-mdc-form-field
 {
     font-size: 14px;
     width: 99%;

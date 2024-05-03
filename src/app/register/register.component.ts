@@ -20,12 +20,14 @@ import { MatDialogRef } from '@angular/material/dialog';
     ReactiveFormsModule,
     NgForOf,
     NgIf,
+    LoadingSpinnerComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent
 {
+    isLoading = false
     userForm !: FormGroup
     roles: any
     selectList!: HTMLSelectElement
@@ -37,9 +39,9 @@ export class RegisterComponent
 
     isPasswordVisible = false
 
-    public constructor( 
-      private userFormBuilder: FormBuilder, 
-      private userService: UserService, 
+    public constructor(
+      private userFormBuilder: FormBuilder,
+      private userService: UserService,
       private authService: AuthService,
       private utilsService: UtilsService)
     {
@@ -52,7 +54,6 @@ export class RegisterComponent
         userPassword: ['',Validators.required],
         userRole: [undefined,Validators.required]
       })
-
     }
 
     createUser()
@@ -61,6 +62,7 @@ export class RegisterComponent
         this.selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
         this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
         this.dialogRef = this.utilsService.loadingSpinnerDialog()
+        // this.isLoading = true
 
         switch (this.selectedOptionValue)
         {
@@ -86,27 +88,36 @@ export class RegisterComponent
         next:(statusCode)=> {
           if (statusCode == 200)
           {
-            this.dialogRef.close()
+            // this.dialogRef.close()
+            this.isLoading = false
             this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créé avec succès", true)
           }
         },
         error: (err)=> {
-          this.dialogRef.afterOpened().subscribe(() => {
-            if (err.status)
-            {
-              this.dialogRef.close()
-            }
-          })
-
-          this.dialogRef.afterClosed().subscribe(() => {
-            switch (err.status)
-            {
-              case 302:
-              { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
-              default:
-              { this.utilsService.successDialog("Opération échouée", err.message, false); break }
-            }
-          })
+          this.isLoading = false
+          switch (err.status)
+          {
+            case 302:
+            { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+            default:
+            { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+          }
+          //   this.dialogRef.afterOpened().subscribe(() => {
+          //   if (err.status)
+          //   {
+          //     this.dialogRef.close()
+          //   }
+          // })
+          //
+          // this.dialogRef.afterClosed().subscribe(() => {
+          //   switch (err.status)
+          //   {
+          //     case 302:
+          //     { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
+          //     default:
+          //     { this.utilsService.successDialog("Opération échouée", err.message, false); break }
+          //   }
+          // })
         },
       })
     }
@@ -133,7 +144,7 @@ export class RegisterComponent
                 this.dialogRef.close()
               }
             })
-  
+
             this.dialogRef.afterClosed().subscribe(() => {
               switch (err.status)
               {
@@ -169,7 +180,7 @@ export class RegisterComponent
                 this.dialogRef.close()
               }
             })
-  
+
             this.dialogRef.afterClosed().subscribe(() => {
               switch (err.status)
               {

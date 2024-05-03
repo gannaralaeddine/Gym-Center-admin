@@ -63,6 +63,7 @@ export class SessionComponent implements OnInit
   {
       const popup = this.dialogRef.open(AddSessionComponent, {
         width: "40%",
+        height: "100%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
         data: { sessionId: sessionId }
