@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import { UserService } from "../services/user.service";
 import { User } from "../user/user";
 import { UtilsService } from "../serviceutils/utils.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CoachModule} from "../user/coach.module";
 import {MemberModule} from "../user/member.module";
 import {AuthService} from "../auth/auth.service";
@@ -21,6 +21,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     NgForOf,
     NgIf,
     LoadingSpinnerComponent,
+    NgClass,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -61,8 +62,8 @@ export class RegisterComponent
         console.log("email: " + this.userForm.value.userEmail)
         this.selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
         this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
-        this.dialogRef = this.utilsService.loadingSpinnerDialog()
-        // this.isLoading = true
+        // this.dialogRef = this.utilsService.loadingSpinnerDialog()
+        this.isLoading = true
 
         switch (this.selectedOptionValue)
         {

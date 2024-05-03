@@ -4,7 +4,6 @@ import {map, Observable} from "rxjs";
 import {Role} from "../user/role";
 import {UtilsService} from "../serviceutils/utils.service";
 import { User } from '../user/user';
-import {Coach} from "../user/coach";
 
 @Injectable({
   providedIn: 'root'
