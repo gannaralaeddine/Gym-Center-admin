@@ -1,0 +1,51 @@
+.sidenav 
+{
+    height: 90%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    background-color: #344767;
+    overflow: hidden;
+    transition: 0.3s; 
+    margin-top: 1.5%;
+    margin-left: 5px;
+    margin-bottom: -3%;
+    transform: translateY(0.1rem);
+    border-radius: 0.75rem;
+}
+
+@media (max-width: 392px) 
+{
+    .sidenav:hover
+    {
+        overflow-y: scroll;
+    }
+}
+.sidenav:hover
+{
+    overflow-y: auto;
+}
+
+@media (max-width: 1199.98px) 
+{
+    #mySidenav
+    {
+        transform: none;
+    }
+}
+
+.menu-text
+{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+li
+{
+    margin-left: 10px;
+}
+
+i
+{
+    margin-top: 10px;
+}

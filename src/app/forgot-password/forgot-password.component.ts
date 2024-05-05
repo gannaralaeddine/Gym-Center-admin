@@ -28,6 +28,9 @@ export class ForgotPasswordComponent
   isSendingCodeOperation = false
   isSendingPasswordOperation = false
   userEmail!: string
+  confirmationCode!: number
+  passwordValue!: string
+  confirmPasswordValue!: string
 
   constructor(private userService: UserService, private utils: UtilsService, private router: Router) {
   }
@@ -103,4 +106,28 @@ export class ForgotPasswordComponent
     }
   }
 
+  isDigit()
+  {
+    let result = true
+
+    if (isNaN(this.confirmationCode) || this.confirmationCode.toString().indexOf('-') != -1 || this.confirmationCode.toString().indexOf('.') != -1)
+    {
+      result = false
+    }
+
+   return result
+   
+  }
+
+  isIdenticalPasswords()
+  {
+    let result = true
+
+    if (this.passwordValue != this.confirmPasswordValue)
+    {
+      result = false
+    }
+
+    return result
+  }
 }

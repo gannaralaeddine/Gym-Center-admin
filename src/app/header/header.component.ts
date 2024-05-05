@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +7,20 @@ import { Component } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit
+{
+  @Output() buttonClicked = new EventEmitter<boolean>()
+  buttonStatus!: boolean
 
+  ngOnInit()
+  {
+    this.buttonStatus = true
+    this.buttonClicked.emit(this.buttonStatus)
+  }
+
+  isClicked()
+  {
+    this.buttonStatus = !this.buttonStatus 
+    this.buttonClicked.emit(this.buttonStatus)
+  } 
 }

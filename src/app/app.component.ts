@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FooterComponent } from "./footer/footer.component";
@@ -15,10 +15,11 @@ import { AuthService } from "./auth/auth.service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit
+export class AppComponent
 {
 
   title = 'Gym-Center-admin';
+  isClicked!: boolean | undefined
 
   public constructor(private router: Router, private actRouter: ActivatedRoute, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object)
   {
@@ -37,15 +38,6 @@ export class AppComponent implements OnInit
       }
   }
 
-  ngOnInit()
-  {
-      // this.actRouter.queryParams.subscribe( params => {
-      //   this.isAuthenticated = params["isAuthenticated"]
-      //   this.router.navigate(["home"])
-      // })
-
-  }
-
   isLoggedIn(): boolean
   {
     if (isPlatformBrowser(this.platformId))
@@ -57,7 +49,29 @@ export class AppComponent implements OnInit
 
   logout()
   {
-      this.authService.clearLocalStorage()
-      this.router.navigate([""])
+    this.isClicked = false
+    this.openOrCloseSideBarMenu()
+    this.authService.clearLocalStorage()
+    this.router.navigate([""])
+  }
+
+  openOrCloseSideBarMenu()
+  {
+    if (this.isClicked)
+    {
+      document.getElementById("mySidenav")!.style.width = "230px"
+      document.getElementById("main")!.style.marginLeft = "230px"
+    }
+    else
+    {
+      document.getElementById("mySidenav")!.style.width = "0"
+      document.getElementById("main")!.style.marginLeft = "0"
+    }
+  }
+
+  sideBarButtonClicked(event: boolean)
+  {
+    this.isClicked = event
+    this.openOrCloseSideBarMenu()
   }
 }
