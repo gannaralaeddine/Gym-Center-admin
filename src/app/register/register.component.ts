@@ -134,19 +134,12 @@ export class RegisterComponent
           next:(statusCode)=> {
             if (statusCode == 200)
             {
-              this.dialogRef.close()
+              this.isLoading = false
               this.utilsService.successDialog("Opération réussite", "Compte COACH a été créé avec succès", true)
             }
           },
           error: (err)=> {
-            this.dialogRef.afterOpened().subscribe(() => {
-              if (err.status)
-              {
-                this.dialogRef.close()
-              }
-            })
-
-            this.dialogRef.afterClosed().subscribe(() => {
+              this.isLoading = false
               switch (err.status)
               {
                 case 302:
@@ -154,7 +147,7 @@ export class RegisterComponent
                 default:
                 { this.utilsService.successDialog("Opération échouée", err.message, false); break }
               }
-            })
+
           },
         })
     }
@@ -170,19 +163,12 @@ export class RegisterComponent
           next:(statusCode)=> {
             if (statusCode == 200)
             {
-              this.dialogRef.close()
+              this.isLoading = false
               this.utilsService.successDialog("Opération réussite", "Compte ADMIN a été créé avec succès", true)
             }
           },
           error: (err)=> {
-            this.dialogRef.afterOpened().subscribe(() => {
-              if (err.status)
-              {
-                this.dialogRef.close()
-              }
-            })
-
-            this.dialogRef.afterClosed().subscribe(() => {
+              this.isLoading = false
               switch (err.status)
               {
                 case 302:
@@ -190,7 +176,6 @@ export class RegisterComponent
                 default:
                 { this.utilsService.successDialog("Opération échouée", err.message, false); break }
               }
-            })
           },
         })
     }
