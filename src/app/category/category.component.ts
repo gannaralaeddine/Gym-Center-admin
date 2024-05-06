@@ -27,8 +27,8 @@ export class CategoryComponent implements OnInit
   isCategoryUpdated!: Boolean
   category!: Category
   dataSource!: MatTableDataSource<any>;
+  dataSourceBackUp!: MatTableDataSource<any>;
   displayedColumns = ['Image','Titre','Gestion']
-
   @ViewChild(MatPaginator) paginator!: MatPaginator
   @ViewChild(MatSort) sort!: MatSort
 
@@ -51,7 +51,7 @@ export class CategoryComponent implements OnInit
         this.dataSource = new MatTableDataSource(res as any)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
-
+        this.dataSourceBackUp = this.dataSource
       },
       error: (err) => console.error(err)
     })
@@ -106,5 +106,22 @@ export class CategoryComponent implements OnInit
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()
     if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+    this.dataSource = new MatTableDataSource(this.filterByName(this.dataSourceBackUp,filterValue.trim().toLowerCase()))
+    this.dataSource.paginator = this.paginator
+  }
+
+  filterByName(matTableDataSource: MatTableDataSource<any>, filter: string)
+  {
+    let filteredData = []
+
+    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    {
+      if (matTableDataSource.data[i].catName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+      {
+        filteredData.push(matTableDataSource.data[i])
+      }
+    }
+
+    return filteredData
   }
 }

@@ -43,7 +43,7 @@ export class UserComponent implements OnInit
     member = new User();
     dataSource!: MatTableDataSource<any>;
     displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Gestion', 'État']
-
+    dataSourceBackUp!: MatTableDataSource<any>
     @ViewChild(MatPaginator) paginator!: MatPaginator
     @ViewChild(MatSort) sort!: MatSort
 
@@ -68,6 +68,7 @@ export class UserComponent implements OnInit
           this.dataSource = new MatTableDataSource(this.allUsers as any)
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
+          this.dataSourceBackUp = this.dataSource
           console.log("all users type: " + typeof this.allUsers)
         },
         error: (err) => console.error(err)
@@ -92,6 +93,8 @@ export class UserComponent implements OnInit
       const filterValue = (event.target as HTMLInputElement).value
       this.dataSource.filter = filterValue.trim().toLowerCase()
       if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+      this.dataSource = new MatTableDataSource(this.filterByNameOrEmail(this.dataSourceBackUp, filterValue.trim().toLowerCase(),event))
+      this.dataSource.paginator = this.paginator
     }
 
     goToUserProfile(user: User)
@@ -184,4 +187,34 @@ export class UserComponent implements OnInit
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
     }
+
+  filterByNameOrEmail(matTableDataSource: MatTableDataSource<any>, filter: string, event: any)
+  {
+    let filteredData = []
+    let fullName
+
+    if (event.target.value.indexOf('@') != -1)
+    {
+      for (let i = 0; i < matTableDataSource.data.length; i++) 
+        {
+          if (matTableDataSource.data[i].userEmail.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+          {
+            filteredData.push(matTableDataSource.data[i])
+          }
+        }
+    }
+    else
+    {
+      for (let i = 0; i < matTableDataSource.data.length; i++) 
+        {
+          fullName = matTableDataSource.data[i].userFirstName + ' ' + matTableDataSource.data[i].userLastName
+          if (fullName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+          {
+            filteredData.push(matTableDataSource.data[i])
+          }
+        }
+    }
+
+    return filteredData
+  }
 }

@@ -24,6 +24,7 @@ export class OfferComponent
 {
 
   dataSource!: MatTableDataSource<any>
+  dataSourceBackUp!: MatTableDataSource<any>
   displayedColumns = ['Image','Titre','Activité','Tarif','Gestion']
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
@@ -71,6 +72,8 @@ export class OfferComponent
     const filterValue = (event.target as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()
     if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+    this.dataSource = new MatTableDataSource(this.filterByName(this.dataSourceBackUp,filterValue.trim().toLowerCase()))
+    this.dataSource.paginator = this.paginator
   }
 
   goToOfferDetails(offer: any)
@@ -89,6 +92,21 @@ export class OfferComponent
     {
       return "../assets/img/icons/ic_activity.png"
     }
+  }
+
+  filterByName(matTableDataSource: MatTableDataSource<any>, filter: string)
+  {
+    let filteredData = []
+
+    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    {
+      if (matTableDataSource.data[i].offerName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+      {
+        filteredData.push(matTableDataSource.data[i])
+      }
+    }
+
+    return filteredData
   }
 }
 

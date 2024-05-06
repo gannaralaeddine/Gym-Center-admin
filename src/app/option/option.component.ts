@@ -1,6 +1,5 @@
 import { NgIf } from '@angular/common';
 import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -21,6 +20,7 @@ export class OptionComponent implements OnInit
 {
 
   dataSource!: MatTableDataSource<any>
+  dataSourceBackUp!: MatTableDataSource<any>
   displayedColumns = ['Titre', 'Gestion']
   @ViewChild(MatPaginator) paginator!: MatPaginator
   option = new Option()
@@ -34,6 +34,7 @@ export class OptionComponent implements OnInit
       next: (options) => {
         this.dataSource = new MatTableDataSource(options)
         this.dataSource.paginator = this.paginator
+        this.dataSourceBackUp = this.dataSource
       },
       error: (err) => console.error(err)
     })
@@ -44,6 +45,8 @@ export class OptionComponent implements OnInit
     const filterValue = (document.getElementById('optionSearch') as HTMLInputElement).value
     this.dataSource.filter = filterValue.trim().toLowerCase()
     if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
+    this.filterByName(this.dataSourceBackUp, filterValue.trim().toLowerCase())
+    this.dataSource.paginator = this.paginator
   }
 
   addOrUpdateDialog(arg0: any) 
@@ -80,6 +83,20 @@ export class OptionComponent implements OnInit
         this.isValid = true
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
-   
+  }
+
+  filterByName(matTableDataSource: MatTableDataSource<any>, filter: string)
+  {
+    let filteredData = []
+
+    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    {
+      if (matTableDataSource.data[i].optionName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+      {
+        filteredData.push(matTableDataSource.data[i])
+      }
+    }
+
+    return filteredData
   }
 }
