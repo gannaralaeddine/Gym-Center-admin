@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {MatSort, MatSortModule} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { UtilsService } from "../serviceutils/utils.service";
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -93,7 +93,7 @@ export class UserComponent implements OnInit
       const filterValue = (event.target as HTMLInputElement).value
       this.dataSource.filter = filterValue.trim().toLowerCase()
       if (this.dataSource.paginator) { this.dataSource.paginator.firstPage() }
-      this.dataSource = new MatTableDataSource(this.filterByNameOrEmail(this.dataSourceBackUp, filterValue.trim().toLowerCase(),event))
+      this.dataSource = new MatTableDataSource(this.filterByNameOrEmail(this.dataSourceBackUp, filterValue.trim().toLowerCase()))
       this.dataSource.paginator = this.paginator
     }
 
@@ -141,6 +141,7 @@ export class UserComponent implements OnInit
         this.dataSource = new MatTableDataSource(this.allUsers as any)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSourceBackUp = this.dataSource
     }
 
     getAdmins()
@@ -156,6 +157,7 @@ export class UserComponent implements OnInit
         this.dataSource = new MatTableDataSource(admins as any)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSourceBackUp = this.dataSource
     }
 
     getMembers()
@@ -171,6 +173,7 @@ export class UserComponent implements OnInit
         this.dataSource = new MatTableDataSource(members as any)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSourceBackUp = this.dataSource
     }
 
     getCoaches()
@@ -186,33 +189,21 @@ export class UserComponent implements OnInit
         this.dataSource = new MatTableDataSource(coaches as any)
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
+        this.dataSourceBackUp = this.dataSource
     }
 
-  filterByNameOrEmail(matTableDataSource: MatTableDataSource<any>, filter: string, event: any)
+  filterByNameOrEmail(matTableDataSource: MatTableDataSource<any>, filter: string)
   {
     let filteredData = []
     let fullName
 
-    if (event.target.value.indexOf('@') != -1)
+    for (let i = 0; i < matTableDataSource.data.length; i++) 
     {
-      for (let i = 0; i < matTableDataSource.data.length; i++) 
-        {
-          if (matTableDataSource.data[i].userEmail.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
-          {
-            filteredData.push(matTableDataSource.data[i])
-          }
-        }
-    }
-    else
-    {
-      for (let i = 0; i < matTableDataSource.data.length; i++) 
-        {
-          fullName = matTableDataSource.data[i].userFirstName + ' ' + matTableDataSource.data[i].userLastName
-          if (fullName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
-          {
-            filteredData.push(matTableDataSource.data[i])
-          }
-        }
+      fullName = matTableDataSource.data[i].userFirstName + ' ' + matTableDataSource.data[i].userLastName
+      if ((fullName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1) || (matTableDataSource.data[i].userEmail.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1))
+      {
+        filteredData.push(matTableDataSource.data[i])
+      }
     }
 
     return filteredData
