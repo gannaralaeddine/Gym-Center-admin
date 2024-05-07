@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="margin-left: 0.5%;">
     <div class="col-12">
       <div class="card my-4">
 
@@ -17,16 +17,16 @@
 
 
 
-        <mat-form-field [color]="'accent'">
-            <mat-label>Saisir Titre option</mat-label>
-            <input matInput id="optionSearch" (keyup)="applyFilter()" (input)="isValidName()" #input>
-        </mat-form-field>
-        <h5 class="text-danger text-bold ml-2" *ngIf="!isValid" style="margin-top: -1.5%;">Merci de saisir un titre valide</h5>
+<mat-form-field [color]="'accent'" style="margin-left: 1.5%;">
+    <mat-label>Saisir Titre option</mat-label>
+    <input matInput id="optionSearch" (keyup)="applyFilter()" (input)="isValidName()" #input>
+</mat-form-field>
+<h5 class="text-danger text-bold ml-2" *ngIf="!isValid" style="margin-top: -1.5%;margin-left: 1;">Merci de saisir un titre valide</h5>
   
 
 
 
-<div class="main-body">
+<div class="main-body" style="margin-left: 1.5%;">
   <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
 

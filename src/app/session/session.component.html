@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="margin-left: 0.5%;">
     <div class="col-12">
       <div class="card my-4">
 
@@ -14,12 +14,12 @@
     </div>
   </div>
 
-<mat-form-field [color]="'accent'">
+<mat-form-field [color]="'accent'" style="margin-left: 1.5%;">
     <mat-label>Chercher séance</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom de séance pour chercher" #input>
 </mat-form-field>
 
-<div class="main-body">
+<div class="main-body" style="margin-left: 1.5%;">
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
 
