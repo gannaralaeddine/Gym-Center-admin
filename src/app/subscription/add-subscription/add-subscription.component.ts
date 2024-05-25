@@ -1,6 +1,6 @@
-import { NgIf, NgFor } from '@angular/common';
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -8,15 +8,31 @@ import { Subscription } from '../subscription';
 import { SubscriptionService } from '../../services/subscription.service';
 import { UtilsService } from '../../serviceutils/utils.service';
 import { Activity } from '../../activity/activity';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
+import { UserService } from '../../services/user.service';
+
 
 @Component({
   selector: 'app-add-subscription',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,NgFor],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe
+  ],
   templateUrl: './add-subscription.component.html',
   styleUrl: './add-subscription.component.css'
 })
-export class AddSubscriptionComponent 
+export class AddSubscriptionComponent implements OnInit
 {
   subscriptionFormValue !: FormGroup
   isAddOperation = true
@@ -24,9 +40,15 @@ export class AddSubscriptionComponent
   subscriptionObject = new Subscription()
   subscription!: Subscription
   subscriptionActivity!: Activity
+  myControl = new FormControl('')
+  options: string[] = []
+  userIDs: string[] = []
+  filteredOptions!: Observable<string[]>
+  userId!: string
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
+    private userService: UserService,
     private utilsService: UtilsService,
     private subscriptionFormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddSubscriptionComponent>,
@@ -48,7 +70,29 @@ export class AddSubscriptionComponent
 
     this.getAllActivities()
   }
+  ngOnInit()
+  {
+    this.userService.getAllUsers().subscribe({
+      next: (users) => {
+        for (let i = 0; i < users.length; i++) 
+        {
+          if (users[i].roles[0].roleName === "MEMBER")
+          {
+            this.options.push(users[i].userId + "-" +users[i].userFirstName + "-" + users[i].userLastName)
+          }
+        }
+      },
+      error: (err) => console.error(err)
+    })
+    this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
+  }
  
+  private _filter(value: string): string[] 
+  {
+    const filterValue = value.toLowerCase()
+    return this.options.filter(option => option.toLowerCase().includes(filterValue))
+  }
+
   checkValidityForm() 
   {
     if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid && this.subscriptionFormValue.controls['subscriptionPrice'].touched)
@@ -150,11 +194,18 @@ export class AddSubscriptionComponent
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
 
     this.subscriptionService.addSubscription(this.subscriptionObject).subscribe({
-      next:(val)=> {
-        console.log("Opération réussite: " + val)
-        this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
-
+      next:(subscription: any) => {
+        this.subscriptionService.addMemberToSubscription(this.userId, subscription.subscriptionId).subscribe({
+          next: (response) => {
+            if (response === 200)
+            {
+              console.log("Opération réussite: " + subscription.subscriptionId)
+              this.dialogRef.close()
+              this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
+            }
+          },
+          error: (err) => console.error(err)
+        })
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
@@ -239,5 +290,4 @@ export class AddSubscriptionComponent
       error: (err)=>console.error(err)
     })
   }
-
 }
