@@ -38,6 +38,7 @@ export class ProfileComponent
     accountType!: string
     userImages: any
     coachSpecialities: any
+    privateSessions: any
 
     constructor(
       private userService: UserService,
@@ -90,8 +91,14 @@ export class ProfileComponent
       this.user.userBirthDate = user.userBirthDate
       this.user.userPicture = user.userPicture
       this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
+
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
         next: (specialities) => this.coachSpecialities = specialities,
+        error: (err) => console.error(err)
+      })
+
+      this.userService.retrievePrivateSessions(this.accountType, this.user.userEmail!).subscribe({
+        next: (privateSessions) => {this.privateSessions = privateSessions; console.log(privateSessions)},
         error: (err) => console.error(err)
       })
     }

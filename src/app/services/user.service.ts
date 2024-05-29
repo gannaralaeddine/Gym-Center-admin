@@ -71,4 +71,16 @@ export class UserService {
 
     public changePassword(email: string, password: string) { return this.http.put(this.utils.API_GYM_CENTER + "/user/change-password/" + email + "/" + password, email) }
 
+    public retrievePrivateSessions(role: string, email:string)
+    {
+      if (role === "MEMBER")
+      {
+        return this.http.get(this.utils.API_GYM_CENTER + "/member/get-member-private-sessions/"+ email)
+      }
+      else
+      {
+        return this.http.get(this.utils.API_GYM_CENTER + "/coach/get-coach-private-sessions/"+ email)
+      }
+    }
+
 }

@@ -162,6 +162,38 @@
           </div>
         </div>
 
+      <div>
+        <h2 class="mb-1 ml-3">Mes séances privées</h2>
+        <div class="d-flex justify-content-center" *ngIf="!privateSessions || privateSessions.length === 0">
+          <h2 class="text-center">Il n'y a pas encore des séances privées</h2>
+        </div>
+        
+        <div class="main-body" style="width: fit-content; margin-left: 30%;" *ngIf="privateSessions && privateSessions.length !== 0">
+          <div class="mat-elevation-z8 text-center">
+            <table>
+              <thead>
+                <tr>
+                  <th  class="text-center">Titre</th>
+                  <th class="text-center">Date Début</th>
+                  <th  class="text-center">Date fin</th>
+                  <th  class="text-center" *ngIf="accountType === 'MEMBER'" style="padding-right: 13px;">Nom Coach</th>
+                  <th  class="text-center" *ngIf="accountType === 'COACH'" style="padding-right: 13px;">Nom Membre</th> 
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr *ngFor="let session of privateSessions">
+                  <td  class="text-center private-sessions-item">{{session.privateSessionTitle}}</td>
+                  <td  class="text-center private-sessions-item">{{session.privateSessionStartDateTime | date: "dd MMM yyyy - HH:mm"}}</td>
+                  <td  class="text-center private-sessions-item">{{session.privateSessionEndDateTime | date: "dd MMM yyyy - HH:mm"}}</td>
+                  <td  class="text-center private-sessions-item" *ngIf="accountType === 'MEMBER'">{{session.privateSessionCoach.userFirstName + " " + session.privateSessionCoach.userLastName}}</td>
+                  <td  class="text-center private-sessions-item" *ngIf="accountType === 'COACH'">{{session.privateSessionMember.userFirstName + " " + session.privateSessionMember.userLastName}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
         <div class="col-12 mt-4">
           <div class="mb-5 ps-3">
