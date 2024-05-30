@@ -101,11 +101,11 @@ export class ProfileComponent
 
       if (this.accountType === "COACH")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Gestion']
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Nombre Heures','Gestion']
       }  
       else if (this.accountType === "MEMBER")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Gestion']
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Nombre Heures','Gestion']
       }  
 
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
