@@ -55,11 +55,16 @@
         
             
                
-              
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 ml-2 mb-2">
+                    <div class="nav-wrapper position-relative">
+                      <h2 class="mb-0">Abonné</h2>
+                    </div>
+                  </div>
+
                   <div class="main-body">
                   <div class="mat-elevation-z8">
                     <table>
-
                       <thead>
                         <tr>
                           <th class="text-start"><span class="ml-3">Image</span></th>
@@ -70,14 +75,14 @@
                         </tr>
                       </thead>
                       
-                      <tbody *ngFor="let member of members">
+                      <tbody>
                         <tr>
-                          <td class=""><img [src]="getUserImage(member.userPicture)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(member.userEmail)"></td>
-                          <td  class="text-center"> {{member.userLastName}} {{member.userFirstName}} {{members.length}} </td>
+                          <td class=""><img [src]="getUserImage(subscription.subscriptionMember.userPicture!)" class="category-image avatar avatar-sm me-3 border-radius-lg activity-image act-img ml-2" alt="Category Image" (click)="goToUserProfileDetails(subscription.subscriptionMember.userEmail)"></td>
+                          <td  class="text-center"> {{subscription.subscriptionMember.userLastName}} {{subscription.subscriptionMember.userFirstName}} </td>
                           <td  class="text-center"> {{subscription.subscriptionStartDate | date: "dd MMM yyyy"}} </td>
                           <td  class="text-center"> {{subscription.subscriptionEndDate | date: "dd MMM yyyy"}} </td>
                           <td class="text-center">
-                            <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserProfileDetails(member.userEmail)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
+                            <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserProfileDetails(subscription.subscriptionMember.userEmail)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
                           </td>
                         </tr>
                       </tbody>

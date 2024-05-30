@@ -8,5 +8,5 @@ export class Subscription
     subscriptionStartDate!: string
     subscriptionEndDate!: string
     subscriptionActivity!: Activity
-    subscriptionMembers!: User
+    subscriptionMember!: User
 }

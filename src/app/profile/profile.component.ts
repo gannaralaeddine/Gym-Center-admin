@@ -1,4 +1,4 @@
-import {Component, Inject, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, PLATFORM_ID, ViewChild} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {AuthService} from "../auth/auth.service";
 import {DatePipe, isPlatformBrowser, NgFor, NgIf} from "@angular/common";
@@ -14,6 +14,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {AddImagesComponent} from "../add-images/add-images.component";
 import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-specialities.component";
 import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 
 @Component({
@@ -25,7 +27,9 @@ import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
     MatGridListModule,
     NgFor,
     NgIf,
-    DatePipe
+    DatePipe,
+    MatPaginatorModule,
+    MatTableModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -33,12 +37,15 @@ import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
 export class ProfileComponent
 {
 
-    deleteTag = "deleteProfileImage"
-    user = new User()
-    accountType!: string
-    userImages: any
-    coachSpecialities: any
-    privateSessions: any
+  deleteTag = "deleteProfileImage"
+  user = new User()
+  accountType!: string
+  userImages: any
+  coachSpecialities: any
+  privateSessions: any
+  dataSource!: MatTableDataSource<any>
+  displayedColumns: any
+  @ViewChild(MatPaginator) paginator!: MatPaginator
 
     constructor(
       private userService: UserService,
@@ -92,13 +99,26 @@ export class ProfileComponent
       this.user.userPicture = user.userPicture
       this.userImages = this.utilsService.deleteItemFromArray(user.userImages, user.userPicture)
 
+      if (this.accountType === "COACH")
+      {
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Gestion']
+      }  
+      else if (this.accountType === "MEMBER")
+      {
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Gestion']
+      }  
+
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
         next: (specialities) => this.coachSpecialities = specialities,
         error: (err) => console.error(err)
       })
 
       this.userService.retrievePrivateSessions(this.accountType, this.user.userEmail!).subscribe({
-        next: (privateSessions) => {this.privateSessions = privateSessions; console.log(privateSessions)},
+        next :(res) => {
+          this.dataSource = new MatTableDataSource(res as any)
+          this.dataSource.paginator = this.paginator
+          console.log(this.dataSource.data)
+        },
         error: (err) => console.error(err)
       })
     }
@@ -265,6 +285,20 @@ export class ProfileComponent
     goToActivityDetails(activity: any)
     {
       this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
+    }
+
+    goToUserDetails(privateSession: any)
+    {
+      switch (this.accountType) 
+      {
+        case "COACH":
+          this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionMember.userEmail}  })
+          break
+        
+          case "MEMBER":
+            this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionCoach.userEmail}  })
+            break
+      }
     }
 
     deleteSpeciality(activityId: any)

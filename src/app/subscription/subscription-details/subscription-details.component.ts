@@ -16,7 +16,17 @@ import { AddSubscriptionComponent } from '../add-subscription/add-subscription.c
 @Component({
   selector: 'app-subscription-details',
   standalone: true,
-  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule, DatePipe],
+  imports: [
+    NgFor, 
+    NgIf, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatIconModule, 
+    MatPaginatorModule, 
+    MatTableModule, 
+    MatSortModule, 
+    DatePipe
+  ],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.css'
 })
@@ -24,7 +34,6 @@ import { AddSubscriptionComponent } from '../add-subscription/add-subscription.c
 export class SubscriptionDetailsComponent implements OnInit
 {
   subscription = new Subscription()
-  members: any
   subscriptionId: any
   activityImage: any
 
@@ -51,7 +60,7 @@ export class SubscriptionDetailsComponent implements OnInit
         this.subscription.subscriptionStartDate = subscriptionObject.subscriptionStartDate.split('T')[0]
         this.subscription.subscriptionEndDate = subscriptionObject.subscriptionEndDate.split('T')[0]
         this.subscription.subscriptionActivity = subscriptionObject.subscriptionActivity
-        this.members = subscriptionObject.subscriptionMembers
+        this.subscription.subscriptionMember = subscriptionObject.member
         this.activityImage = this.utilsService.getImage(subscriptionObject.subscriptionActivity.actImage)
       },
       error: (err) => console.error(err)
