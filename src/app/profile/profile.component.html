@@ -167,30 +167,30 @@
         <div class="d-flex justify-content-center" *ngIf="!dataSource || dataSource.data.length === 0">
           <h2 class="text-center">Il n'y a pas encore des séances privées</h2>
         </div>
-        
+
         <div class="main-body" style="margin-left: 1.5%;" *ngIf="dataSource && dataSource.data.length !== 0">
           <div class="mat-elevation-z8">
               <table mat-table [dataSource]="dataSource">
-        
+
                 <!-- Title Column -->
                 <ng-container matColumnDef="Titre">
                   <th mat-header-cell *matHeaderCellDef class="text-center">Titre</th>
                     <td mat-cell *matCellDef="let privateSession" class="text-center">{{privateSession.privateSessionTitle}}</td>
                 </ng-container>
-        
+
                 <!-- Title Column -->
                 <ng-container matColumnDef="Date Début">
                   <th mat-header-cell *matHeaderCellDef  class="text-center">Date Début</th>
                   <td mat-cell *matCellDef="let privateSession" class="text-center"> {{privateSession.privateSessionStartDateTime | date: "dd MMM yyyy - HH:mm"}} </td>
                 </ng-container>
-        
+
                   <!-- Category Column -->
                   <ng-container matColumnDef="Date Fin">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Date Fin</th>
                     <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;"> {{privateSession.privateSessionEndDateTime | date: "dd MMM yyyy - HH:mm"}} </td>
                   </ng-container>
-        
-                  <ng-container matColumnDef="Nom Membre" *ngIf="accountType === 'COACH'"> 
+
+                  <ng-container matColumnDef="Nom Membre" *ngIf="accountType === 'COACH'">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Nom Membre</th>
                     <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;">{{privateSession.privateSessionMember.userFirstName + " " + privateSession.privateSessionMember.userLastName}}</td>
                   </ng-container>
@@ -199,23 +199,30 @@
                     <th mat-header-cell *matHeaderCellDef class="text-center">Nom Coach</th>
                     <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;">{{privateSession.privateSessionCoach.userFirstName + " " + privateSession.privateSessionCoach.userLastName}}</td>
                   </ng-container>
-                  
+
                   <ng-container matColumnDef="Nombre Heures">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Nombre Heures</th>
                     <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;">{{privateSession.privateSessionTitle}}</td>
                   </ng-container>
-                  
-                    <ng-container matColumnDef="Gestion">
-                        <th mat-header-cell *matHeaderCellDef  class="text-center" style="margin-left: -5%;">Gestion</th>
+
+                    <ng-container matColumnDef="Profil Membre" *ngIf="accountType === 'MEMBER'">
+                        <th mat-header-cell *matHeaderCellDef  class="text-center" style="margin-left: -5%;">Profil Coach</th>
                         <td mat-cell *matCellDef="let privateSession" class="text-center">
                           <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserDetails(privateSession)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
                         </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="Profil Coach" *ngIf="accountType === 'COACH'">
+                      <th mat-header-cell *matHeaderCellDef  class="text-center" style="margin-left: -5%;">Profil Membre</th>
+                      <td mat-cell *matCellDef="let privateSession" class="text-center">
+                        <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToUserDetails(privateSession)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
+                      </td>
+                    </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-        
+
               <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
           </div>
         </div>

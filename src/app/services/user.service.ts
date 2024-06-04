@@ -83,4 +83,8 @@ export class UserService {
       }
     }
 
+
+    public retrieveMemberById(id: any)  { return this.http.get(this.utils.API_GYM_CENTER + "/member/retrieve-member-by-id/"+ id) }
+
+
 }

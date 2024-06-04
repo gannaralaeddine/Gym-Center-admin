@@ -101,12 +101,12 @@ export class ProfileComponent
 
       if (this.accountType === "COACH")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Nombre Heures','Gestion']
-      }  
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Nombre Heures','Profil Coach']
+      }
       else if (this.accountType === "MEMBER")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Nombre Heures','Gestion']
-      }  
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Nombre Heures','Profil Membre']
+      }
 
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
         next: (specialities) => this.coachSpecialities = specialities,
@@ -289,12 +289,12 @@ export class ProfileComponent
 
     goToUserDetails(privateSession: any)
     {
-      switch (this.accountType) 
+      switch (this.accountType)
       {
         case "COACH":
           this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionMember.userEmail}  })
           break
-        
+
           case "MEMBER":
             this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionCoach.userEmail}  })
             break

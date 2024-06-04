@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, startWith } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import {User} from "../../user/user";
 
 
 @Component({
@@ -45,6 +46,8 @@ export class AddSubscriptionComponent implements OnInit
   userIDs: string[] = []
   filteredOptions!: Observable<string[]>
   userId!: string
+  selectedUser!: User
+
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -58,7 +61,7 @@ export class AddSubscriptionComponent implements OnInit
     if (this.data.subscriptionId)
     {
       this.isAddOperation = false;
-      this.getSubscrption(this.data.subscriptionId)
+      this.getSubscription(this.data.subscriptionId)
     }
 
     this.subscriptionFormValue = this.subscriptionFormBuilder.group({
@@ -74,7 +77,7 @@ export class AddSubscriptionComponent implements OnInit
   {
     this.userService.getAllUsers().subscribe({
       next: (users) => {
-        for (let i = 0; i < users.length; i++) 
+        for (let i = 0; i < users.length; i++)
         {
           if (users[i].roles[0].roleName === "MEMBER")
           {
@@ -86,14 +89,14 @@ export class AddSubscriptionComponent implements OnInit
     })
     this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
   }
- 
-  private _filter(value: string): string[] 
+
+  private _filter(value: string): string[]
   {
     const filterValue = value.toLowerCase()
     return this.options.filter(option => option.toLowerCase().includes(filterValue))
   }
 
-  checkValidityForm() 
+  checkValidityForm()
   {
     if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid && this.subscriptionFormValue.controls['subscriptionPrice'].touched)
     {
@@ -143,7 +146,7 @@ export class AddSubscriptionComponent implements OnInit
       }
     }
     else
-    { 
+    {
       if (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
@@ -151,18 +154,18 @@ export class AddSubscriptionComponent implements OnInit
       else
       {
         document.getElementById("addButton")?.setAttribute("disabled","")
-      } 
+      }
     }
   }
 
-  closeDialog() 
+  closeDialog()
   {
     this.dialogRef.close()
   }
 
-  getActivity(id?: any) 
+  getActivity(id?: any)
   {
-    
+
     if (id)
     {
       this.activityService.getActivity(id).subscribe({
@@ -179,7 +182,7 @@ export class AddSubscriptionComponent implements OnInit
     }
   }
 
-  getAllActivities() 
+  getAllActivities()
   {
     this.activityService.getAllActivities().subscribe({
       next: (activities) => this.activities = activities,
@@ -187,37 +190,32 @@ export class AddSubscriptionComponent implements OnInit
     })
   }
 
-  addSubscription() 
+  addSubscription()
   {
     this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
     this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
+    console.log("before assigning objesct")
+    console.log(this.selectedUser)
+    this.subscriptionObject.subscriptionMember = this.selectedUser
 
     this.subscriptionService.addSubscription(this.subscriptionObject).subscribe({
-      next:(subscription: any) => {
-        this.subscriptionService.addMemberToSubscription(this.userId, subscription.subscriptionId).subscribe({
-          next: (response) => {
-            if (response === 200)
-            {
-              console.log("Opération réussite: " + subscription.subscriptionId)
-              this.dialogRef.close()
-              this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
-            }
-          },
-          error: (err) => console.error(err)
-        })
+      next:() => {
+            this.dialogRef.close()
+            this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 
-  updateSubscription() 
+  updateSubscription()
   {
     this.subscriptionObject.subscriptionId = this.data.subscriptionId
     this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
     this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
-  
+    this.subscriptionObject.subscriptionMember = this.selectedUser
+
     this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject).subscribe({
       complete: () => {
         this.dialogRef.close()
@@ -227,10 +225,10 @@ export class AddSubscriptionComponent implements OnInit
     })
   }
 
-  getSubscrption(subscriptionId: any) 
+  getSubscription(subscriptionId: any)
   {
     this.subscriptionService.getSubscription(subscriptionId).subscribe({
-      next: (subscription) => { 
+      next: (subscription) => {
         this.subscriptionObject.subscriptionActivity = subscription.subscriptionActivity
         this.subscriptionFormValue.controls['subscriptionPrice'].setValue(subscription.subscriptionPrice)
         this.subscriptionFormValue.controls['subscriptionStartDate'].setValue(subscription.subscriptionStartDate.split('T')[0])
@@ -239,7 +237,6 @@ export class AddSubscriptionComponent implements OnInit
     },
       error: (err) => console.error(err)
     })
-    //console.log(this.subscription)
   }
 
   populateActivitySelectList(subscription: any)
@@ -289,5 +286,19 @@ export class AddSubscriptionComponent implements OnInit
     },
       error: (err)=>console.error(err)
     })
+  }
+
+  getMemberById(memberId: string)
+  {
+
+    this.userService.retrieveMemberById(memberId).subscribe(
+      {
+        next: (user) => {
+          this.selectedUser = user as User
+        },
+        error: (err) => console.error(err)
+      }
+    )
+
   }
 }

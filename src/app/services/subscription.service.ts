@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilsService } from '../serviceutils/utils.service';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionService 
+export class SubscriptionService
 {
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
@@ -18,15 +17,15 @@ export class SubscriptionService
 
   public deleteSubscription(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/subscription/delete-subscription/" + id) }
 
-  public updateSubscription(id: any, subscription:any) { return this.http.put(this.utils.API_GYM_CENTER + "/subscription/update-subscription/" + id,subscription) }
+  public updateSubscription(id: any, subscription:any) { return this.http.put(this.utils.API_GYM_CENTER + "/subscription/update-subscription/" + id, subscription) }
 
-  public addMemberToSubscription(memberId: any, subscriptionId:any) 
-  { 
-    return this
-              .http
-              .put(this.utils.API_GYM_CENTER + "/subscription/assign-member-to-subscription/" + subscriptionId + "/" + memberId, null, {observe: "response"})
-              .pipe(map((response) => {
-                return response.status
-              }))
-  }
+  // public addMemberToSubscription(memberId: any, subscriptionId:any)
+  // {
+  //   return this
+  //             .http
+  //             .put(this.utils.API_GYM_CENTER + "/subscription/assign-member-to-subscription/" + subscriptionId + "/" + memberId, null, {observe: "response"})
+  //             .pipe(map((response) => {
+  //               return response.status
+  //             }))
+  // }
 }

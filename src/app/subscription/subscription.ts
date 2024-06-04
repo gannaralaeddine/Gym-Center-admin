@@ -1,7 +1,7 @@
 import { Activity } from "../activity/activity"
 import { User } from "../user/user"
 
-export class Subscription 
+export class Subscription
 {
     subscriptionId!: number
     subscriptionPrice!: number

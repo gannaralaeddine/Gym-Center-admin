@@ -17,14 +17,14 @@ import { AddSubscriptionComponent } from '../add-subscription/add-subscription.c
   selector: 'app-subscription-details',
   standalone: true,
   imports: [
-    NgFor, 
-    NgIf, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatIconModule, 
-    MatPaginatorModule, 
-    MatTableModule, 
-    MatSortModule, 
+    NgFor,
+    NgIf,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
     DatePipe
   ],
   templateUrl: './subscription-details.component.html',
@@ -66,7 +66,8 @@ export class SubscriptionDetailsComponent implements OnInit
       error: (err) => console.error(err)
     })
   }
-  getUserImage(imageName: string): string
+
+  getUserImage(imageName: string | undefined): string
   {
       if (imageName)
       {

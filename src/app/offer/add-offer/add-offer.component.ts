@@ -11,7 +11,6 @@ import { Activity } from '../../activity/activity';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { OptionService } from '../../services/option.service';
-import { Option } from '../../option/option';
 
 @Component({
   selector: 'app-add-offer',
@@ -32,7 +31,7 @@ export class AddOfferComponent implements OnInit
   minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
   selectedOptions = new FormControl('');
   allOptionsList: any
-  
+
   constructor(
     private offerFormBuilder: FormBuilder,
     private activityService: ActivityService,
@@ -63,7 +62,7 @@ export class AddOfferComponent implements OnInit
     this.getAllOptions()
   }
 
-  getOffer(offerId: any) 
+  getOffer(offerId: any)
   {
     this.offerService.getOffer(offerId).subscribe({
       next: (offerObject) => {
@@ -72,7 +71,7 @@ export class AddOfferComponent implements OnInit
         this.offerFormValue.controls['offerPeriod'].setValue(offerObject.offerPeriod)
         this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
         this.populateActivitiesList(offerObject)
-  
+
         this.offer = offerObject as Offer
       },
       error: (err) => console.error(err)
@@ -97,7 +96,7 @@ export class AddOfferComponent implements OnInit
     }
   }
 
-  getAllActivities() 
+  getAllActivities()
   {
     this.activityService.getAllActivities().subscribe({
       next: (activitiesList) => this.activities = activitiesList,
@@ -105,7 +104,7 @@ export class AddOfferComponent implements OnInit
     })
   }
 
-  getAllOptions() 
+  getAllOptions()
   {
     this.optionService.getAllOptions().subscribe({
       next: (options) =>{ this.allOptionsList = options
@@ -113,7 +112,7 @@ export class AddOfferComponent implements OnInit
       error: (err) => console.error(err)
     })
   }
-  checkValidityForm() 
+  checkValidityForm()
   {
     if (this.offerFormValue.controls['offerTitle'].invalid && this.offerFormValue.controls['offerTitle'].touched)
     {
@@ -175,7 +174,7 @@ export class AddOfferComponent implements OnInit
     }
   }
 
-  updateOffer() 
+  updateOffer()
   {
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
@@ -186,11 +185,11 @@ export class AddOfferComponent implements OnInit
         this.closeDialog()
         this.utilsService.successDialog("Opération réussite", "Offre mise à jour avec succès", true)
       },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 
-  addOffer() 
+  addOffer()
   {
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
@@ -201,11 +200,11 @@ export class AddOfferComponent implements OnInit
         this.closeDialog()
         this.utilsService.successDialog("Opération réussite", "Offre ajouté avec succès", true)
       },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 
-  closeDialog() 
+  closeDialog()
   {
     this.dialogRef.close()
   }
@@ -218,7 +217,7 @@ export class AddOfferComponent implements OnInit
     let formGroupActivitySelectList = document.getElementById("activitySelectList")?.parentElement
     document.getElementById("activitySelectList")?.remove()
 
-    selectTag = document.createElement("select") 
+    selectTag = document.createElement("select")
     selectTag.setAttribute("formcontrolname","offerActivity")
     selectTag.setAttribute("class","form-control border border-dark pl-2 round")
     selectTag.setAttribute("id","activitySelectList")
@@ -255,7 +254,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerOption = []
     if (this.selectedOptions.value)
     {
-      for (let i = 0; i < this.selectedOptions.value?.length; i++) 
+      for (let i = 0; i < this.selectedOptions.value?.length; i++)
       {
           this.optionService.getOption(this.selectedOptions.value[i]).subscribe({
             next: (optionObject) => this.offer.offerOption.push(optionObject),
