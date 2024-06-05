@@ -1,0 +1,34 @@
+
+<div class="modal-content" style="margin: 10px">
+
+    <div class="modal-header">
+
+      <h1 class="modal-title pl-1">Ajouter Séance</h1>
+      <button type="button" class="close" (click)="closeDialog()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div>
+        <form [formGroup]="updatePrivateSessionsNumberFormValue">
+              <div class="form-group">
+                <label for="offerTitleInput" class="text-dark font-weight-bold" >Nombre des séances privées</label>
+                <input type="text" pattern="^[0-9]*$" class="form-control border border-secondary pl-2 round"  placeholder="saisir nombre des séances à ajouter" formControlName="privateSessionsNumber">
+                <h5 class="text-danger text-bold ml-2" *ngIf="updatePrivateSessionsNumberFormValue.controls['privateSessionsNumber'].invalid && updatePrivateSessionsNumberFormValue.controls['privateSessionsNumber'].touched">Merci de saisir des entiers</h5>
+              </div>
+
+              <div class="row">
+                <div class="col text-center">
+                  <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
+                  <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="updatePrivateSessionsNumber()" [disabled]="updatePrivateSessionsNumberFormValue.controls['privateSessionsNumber'].invalid">Ajouter</button>
+                </div>
+              </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+

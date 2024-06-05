@@ -16,6 +16,7 @@ import {AddCoachSpecialitiesComponent} from "./add-coach-specialities/add-coach-
 import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { UpdatePrivateSessionsNumberComponent } from './update-private-sessions-number/update-private-sessions-number.component';
 
 
 @Component({
@@ -101,11 +102,11 @@ export class ProfileComponent
 
       if (this.accountType === "COACH")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Nombre Heures','Profil Coach']
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Profil Coach']
       }
       else if (this.accountType === "MEMBER")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Nombre Heures','Profil Membre']
+        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Profil Membre']
       }
 
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
@@ -321,6 +322,19 @@ export class ProfileComponent
             }
           })
         }
+      })
+    }
+
+    updatePrivateSessionsNumberDialog(email: any)
+    {
+      const popup = this.dialogRef.open(UpdatePrivateSessionsNumberComponent, {
+        width: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { memberEmail: email }
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.ngOnInit()
       })
     }
 }

@@ -22,4 +22,5 @@ export class User
   roles?: Array<Role>
   userImages!: FileHandleModule[]
   userIsEnabled!: boolean
+  privateSessionsNumber!: number
 }

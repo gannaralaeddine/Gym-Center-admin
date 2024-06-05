@@ -86,5 +86,10 @@ export class UserService {
 
     public retrieveMemberById(id: any)  { return this.http.get(this.utils.API_GYM_CENTER + "/member/retrieve-member-by-id/"+ id) }
 
+    public updatePrivateSessionsNumber(memberEmail: any, newPrivateSessionsNumber:any) 
+    { 
+      return this.http.put(this.utils.API_GYM_CENTER + "/member/update-member-private-sessions-number/"+ memberEmail + "/" + newPrivateSessionsNumber,null)
+    }
+
 
 }

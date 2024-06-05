@@ -61,6 +61,15 @@
             <td mat-cell *matCellDef="let user" class="text-center"> {{ user.userFirstName }} {{ user.userLastName }} </td>
           </ng-container>
 
+          <ng-container matColumnDef="Séances Privées Restantes">
+            <th mat-header-cell *matHeaderCellDef  class="text-center">Séances Privées Restantes</th>
+            
+              <td mat-cell *matCellDef="let user" class="text-center">
+                <span *ngIf="user.privateSessionsNumber">{{user.privateSessionsNumber}} Séance(s)</span>
+                <span *ngIf="!user.privateSessionsNumber">N/A</span>
+            </td>
+          </ng-container>
+
         <ng-container matColumnDef="État">
           <th mat-header-cell *matHeaderCellDef  class="text-center">État</th>
           <td mat-cell *matCellDef="let user" class="text-center">

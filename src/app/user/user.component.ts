@@ -42,7 +42,7 @@ export class UserComponent implements OnInit
     user = new User()
     member = new User();
     dataSource!: MatTableDataSource<any>;
-    displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Gestion', 'État']
+    displayedColumns = ['Image','Type de compte', 'E-mail', 'Nom & Prénom','Séances Privées Restantes','Gestion', 'État']
     dataSourceBackUp!: MatTableDataSource<any>
     @ViewChild(MatPaginator) paginator!: MatPaginator
     @ViewChild(MatSort) sort!: MatSort
@@ -69,7 +69,7 @@ export class UserComponent implements OnInit
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
           this.dataSourceBackUp = this.dataSource
-          console.log("all users type: " + typeof this.allUsers)
+          console.log(this.allUsers)
         },
         error: (err) => console.error(err)
       })
