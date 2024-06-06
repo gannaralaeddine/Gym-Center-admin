@@ -173,13 +173,13 @@
 
       <div>
         <h2 class="mb-1 ml-3">Séances privées</h2>
-        <div class="d-flex justify-content-center" *ngIf="!dataSource || dataSource.data.length === 0">
+        <div class="d-flex justify-content-center" *ngIf="!privateSessionsDataSource || privateSessionsDataSource.data.length === 0">
           <h2 class="text-center">Il n'y a pas encore des séances privées</h2>
         </div>
 
-        <div class="main-body" style="margin-left: 1.5%;" *ngIf="dataSource && dataSource.data.length !== 0">
+        <div class="main-body" style="margin-left: 1.5%;" *ngIf="privateSessionsDataSource && privateSessionsDataSource.data.length !== 0">
           <div class="mat-elevation-z8">
-              <table mat-table [dataSource]="dataSource">
+              <table mat-table [dataSource]="privateSessionsDataSource">
 
                 <!-- Title Column -->
                 <ng-container matColumnDef="Titre">
@@ -209,11 +209,6 @@
                     <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;">{{privateSession.privateSessionCoach.userFirstName + " " + privateSession.privateSessionCoach.userLastName}}</td>
                   </ng-container>
 
-                  <!-- <ng-container matColumnDef="Nombre Séances" *ngIf="accountType === 'MEMBER'">
-                    <th mat-header-cell *matHeaderCellDef class="text-center">Nombre Séances</th>
-                    <td mat-cell *matCellDef="let privateSession" class="text-center" style="margin-left: -5%;">{{privateSession.privateSessionMember.privateSessionsNumber}}</td>
-                  </ng-container> -->
-
                     <ng-container matColumnDef="Profil Membre" *ngIf="accountType === 'MEMBER'">
                         <th mat-header-cell *matHeaderCellDef  class="text-center" style="margin-left: -5%;">Profil Coach</th>
                         <td mat-cell *matCellDef="let privateSession" class="text-center">
@@ -228,15 +223,64 @@
                       </td>
                     </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-header-row *matHeaderRowDef="privateSessionsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: privateSessionsDisplayedColumns;"></tr>
               </table>
 
-              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
           </div>
         </div>
       </div>
 
+      <div class="main-body mt-3" style="margin-left: 1.5%;" *ngIf="accountType === 'MEMBER'">
+        <h2 class="mb-1 ml-3">Abonnements</h2>
+
+        <div class="d-flex justify-content-center" *ngIf="!subscriptionsDataSource || subscriptionsDataSource.data.length === 0">
+          <h2 class="text-center">Il n'y a pas encore des abonnements</h2>
+        </div>
+
+        <div class="mat-elevation-z8" *ngIf="subscriptionsDataSource && subscriptionsDataSource.data.length !== 0">
+            <table mat-table [dataSource]="subscriptionsDataSource">
+      
+              <!-- Image Column -->
+              <ng-container matColumnDef="Image">
+                <th mat-header-cell *matHeaderCellDef>Image</th>
+                <td mat-cell *matCellDef="let subscription">
+                  <img [src]="getActivityImage(subscription.subscriptionActivity.actImage)" class="avatar avatar-sm me-3 border-radius-lg activity-image mt-1 mb-1" alt="Session Image">
+                </td>
+              </ng-container>
+      
+              <!-- Activity Column -->
+              <ng-container matColumnDef="Activité">
+                <th mat-header-cell *matHeaderCellDef  class="text-center">Activité</th>
+                <td mat-cell *matCellDef="let subscription" class="text-center"> {{subscription.subscriptionActivity.actName}} </td>
+              </ng-container>
+      
+                <!-- Price Column -->
+                <ng-container matColumnDef="Prix">
+                  <th mat-header-cell *matHeaderCellDef  class="text-center" >Tarif Mensuel</th>
+                  <td mat-cell *matCellDef="let subscription" class="text-center" style="margin-left: -5%;"> {{subscription.subscriptionPrice}} dinars</td>
+                </ng-container>
+      
+              <!-- Action Column -->
+              <ng-container matColumnDef="Gestion">
+                <th mat-header-cell *matHeaderCellDef  class="text-center" style="margin-left: -5%;">Gestion</th>
+                <td mat-cell *matCellDef="let subscription" class="text-center">
+      
+                  <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToSubscriptionDetails(subscription)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
+      
+                </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="subscriptionsDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: subscriptionsDisplayedColumns;"></tr>
+      
+            </table>
+      
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+      </div>
+      
         <div class="col-12 mt-4">
           <div class="mb-5 ps-3">
             <h2 class="mb-1">Album</h2>

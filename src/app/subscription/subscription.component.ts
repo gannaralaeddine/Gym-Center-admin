@@ -67,6 +67,7 @@ export class SubscriptionComponent implements OnInit
       return "../assets/img/icons/ic_activity.png"
     }
   }
+  
   addOrUpdateDialog(subscriptionId: any)
   {
     const popup = this.dialogRef.open(AddSubscriptionComponent, {

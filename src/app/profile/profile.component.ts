@@ -44,9 +44,12 @@ export class ProfileComponent
   userImages: any
   coachSpecialities: any
   privateSessions: any
-  dataSource!: MatTableDataSource<any>
-  displayedColumns: any
-  @ViewChild(MatPaginator) paginator!: MatPaginator
+  privateSessionsDataSource!: MatTableDataSource<any>
+  privateSessionsDisplayedColumns: any
+  @ViewChild(MatPaginator) privateSessionsPaginator!: MatPaginator
+  subscriptionsDataSource!: MatTableDataSource<any>
+  subscriptionsDisplayedColumns = ['Image','Activité','Prix','Gestion']
+  @ViewChild(MatPaginator) subscriptionsPaginator!: MatPaginator
 
     constructor(
       private userService: UserService,
@@ -102,11 +105,11 @@ export class ProfileComponent
 
       if (this.accountType === "COACH")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Profil Coach']
+        this.privateSessionsDisplayedColumns = ['Titre','Date Début','Date Fin','Nom Membre','Profil Coach']
       }
       else if (this.accountType === "MEMBER")
       {
-        this.displayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Profil Membre']
+        this.privateSessionsDisplayedColumns = ['Titre','Date Début','Date Fin','Nom Coach','Profil Membre']
       }
 
       this.userService.retrieveCoachSpecialities(user.userId).subscribe({
@@ -116,9 +119,16 @@ export class ProfileComponent
 
       this.userService.retrievePrivateSessions(this.accountType, this.user.userEmail!).subscribe({
         next :(res) => {
-          this.dataSource = new MatTableDataSource(res as any)
-          this.dataSource.paginator = this.paginator
-          console.log(this.dataSource.data)
+          this.privateSessionsDataSource = new MatTableDataSource(res as any)
+          this.privateSessionsDataSource.paginator = this.privateSessionsPaginator
+        },
+        error: (err) => console.error(err)
+      })
+
+      this.userService.getMemberSubscriptions(this.user.userEmail!).subscribe({
+        next :(res) => {
+          this.subscriptionsDataSource = new MatTableDataSource(res as any)
+          this.subscriptionsDataSource.paginator = this.subscriptionsPaginator
         },
         error: (err) => console.error(err)
       })
@@ -337,4 +347,22 @@ export class ProfileComponent
         this.ngOnInit()
       })
     }
+
+    getActivityImage(imageName: string): string
+    {
+      if (imageName)
+      {
+        return this.utilsService.getImage(imageName)
+      }
+      else
+      {
+        return "../assets/img/icons/ic_activity.png"
+      }
+    }
+
+    goToSubscriptionDetails(subscription: any)
+  {
+    const params = { subscriptionId: subscription.subscriptionId }
+    this.activityRouter.navigate(["subscription-details"], { queryParams: params  })
+  }
 }

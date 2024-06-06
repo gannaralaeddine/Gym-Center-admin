@@ -91,5 +91,8 @@ export class UserService {
       return this.http.put(this.utils.API_GYM_CENTER + "/member/update-member-private-sessions-number/"+ memberEmail + "/" + newPrivateSessionsNumber,null)
     }
 
-
+    public getMemberSubscriptions(email: any) 
+    {
+      return this.http.get(this.utils.API_GYM_CENTER + "/member/get-member-subscriptions/" + email)
+    }
 }
