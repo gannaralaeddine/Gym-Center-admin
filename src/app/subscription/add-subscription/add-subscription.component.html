@@ -35,13 +35,13 @@
                 <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionEndDate'].invalid && subscriptionFormValue.controls['subscriptionEndDate'].touched">Merci de choisir une date valide</h5>
               </div>
 
-              <mat-form-field class="example-full-width" [color]="'accent'">
-                <mat-label>Membre</mat-label>
-                <input type="text" placeholder="Saisir nom du membre" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.split('-')[1] + ' ' + option.split('-')[2]" (onSelectionChange)="userId = option.split('-')[0]; getMemberById(option.split('-')[0])">{{option.split('-')[1] + " " + option.split('-')[2]}}</mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
+              <div class="form-group">
+                <label for="privateSessionsNumber" class="text-dark font-weight-bold">Nombre des séances privées</label>
+                <input type="text" pattern="^[0-9]*$" class="form-control border border-secondary pl-2 round"  id="privateSessionsNumber" placeholder="saisir nombre des séances" formControlName="privateSessionsNumber" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" [defaultValue]="1">
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && subscriptionFormValue.controls['privateSessionsNumber'].invalid && subscriptionFormValue.controls['privateSessionsNumber'].touched">Merci de saisir des entiers</h5>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched">Merci de saisir un entier supérieur à 0</h5>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched">Merci de saisir un entier valide</h5>
+              </div>
 
               <div class="form-group">
                 <label for="activitySelectList" class="text-dark font-weight-bold">Activité</label>
@@ -50,6 +50,14 @@
                 </select>
                 <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionActivity'].invalid && subscriptionFormValue.controls['subscriptionActivity'].touched">Merci de choisir une catégorie</h5>
               </div>
+
+              <mat-form-field class="example-full-width" [color]="'accent'" [hidden]="subscriptionFormValue.controls['subscriptionActivity'].invalid && isAddOperation">
+                <mat-label>Membre</mat-label>
+                <input type="text" placeholder="Saisir nom du membre" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.split('-')[1] + ' ' + option.split('-')[2]" (onSelectionChange)="userId = option.split('-')[0]; getMemberById(option.split('-')[0])">{{option.split('-')[1] + " " + option.split('-')[2]}}</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
 
               <div class="row">
                 <div class="col text-center">

@@ -53,6 +53,8 @@ export class UserService {
 
     public updateUserData(user: User) { return this.http.put(this.utils.API_GYM_CENTER + "/user/update-user", user) }
 
+    public updateMember(memberId: string ,member: User) { return this.http.put(this.utils.API_GYM_CENTER + "/update-member/" + memberId, member) }
+
     public getAllCoaches() {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-all-coaches")}
 
     public retrieveCoachSpecialities(id: number) {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-coach-specialities/"+ id)}
@@ -94,5 +96,15 @@ export class UserService {
     public getMemberSubscriptions(email: any) 
     {
       return this.http.get(this.utils.API_GYM_CENTER + "/member/get-member-subscriptions/" + email)
+    }
+
+    public getMemberById(id: any) 
+    {
+      return this.http.get(this.utils.API_GYM_CENTER + "/member/retrieve-member-by-id/" + id)
+    }
+
+    public replaceOldPrivateSessionsNumber(memberId: any , newNumberumberOfSessions: any) 
+    { 
+      return this.http.put(this.utils.API_GYM_CENTER + "/replace-old-private-sessions-number/" + memberId + "/" + newNumberumberOfSessions, null) 
     }
 }

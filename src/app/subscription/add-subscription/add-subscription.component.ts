@@ -39,7 +39,6 @@ export class AddSubscriptionComponent implements OnInit
   isAddOperation = true
   activities: any
   subscriptionObject = new Subscription()
-  subscription!: Subscription
   subscriptionActivity!: Activity
   myControl = new FormControl('')
   options: string[] = []
@@ -47,6 +46,7 @@ export class AddSubscriptionComponent implements OnInit
   filteredOptions!: Observable<string[]>
   userId!: string
   selectedUser!: User
+  privateSessionsNumber!: number
 
 
   constructor(private activityService: ActivityService,
@@ -68,7 +68,8 @@ export class AddSubscriptionComponent implements OnInit
       subscriptionPrice : ['',Validators.required],
       subscriptionStartDate : ['',Validators.required],
       subscriptionEndDate : ['',Validators.required],
-      subscriptionActivity:['',Validators.required]
+      subscriptionActivity:['',Validators.required],
+      privateSessionsNumber:['',Validators.required]
     })
 
     this.getAllActivities()
@@ -98,14 +99,25 @@ export class AddSubscriptionComponent implements OnInit
 
   checkValidityForm()
   {
-    if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid && this.subscriptionFormValue.controls['subscriptionPrice'].touched)
+    if ((this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && this.subscriptionFormValue.controls['privateSessionsNumber'].invalid && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) || 
+    (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) || 
+    (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched))
     {
-      document.getElementById('subscriptionNameInput')!.className = "form-control border border-danger pl-2 round"
+      document.getElementById('privateSessionsNumber')!.className = "form-control border border-danger pl-2 round"
     }
     else
     {
-      document.getElementById('subscriptionNameInput')!.className = "form-control border border-dark pl-2 round"
+      document.getElementById('privateSessionsNumber')!.className = "form-control border border-dark pl-2 round"
     }
+
+    if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid && this.subscriptionFormValue.controls['subscriptionPrice'].touched)
+      {
+        document.getElementById('subscriptionNameInput')!.className = "form-control border border-danger pl-2 round"
+      }
+      else
+      {
+        document.getElementById('subscriptionNameInput')!.className = "form-control border border-dark pl-2 round"
+      }
 
     if (this.subscriptionFormValue.controls['subscriptionStartDate'].invalid && this.subscriptionFormValue.controls['subscriptionStartDate'].touched)
     {
@@ -147,7 +159,7 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
-      if (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid)
+      if (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -195,14 +207,16 @@ export class AddSubscriptionComponent implements OnInit
     this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
     this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
-    console.log("before assigning objesct")
-    console.log(this.selectedUser)
-    this.subscriptionObject.subscriptionMember = this.selectedUser
 
-    this.subscriptionService.addSubscription(this.subscriptionObject).subscribe({
+    this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
       next:() => {
+        this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail,this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
+          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
+          complete: () => {
             this.dialogRef.close()
             this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
+          }
+        })
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
@@ -214,14 +228,30 @@ export class AddSubscriptionComponent implements OnInit
     this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
     this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
-    this.subscriptionObject.subscriptionMember = this.selectedUser
+    //this.subscriptionObject.subscriptionMember = this.selectedUser
 
-    this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject).subscribe({
+    this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject, this.userId).subscribe({
+      next: () => {
+        this.userService.replaceOldPrivateSessionsNumber(this.userId, this.subscriptionFormValue.controls['privateSessionsNumber'].value).subscribe({
+          error: (err) => console.error(err)
+        })
+        // if (this.privateSessionsNumber !== this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue())
+        // {
+          
+          
+        //   this.userService.updateMember(this.selectedUser.userId!.toString(),this.selectedUser).subscribe({
+        //     next: (member) => console.log(member),
+        //     error: (err) => console.error(err)
+        //   })
+        // }
+      },
+
+      error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
+
       complete: () => {
         this.dialogRef.close()
-        this.utilsService.successDialog("Opération réussite", "Activité éditée avec succès", true)
-      },
-      error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+        this.utilsService.successDialog("Opération réussite", "Abonnement édité avec succès", true)
+      }
     })
   }
 
@@ -233,7 +263,12 @@ export class AddSubscriptionComponent implements OnInit
         this.subscriptionFormValue.controls['subscriptionPrice'].setValue(subscription.subscriptionPrice)
         this.subscriptionFormValue.controls['subscriptionStartDate'].setValue(subscription.subscriptionStartDate.split('T')[0])
         this.subscriptionFormValue.controls['subscriptionEndDate'].setValue(subscription.subscriptionEndDate.split('T')[0])
+        this.subscriptionFormValue.controls['privateSessionsNumber'].setValue(subscription.member.privateSessionsNumber)
         this.populateActivitySelectList(subscription)
+        this.myControl.setValue(subscription.member.userFirstName + " " + subscription.member.userLastName)
+        this.selectedUser = subscription.member
+        this.userId = subscription.member.userId
+        this.privateSessionsNumber = subscription.member.privateSessionsNumber
     },
       error: (err) => console.error(err)
     })
