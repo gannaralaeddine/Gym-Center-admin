@@ -3,7 +3,7 @@ import {FileHandleModule} from "../file-handle/file-handle.module";
 
 export class User
 {
-  userId?: number
+  userId!: number
   userEmail?: string
   userFirstName!: string
   userLastName!: string

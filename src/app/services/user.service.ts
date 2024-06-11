@@ -57,6 +57,8 @@ export class UserService {
 
     public getAllCoaches() {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-all-coaches")}
 
+    public retrieveAllMembers() {return this.http.get(this.utils.API_GYM_CENTER + "/member/retrieve-all-members")}
+
     public retrieveCoachSpecialities(id: number) {return this.http.get(this.utils.API_GYM_CENTER + "/coach/retrieve-coach-specialities/"+ id)}
 
     public deleteCoachSpeciality(coachId: number, activityId: number) {return this.http.delete(this.utils.API_GYM_CENTER + "/coach/delete-coach-activities/"+ coachId + "/"+ activityId)}

@@ -38,16 +38,16 @@ export class AddSubscriptionComponent implements OnInit
   subscriptionFormValue !: FormGroup
   isAddOperation = true
   activities: any
+  activitySubscriptions!: Subscription[]
   subscriptionObject = new Subscription()
   subscriptionActivity!: Activity
   myControl = new FormControl('')
   options: string[] = []
-  userIDs: string[] = []
   filteredOptions!: Observable<string[]>
   userId!: string
   selectedUser!: User
   privateSessionsNumber!: number
-
+  membersList: any
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -76,19 +76,10 @@ export class AddSubscriptionComponent implements OnInit
   }
   ngOnInit()
   {
-    this.userService.getAllUsers().subscribe({
-      next: (users) => {
-        for (let i = 0; i < users.length; i++)
-        {
-          if (users[i].roles[0].roleName === "MEMBER")
-          {
-            this.options.push(users[i].userId + "-" +users[i].userFirstName + "-" + users[i].userLastName)
-          }
-        }
-      },
+    this.userService.retrieveAllMembers().subscribe({
+      next: (members:any) => this.membersList = members,
       error: (err) => console.error(err)
     })
-    this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
   }
 
   private _filter(value: string): string[]
@@ -188,7 +179,19 @@ export class AddSubscriptionComponent implements OnInit
     else
     {
       this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
-        next: (activity) => this.subscriptionObject.subscriptionActivity = activity as Activity,
+        next: (activity) => {
+          this.subscriptionObject.subscriptionActivity = activity as Activity
+          this.subscriptionService.retrieveActivitySubscriptions(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
+            next: (activitySubscriptions) => {
+              this.activitySubscriptions = activitySubscriptions
+              this.filterUnsubscribedMembersInActivity(this.membersList).forEach((user: User) => {
+                this.options.push(user.userId + "-" +user.userFirstName + "-" + user.userLastName)
+              })
+              this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
+            },
+            error: (err) => console.error(err)
+          })
+        },
         error: (err) => console.log(err)
       })
     }
@@ -228,7 +231,6 @@ export class AddSubscriptionComponent implements OnInit
     this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
     this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
     this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
-    //this.subscriptionObject.subscriptionMember = this.selectedUser
 
     this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject, this.userId).subscribe({
       next: () => {
@@ -334,6 +336,36 @@ export class AddSubscriptionComponent implements OnInit
         error: (err) => console.error(err)
       }
     )
+
+  }
+
+  filterUnsubscribedMembersInActivity(members: any)
+  {
+    let unsubscribedMembersList: User[] = []
+    let isUnsubscribed
+
+    for (let i = 0; i < members.length; i++) 
+    {
+      isUnsubscribed = true
+
+      this.activitySubscriptions.forEach((subscription: any) => {
+        if (members[i].userId == subscription.member.userId)
+        {
+          isUnsubscribed = false
+        }
+      })
+
+      if (isUnsubscribed)
+      {
+        unsubscribedMembersList.push(members[i])
+      }
+    }
+
+    this.options = []
+
+    return unsubscribedMembersList
+    
+
 
   }
 }
