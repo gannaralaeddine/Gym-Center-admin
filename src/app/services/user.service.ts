@@ -107,6 +107,6 @@ export class UserService {
 
     public replaceOldPrivateSessionsNumber(memberId: any , newNumberumberOfSessions: any) 
     { 
-      return this.http.put(this.utils.API_GYM_CENTER + "/replace-old-private-sessions-number/" + memberId + "/" + newNumberumberOfSessions, null) 
+      return this.http.put(this.utils.API_GYM_CENTER + "/member/replace-old-member-private-sessions-number/" + memberId + "/" + newNumberumberOfSessions, null) 
     }
 }
