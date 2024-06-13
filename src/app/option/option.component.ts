@@ -7,6 +7,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { OptionService } from '../services/option.service';
 import { Option } from './option';
 import { UtilsService } from '../serviceutils/utils.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateOptionComponent } from './update-option/update-option.component';
 
 @Component({
   selector: 'app-option',
@@ -26,7 +28,9 @@ export class OptionComponent implements OnInit
   option = new Option()
   isValid = true
   
-  constructor(private optionService: OptionService,private utilsService: UtilsService) {}
+  constructor(private optionService: OptionService,
+    private utilsService: UtilsService,
+    private dialogRef: MatDialog) {}
 
   ngOnInit()
   {
@@ -49,10 +53,6 @@ export class OptionComponent implements OnInit
     this.dataSource.paginator = this.paginator
   }
 
-  addOrUpdateDialog(arg0: any) 
-  {
-    
-  }
 
   addOption()
   {
@@ -98,5 +98,19 @@ export class OptionComponent implements OnInit
     }
 
     return filteredData
+  }
+
+  updateDialog(id: number)
+  {
+      const popup = this.dialogRef.open(UpdateOptionComponent, {
+        width: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { optionId: id }
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.ngOnInit()
+      })
+    
   }
 }
