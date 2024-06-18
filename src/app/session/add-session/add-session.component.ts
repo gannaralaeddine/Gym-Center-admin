@@ -168,7 +168,7 @@ export class AddSessionComponent implements OnInit
       document.getElementById('sessionDeadlineInput')!.className = "form-control border border-dark pl-2 round"
     }
 
-    if ((this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255))
+    if ((this.sessionFormValue.controls['sessionDescription'].invalid && this.sessionFormValue.controls['sessionDescription'].touched) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 510))
     {
       document.getElementById('sessionDescriptionInput')!.className = "form-control border border-danger pl-2 round"
     }
@@ -202,7 +202,7 @@ export class AddSessionComponent implements OnInit
 
     if (this.data.sessionId) // enable or disable the update button
     {
-      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 255) || (this.sessionFormValue.controls['sessionTotalPlaces'].invalid) || (this.sessionFormValue.controls['sessionDeadline'].invalid))
+      if ((this.sessionFormValue.controls['sessionName'].invalid) || (this.sessionFormValue.controls['sessionDescription'].invalid) || (this.sessionFormValue.controls['sessionDescription'].getRawValue().length > 510) || (this.sessionFormValue.controls['sessionTotalPlaces'].invalid) || (this.sessionFormValue.controls['sessionDeadline'].invalid))
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -222,7 +222,7 @@ export class AddSessionComponent implements OnInit
         document.getElementById('sessionImageInput')!.className = "form-control border border-dark pl-2 round"
       }
 
-      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid && this.sessionFormValue.controls['sessionDescription'].getRawValue().length <= 255 && this.sessionFormValue.controls['sessionDeadline'].valid && this.sessionFormValue.controls['sessionTotalPlaces'].valid)
+      if (this.sessionFormValue.controls['sessionName'].valid && this.sessionFormValue.controls['sessionActivity'].valid && this.sessionFormValue.controls['sessionCoach'].valid && this.sessionObject.sessionImages.length > 0 && this.sessionFormValue.controls['sessionDescription'].valid && this.sessionFormValue.controls['sessionDescription'].getRawValue().length <= 510 && this.sessionFormValue.controls['sessionDeadline'].valid && this.sessionFormValue.controls['sessionTotalPlaces'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }

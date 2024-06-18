@@ -27,7 +27,7 @@
                 <label for="activityDescriptionInput" class="text-dark font-weight-bold">Description Activité</label>
                 <textarea type="text" class="form-control border border-secondary pl-2 round" id="activityDescriptionInput" placeholder="saisir description activité" formControlName="activityDescription" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"></textarea>
                 <h5 class="text-danger text-bold ml-2" *ngIf="this.activityFormValue.controls['activityDescription'].invalid && this.activityFormValue.controls['activityDescription'].touched">Merci de saisir une description</h5>
-                <h5 class="text-danger text-bold ml-2" *ngIf="this.activityFormValue.controls['activityDescription'].getRawValue().length > 255">Le nombre maximum des caractères c'est 255</h5>
+                <h5 class="text-danger text-bold ml-2" *ngIf="this.activityFormValue.controls['activityDescription'].getRawValue().length > 510">Le nombre maximum des caractères c'est 510</h5>
               </div>
 
               <div class="form-group">

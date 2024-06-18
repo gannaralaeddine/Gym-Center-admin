@@ -184,7 +184,7 @@ export class AddCategoryComponent implements OnInit
     }
 
     // check category description and change borer color based on validity of input
-    if ((this.categoryFormValue.controls['categoryDescription'].invalid && this.categoryFormValue.controls['categoryDescription'].touched) || (this.categoryFormValue.controls['categoryDescription'].getRawValue().length > 255))
+    if ((this.categoryFormValue.controls['categoryDescription'].invalid && this.categoryFormValue.controls['categoryDescription'].touched) || (this.categoryFormValue.controls['categoryDescription'].getRawValue().length > 510))
     {
       document.getElementById('categoryDescriptionInput')!.className = "form-control border border-danger pl-2 round"
     }
@@ -196,7 +196,7 @@ export class AddCategoryComponent implements OnInit
     if (this.categoryId)
     {
       // enable or disable the update button
-      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid || (this.categoryFormValue.controls['categoryDescription'].getRawValue().length > 255))
+      if (this.categoryFormValue.controls['categoryName'].invalid || this.categoryFormValue.controls['categoryDescription'].invalid || (this.categoryFormValue.controls['categoryDescription'].getRawValue().length > 510))
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -208,7 +208,7 @@ export class AddCategoryComponent implements OnInit
     else
     {
       // enable or disable the add button
-      if (this.categoryFormValue.controls['categoryName'].valid && this.categoryFormValue.controls['categoryDescription'].valid && this.category.catImages.length > 0 && this.categoryFormValue.controls['categoryDescription'].getRawValue().length <= 255)
+      if (this.categoryFormValue.controls['categoryName'].valid && this.categoryFormValue.controls['categoryDescription'].valid && this.category.catImages.length > 0 && this.categoryFormValue.controls['categoryDescription'].getRawValue().length <= 510)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
