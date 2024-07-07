@@ -98,7 +98,7 @@ export class DetailsActivityComponent implements OnInit
   {
     this.activityService.getActivity(this.activityId).subscribe(
       {
-        next: (val) => {this.populateActivityData(val)},
+        next: (val) => this.populateActivityData(val),
         error: (err) => console.error(err)
       }
     )

@@ -36,6 +36,8 @@ export class UpdateOptionComponent implements OnInit
       next: (option: Option) => this.optionFormValue.controls['optionTitle'].setValue(option.optionName),
       error: (err) => console.error(err)
     })
+
+    console.log(this.data.options)
   }
   closeDialog()
   {
@@ -74,5 +76,10 @@ export class UpdateOptionComponent implements OnInit
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
     })
+  }
+
+  addOffer() 
+  {
+    
   }
 }

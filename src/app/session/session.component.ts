@@ -110,4 +110,17 @@ export class SessionComponent implements OnInit
 
     return filteredData
   }
+
+  deleteSession(id:any)
+  {
+      this.utilsService.deletePopup("Supprimer Session", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
+      .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.sessionService.deleteSession(id).subscribe({
+          complete: () => this.ngOnInit(),
+          error:(err)=> console.error(err)
+        })
+      }
+    })
+  }
 }

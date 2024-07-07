@@ -67,6 +67,12 @@ export class UserService {
 
     public deleteUserImage(userId: number, imageName: string){ return this.http.delete(this.utils.API_GYM_CENTER + "/user/delete-user-image/" + userId + "/" + imageName) }
 
+    public deleteUser(userId: any){ return this.http.delete(this.utils.API_GYM_CENTER + "/user/delete-user/" + userId) }
+
+    public deleteCoach(coachId: any){ return this.http.delete(this.utils.API_GYM_CENTER + "/coach/delete-coach/" + coachId) }
+
+    public deleteMember(memberId: any){ return this.http.delete(this.utils.API_GYM_CENTER + "/member/delete-member/" + memberId) }
+
     public updateCoachSpecialities(coachId: any, specialities: []) { return this.http.put(this.utils.API_GYM_CENTER + "/coach/add-coach-to-activity/" + coachId, specialities) }
 
     public sendVerificationCode(email: any): Observable<Object> { return this.http.post(this.utils.API_GYM_CENTER + "/user/send-verification-code/" + email, email) }

@@ -310,7 +310,7 @@ export class AddSessionComponent implements OnInit
     this.sessionFormValue.controls['sessionName'].setValue(session.sessionName)
     this.sessionFormValue.controls['sessionDescription'].setValue(session.sessionDescription)
     this.sessionFormValue.controls['sessionTotalPlaces'].setValue(session.sessionTotalPlaces)
-    this.sessionFormValue.controls['sessionDeadline'].setValue(new Date(session.sessionDeadline).toISOString().split('T')[0])
+    this.sessionFormValue.controls['sessionDeadline'].setValue(new Date(session.sessionDeadline).toISOString().split('Z')[0])
     this.populateActivitySelectList(session)
     this.populateCoachSelectList(session)
   }
