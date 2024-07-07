@@ -12,6 +12,7 @@ export class UtilsService
 {
 
   public API_GYM_CENTER = "http://localhost:8089/gym-center"
+  // public API_GYM_CENTER = "http://127.0.0.1:8089/gym-center"
 
   constructor( private matDialog: MatDialog ) { }
 

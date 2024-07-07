@@ -64,6 +64,10 @@ export class DetailsSessionComponent implements OnInit
     })
 
     popup.afterClosed().subscribe(() => {
+      if (isNaN(this.sessionId) || this.sessionId <= 0) {
+        console.error('Invalid sessionId provided');
+        return; // Or handle the error appropriately
+      }
       this.sessionService.getSession(this.sessionId).subscribe({
         next: (session) => this.populateSessionData(session),
         error: (err) => console.error(err)
@@ -105,6 +109,10 @@ export class DetailsSessionComponent implements OnInit
   {
     if (isDataChanges)
     {
+      if (isNaN(this.sessionId) || this.sessionId <= 0) {
+        console.error('Invalid sessionId provided');
+        return; // Or handle the error appropriately
+      }
       this.sessionService.getSession(this.sessionId).subscribe(
         {
           next: (session) => this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage),
@@ -116,6 +124,10 @@ export class DetailsSessionComponent implements OnInit
 
   getSessionById()
   {
+    if (isNaN(this.sessionId) || this.sessionId <= 0) {
+      console.error('Invalid sessionId provided');
+      return; // Or handle the error appropriately
+    }
     this.sessionService.getSession(this.sessionId).subscribe({
       next: (session) => this.populateSessionData(session),
       error: (err) => console.error(err)
@@ -156,7 +168,7 @@ export class DetailsSessionComponent implements OnInit
       }
   }
 
-  goToUserProfileDetails(email:any) 
+  goToUserProfileDetails(email:any)
   {
     const params = { userEmail: email }
     this.routerActivity.navigate(["profile"], { queryParams: params  })

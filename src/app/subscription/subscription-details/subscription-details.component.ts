@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from '../../services/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from '../subscription';
@@ -54,6 +54,10 @@ export class SubscriptionDetailsComponent implements OnInit
 
   getSubscription()
   {
+    if (isNaN(this.subscriptionId) || this.subscriptionId <= 0) {
+      console.error('Invalid subscriptionId provided');
+      return; // Or handle the error appropriately
+    }
     this.subscriptionService.getSubscription(this.subscriptionId).subscribe({
       next: (subscriptionObject) => {
         this.subscription.subscriptionPrice = subscriptionObject.subscriptionPrice
@@ -100,6 +104,10 @@ export class SubscriptionDetailsComponent implements OnInit
       data: { subscriptionId: subscriptionId }
     })
     popup.afterClosed().subscribe(() =>{
+      if (isNaN(this.subscriptionId) || this.subscriptionId <= 0) {
+        console.error('Invalid subscriptionId provided');
+        return; // Or handle the error appropriately
+      }
       this.subscriptionService.getSubscription(this.subscriptionId).subscribe({
         next: () => this.getSubscription(),
         error: (err) => console.error(err)

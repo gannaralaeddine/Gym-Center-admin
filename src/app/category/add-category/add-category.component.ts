@@ -54,6 +54,10 @@ export class AddCategoryComponent implements OnInit
 
   getCategoryById(id: number)
   {
+    if (isNaN(id) || id <= 0) {
+      console.log("error id isNAN !!!")
+      return
+    }
     this.categoryService.getCategory(id).subscribe({
       next: (val) => this.populateUpdateForm(val),
       error: (err) => console.error(err)
@@ -248,6 +252,6 @@ export class AddCategoryComponent implements OnInit
           }
       }
     }
-     
+
   }
 }

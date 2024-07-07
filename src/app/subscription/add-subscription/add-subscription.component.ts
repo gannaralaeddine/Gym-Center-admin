@@ -55,8 +55,7 @@ export class AddSubscriptionComponent implements OnInit
     private utilsService: UtilsService,
     private subscriptionFormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddSubscriptionComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private sanitizer: DomSanitizer)
+    @Inject(MAT_DIALOG_DATA) public data: any)
   {
     if (this.data.subscriptionId)
     {
@@ -90,8 +89,8 @@ export class AddSubscriptionComponent implements OnInit
 
   checkValidityForm()
   {
-    if ((this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && this.subscriptionFormValue.controls['privateSessionsNumber'].invalid && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) || 
-    (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) || 
+    if ((this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && this.subscriptionFormValue.controls['privateSessionsNumber'].invalid && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) ||
+    (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) ||
     (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched))
     {
       document.getElementById('privateSessionsNumber')!.className = "form-control border border-danger pl-2 round"
@@ -171,6 +170,10 @@ export class AddSubscriptionComponent implements OnInit
 
     if (id)
     {
+      if (isNaN(id) || id <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(id).subscribe({
         next: (activity) => this.subscriptionObject.subscriptionActivity = activity as Activity,
         error: (err) => console.error(err)
@@ -178,6 +181,10 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
+      if (isNaN(this.subscriptionFormValue.value.subscriptionActivity) || this.subscriptionFormValue.value.subscriptionActivity <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
         next: (activity) => {
           this.subscriptionObject.subscriptionActivity = activity as Activity
@@ -239,8 +246,8 @@ export class AddSubscriptionComponent implements OnInit
         })
         // if (this.privateSessionsNumber !== this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue())
         // {
-          
-          
+
+
         //   this.userService.updateMember(this.selectedUser.userId!.toString(),this.selectedUser).subscribe({
         //     next: (member) => console.log(member),
         //     error: (err) => console.error(err)
@@ -259,6 +266,10 @@ export class AddSubscriptionComponent implements OnInit
 
   getSubscription(subscriptionId: any)
   {
+    if (isNaN(subscriptionId) || subscriptionId <= 0) {
+      console.error('Invalid subscriptionId provided');
+      return; // Or handle the error appropriately
+    }
     this.subscriptionService.getSubscription(subscriptionId).subscribe({
       next: (subscription) => {
         this.subscriptionObject.subscriptionActivity = subscription.subscriptionActivity
@@ -344,7 +355,7 @@ export class AddSubscriptionComponent implements OnInit
     let unsubscribedMembersList: User[] = []
     let isUnsubscribed
 
-    for (let i = 0; i < members.length; i++) 
+    for (let i = 0; i < members.length; i++)
     {
       isUnsubscribed = true
 
@@ -364,7 +375,7 @@ export class AddSubscriptionComponent implements OnInit
     this.options = []
 
     return unsubscribedMembersList
-    
+
 
 
   }

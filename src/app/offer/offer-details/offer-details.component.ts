@@ -38,6 +38,10 @@ export class OfferDetailsComponent implements OnInit
   {
     this.router.queryParams.subscribe( params => {
       this.offerId = params["offerId"]
+      if (isNaN(this.offerId) || this.offerId <= 0) {
+        console.error('Invalid sessionId provided');
+        return; // Or handle the error appropriately
+      }
       this.offerService.getOffer(this.offerId).subscribe({
         next: (offerObject) => {
           this.offer = offerObject as Offer
@@ -84,6 +88,10 @@ export class OfferDetailsComponent implements OnInit
     })
 
     popup.afterClosed().subscribe(() =>{
+      if (isNaN(this.offerId) || this.offerId <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(this.offerId).subscribe({
         next: (offerObject) => {
           this.offer = offerObject as Offer

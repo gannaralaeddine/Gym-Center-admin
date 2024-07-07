@@ -31,12 +31,12 @@ export class DetailsCategoryComponent implements OnInit
     categoryActivities: any
 
     constructor(
-    private router: ActivatedRoute, 
-    private categoryService: CategoryService, 
-    private utilsService: UtilsService, 
-    private dialogRef: MatDialog, 
+    private router: ActivatedRoute,
+    private categoryService: CategoryService,
+    private utilsService: UtilsService,
+    private dialogRef: MatDialog,
     private activityService: ActivityService,
-    private routerActivity: Router) 
+    private routerActivity: Router)
     {
       this.router.queryParams.subscribe( params => {
         this.categoryId = params["catId"]
@@ -44,10 +44,14 @@ export class DetailsCategoryComponent implements OnInit
       })
     }
 
-    ngOnInit() 
+    ngOnInit()
     {
       this.router.queryParams.subscribe( params => {
 
+        if (isNaN(params["catId"]) || params["catId"] <= 0) {
+          console.log("error id isNAN !!!")
+          return
+        }
         this.categoryService.getCategory(params["catId"]).subscribe(
           {
             next: (val) => this.populateCategoryData(val),
@@ -76,6 +80,10 @@ export class DetailsCategoryComponent implements OnInit
       data: { categoryId: categoryId }
     })
     popup.afterClosed().subscribe(() =>{
+      if (isNaN(this.categoryId) || this.categoryId <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.categoryService.getCategory(this.categoryId).subscribe({
         next: (val) => this.populateCategoryData(val),
         error: (err) => console.error(err)
@@ -85,6 +93,10 @@ export class DetailsCategoryComponent implements OnInit
 
   getCategoryById()
   {
+    if (isNaN(this.categoryId) || this.categoryId <= 0) {
+      console.log("error id isNAN !!!")
+      return
+    }
     this.categoryService.getCategory(this.categoryId).subscribe(
       {
         next: (val) => {this.populateCategoryData(val)},
@@ -95,6 +107,10 @@ export class DetailsCategoryComponent implements OnInit
 
   getCategoryActivities()
   {
+    if (isNaN(this.categoryId) || this.categoryId <= 0) {
+      console.error('Invalid categoryId provided');
+      return; // Or handle the error appropriately
+    }
     this.activityService.getAllCategoryActivities(this.categoryId).subscribe({
       next: (activities) => this.categoryActivities = activities,
       error: (err) => console.error(err)

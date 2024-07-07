@@ -16,7 +16,7 @@ export class SubscriptionService
 
   public retrieveActivitySubscriptions(activityId: any) { return this.http.get<Subscription[]>(this.utils.API_GYM_CENTER + "/subscription/retrieve-activity-subscriptions/" + activityId) }
 
-  public getSubscription(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/subscription/retrieve-subscription/" + id) }
+  public getSubscription(id: number) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/subscription/retrieve-subscription/" + id) }
 
   public deleteSubscription(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/subscription/delete-subscription/" + id) }
 

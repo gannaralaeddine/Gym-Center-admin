@@ -102,6 +102,10 @@ export class AddActivityComponent
 
   getActivityById(id: number)
   {
+    if (isNaN(id) || id <= 0) {
+      console.log("error id isNAN !!!")
+      return
+    }
     this.activityService.getActivity(id).subscribe({
       next: (activity) => this.populateUpdateForm(activity),
       error: (err) => console.error(err)
@@ -125,7 +129,7 @@ export class AddActivityComponent
     document.getElementById("categorySelectList")?.remove()
 
     // create new select HTML tag for replace the removed one
-    selectTag = document.createElement("select") 
+    selectTag = document.createElement("select")
     selectTag.setAttribute("formcontrolname","activityCategory")
     selectTag.setAttribute("class","form-control border border-dark pl-2 round ng-pristine ng-valid ng-touched")
     selectTag.setAttribute("id","categorySelectList")

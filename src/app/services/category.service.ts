@@ -18,7 +18,7 @@ export class CategoryService
 
   public getAllCategories()  { return this.http.get<any>(this.utils.API_GYM_CENTER + "/category/retrieve-all-categories") }
 
-  public getCategory(id: any)  { return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
+  public getCategory(id: number)  { return this.http.get<Category>(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
 
   public updateCategoryData(id: number, category: Category) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category/"+id, category) }
 

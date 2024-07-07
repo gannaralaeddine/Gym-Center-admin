@@ -73,6 +73,10 @@ export class DetailsActivityComponent implements OnInit
       data: { activityId: activityId }
     })
     popup.afterClosed().subscribe(() =>{
+      if (isNaN(this.activityId) || this.activityId <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(this.activityId).subscribe({
         next: (val) => this.populateActivityData(val),
         error: (err) => console.error(err)
@@ -96,6 +100,10 @@ export class DetailsActivityComponent implements OnInit
 
   getActivityById()
   {
+    if (isNaN(this.activityId) || this.activityId <= 0) {
+      console.log("error id isNAN !!!")
+      return
+    }
     this.activityService.getActivity(this.activityId).subscribe(
       {
         next: (val) => {this.populateActivityData(val)},
@@ -113,6 +121,10 @@ export class DetailsActivityComponent implements OnInit
   {
       if (isDataChanges)
       {
+          if (isNaN(this.activityId) || this.activityId <= 0) {
+            console.log("error id isNAN !!!")
+            return
+          }
           this.activityService.getActivity(this.activityId).subscribe(
             {
               next: (activity) => this.activityImages = this.utilsService.deleteItemFromArray(activity.activityImages, activity.actImage),
@@ -128,7 +140,7 @@ export class DetailsActivityComponent implements OnInit
     this.routerCoach.navigate(["profile"], { queryParams: params  })
   }
 
-  goToCategoryDetails(category: Category) 
+  goToCategoryDetails(category: Category)
   {
     const params = { catId: category.catId }
     this.routerCoach.navigate(["category-details"], { queryParams: params  })

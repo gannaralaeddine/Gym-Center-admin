@@ -71,6 +71,10 @@ export class AddSessionComponent implements OnInit
     if (!id)
     {
       // retrieve activity object in add operation
+      if (isNaN(this.sessionFormValue.value.sessionActivity) || this.sessionFormValue.value.sessionActivity <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(this.sessionFormValue.value.sessionActivity).subscribe({
         next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
         error: (err) => console.log(err)
@@ -79,6 +83,10 @@ export class AddSessionComponent implements OnInit
     else
     {
       // retrieve activity object in update operation
+      if (isNaN(id) || id <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(id).subscribe({
         next: (activity) => this.sessionObject.sessionActivity = activity as Activity,
         error: (err) => console.log(err)
@@ -197,7 +205,7 @@ export class AddSessionComponent implements OnInit
       document.getElementById('coachSelectList')!.className = "form-control border border-dark pl-2 round"
     }
 
-  
+
 
 
     if (this.data.sessionId) // enable or disable the update button
@@ -293,6 +301,10 @@ export class AddSessionComponent implements OnInit
 
   getSessionById(sessionId: any)
   {
+    if (isNaN(sessionId) || sessionId <= 0) {
+      console.error('Invalid sessionId provided');
+      return; // Or handle the error appropriately
+    }
     this.sessionService.getSession(sessionId).subscribe({
       next: (session) => this.populateUpdateForm(session),
       error: (err)=> console.error(err)

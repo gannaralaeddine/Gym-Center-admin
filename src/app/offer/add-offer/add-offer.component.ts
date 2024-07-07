@@ -39,8 +39,7 @@ export class AddOfferComponent implements OnInit
     private optionService: OptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddOfferComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private sanitizer: DomSanitizer) {this.offerId = this.data.offerId}
+    @Inject(MAT_DIALOG_DATA) public data: any) {this.offerId = this.data.offerId}
 
   ngOnInit()
   {
@@ -64,6 +63,10 @@ export class AddOfferComponent implements OnInit
 
   getOffer(offerId: any)
   {
+    if (isNaN(offerId) || offerId <= 0) {
+      console.error('Invalid sessionId provided');
+      return; // Or handle the error appropriately
+    }
     this.offerService.getOffer(offerId).subscribe({
       next: (offerObject) => {
 
@@ -82,6 +85,10 @@ export class AddOfferComponent implements OnInit
   {
     if (!id)
     {
+      if (isNaN(this.offerFormValue.value.offerActivity) || this.offerFormValue.value.offerActivity <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(this.offerFormValue.value.offerActivity).subscribe({
         next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
         error: (err) => console.error(err)
@@ -89,6 +96,10 @@ export class AddOfferComponent implements OnInit
     }
     else
     {
+      if (isNaN(id) || id <= 0) {
+        console.log("error id isNAN !!!")
+        return
+      }
       this.activityService.getActivity(id).subscribe({
         next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
         error: (err) => console.error(err)
