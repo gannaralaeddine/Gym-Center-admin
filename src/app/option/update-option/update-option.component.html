@@ -1,7 +1,8 @@
 <div class="modal-content" style="margin: 10px">
 
     <div class="modal-header">
-      <h1 class="modal-title pl-1">Éditer Offre</h1>
+      <h1 class="modal-title pl-1" *ngIf="!data.operation">Éditer Offre</h1>
+      <h1 class="modal-title pl-1" *ngIf="data.operation">Ajouter Offre</h1>
 
       <button type="button" class="close" (click)="closeDialog()">
         <span aria-hidden="true">&times;</span>
@@ -25,6 +26,7 @@
                 <div class="col text-center">
                   <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
                   <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateOffer()">Éditer</button>
+                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="addOffer()">Ajouter</button>
                 </div>
               </div>
         </form>

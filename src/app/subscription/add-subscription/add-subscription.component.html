@@ -31,7 +31,7 @@
 
               <div class="form-group">
                 <label for="subscriptionEndDateInput" class="text-dark font-weight-bold" >Date fin</label>
-                <input type="date"  class="form-control border border-secondary pl-2 round"  id="subscriptionEndDateInput" formControlName="subscriptionEndDate" (change)="checkValidityForm()"/>
+                <input type="date"  class="form-control border border-secondary pl-2 round"  id="subscriptionEndDateInput" formControlName="subscriptionEndDate" (change)="checkValidityForm()" [min]="SubscriptionEndDate.toISOString().split('T')[0]"/>
                 <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionEndDate'].invalid && subscriptionFormValue.controls['subscriptionEndDate'].touched">Merci de choisir une date valide</h5>
               </div>
 

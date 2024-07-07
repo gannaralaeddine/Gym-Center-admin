@@ -27,7 +27,8 @@ export class OptionComponent implements OnInit
   @ViewChild(MatPaginator) paginator!: MatPaginator
   option = new Option()
   isValid = true
-  
+  options: any
+
   constructor(private optionService: OptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialog) {}
@@ -39,6 +40,7 @@ export class OptionComponent implements OnInit
         this.dataSource = new MatTableDataSource(options)
         this.dataSource.paginator = this.paginator
         this.dataSourceBackUp = this.dataSource
+        this.options = this.dataSource.data
       },
       error: (err) => console.error(err)
     })
@@ -106,11 +108,35 @@ export class OptionComponent implements OnInit
         width: "40%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
-        data: { optionId: id }
+        data: { optionId: id, options: this.options }
       })
       popup.afterClosed().subscribe(() =>{
         this.ngOnInit()
       })
-    
+  }
+
+  addDialog()
+  {
+      const popup = this.dialogRef.open(UpdateOptionComponent, {
+        width: "40%",
+        enterAnimationDuration: "1000ms",
+        exitAnimationDuration: "1000ms",
+        data: { operation: "Add Operation", options: this.options }
+      })
+      popup.afterClosed().subscribe(() =>{
+        this.ngOnInit()
+      })
+  }
+  deleteOption(id:any)
+  {
+      this.utilsService.deletePopup("Supprimer Offre", "En supprimant cette offre, les options associées seront également supprimés.\nÊtes-vous sûr de vouloir continuer ?", "deleteOperation")
+      .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.optionService.deleteOption(id).subscribe({
+          complete: () => this.ngOnInit(),
+          error:(err)=> console.error(err)
+        })
+      }
+    })
   }
 }

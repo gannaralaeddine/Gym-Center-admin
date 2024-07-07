@@ -48,6 +48,7 @@ export class AddSubscriptionComponent implements OnInit
   selectedUser!: User
   privateSessionsNumber!: number
   membersList: any
+  SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -170,14 +171,17 @@ export class AddSubscriptionComponent implements OnInit
 
     if (id)
     {
-      if (isNaN(id) || id <= 0) {
-        console.log("error id isNAN !!!")
-        return
-      }
-      this.activityService.getActivity(id).subscribe({
-        next: (activity) => this.subscriptionObject.subscriptionActivity = activity as Activity,
+      this.options = []
+      this.userService.retrieveAllMembers().subscribe({
+        next: (members) => {
+          (members as User[]).forEach((user: User) => {
+            this.options.push(user.userId + "-" +user.userFirstName + "-" + user.userLastName)
+          })
+          this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
+        },
         error: (err) => console.error(err)
       })
+
     }
     else
     {
@@ -334,6 +338,8 @@ export class AddSubscriptionComponent implements OnInit
     },
       error: (err)=>console.error(err)
     })
+
+    this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
   }
 
   getMemberById(memberId: string)

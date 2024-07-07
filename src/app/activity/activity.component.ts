@@ -54,10 +54,21 @@ export class ActivityComponent implements OnInit
 
   deleteActivity(id:any)
   {
-    this.activityService.deleteActivity(id).subscribe({
-      complete: () => this.getAllActivities(),
-      error:(err)=> console.error(err)
-    })
+    // this.activityService.deleteActivity(id).subscribe({
+    //   complete: () => this.getAllActivities(),
+    //   error:(err)=> console.error(err)
+    // })
+  
+    this.utilsService.deletePopup("Supprimer Activité", "En supprimant cette activité, ses sessions associées ainsi que les abonnements seront également supprimés.\nÊtes-vous sûr de vouloir continuer ?", "deleteOperation")
+        .afterClosed().subscribe(isYesOperation => {
+        if (isYesOperation) {
+          this.activityService.deleteActivity(id).subscribe({
+            complete: () => this.getAllActivities(),
+            error:(err)=> console.error(err)
+          })
+        }
+      })
+    
   }
 
   addOrUpdateDialog(activityId: number)

@@ -62,7 +62,7 @@
 
               <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToSessionDetails(session)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
               <button class="btn btn-link text-dark px-3 mb-0" (click)="addOrUpdateDialog(session.sessionId)"><i class="material-icons text-sm me-2">edit</i>Éditer</button>
-              <button class="btn btn-link text-danger px-3 mb-0"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
+              <button class="btn btn-link text-danger px-3 mb-0" (click)="deleteSession(session.sessionId)"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
 
             </td>
           </ng-container>

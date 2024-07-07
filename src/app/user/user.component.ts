@@ -36,7 +36,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
-export class UserComponent implements OnInit
+export class UserComponent
 {
     allUsers: any
     user = new User()
@@ -53,11 +53,6 @@ export class UserComponent implements OnInit
       private router: Router,
       private dialogRef: MatDialog) {
         this.getAllUsersFromApi()
-    }
-
-    ngOnInit()
-    {
-
     }
 
     getAllUsersFromApi()
@@ -207,5 +202,45 @@ export class UserComponent implements OnInit
     }
 
     return filteredData
+  }
+
+  deleteUser(user: any) 
+  {
+    this.utilsService.deletePopup("Supprimer Utilisateur", "En confirmant cette opération, toutes autres choses associées, telles que les abonnements, les sessions privées, seront supprimées par conséquent.\nÊtes-vous sûr de continuer ?", "deleteOperation")
+    .afterClosed()
+    .subscribe(isYesOperation => {
+      if (isYesOperation) {
+        if (user.roles[0].roleName == "MEMBER")
+        {
+          this.userService.deleteMember(user.userId).subscribe({
+            next: () =>  {
+              this.utilsService.successDialog("Opération réussite", "Cet utilisateur à été supprimé avec succès", true)
+              this.getAllUsersFromApi()
+            },
+            error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+          })
+        }
+        else if (user.roles[0].roleName == "COACH")
+        {
+          this.userService.deleteCoach(user.userId).subscribe({
+            next: () =>  {
+              this.utilsService.successDialog("Opération réussite", "Cet utilisateur à été supprimé avec succès", true)
+              this.getAllUsersFromApi()
+            },
+            error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+          })
+        }
+        else
+        {
+          this.userService.deleteUser(user.userId).subscribe({
+            next: () =>  {
+              this.utilsService.successDialog("Opération réussite", "Cet utilisateur à été supprimé avec succès", true)
+              this.getAllUsersFromApi()
+            },
+            error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+          })
+        }
+      }
+    })
   }
 }

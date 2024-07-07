@@ -21,7 +21,6 @@ import { AddSubscriptionComponent } from './add-subscription/add-subscription.co
 })
 export class SubscriptionComponent implements OnInit 
 {
-
   activities: any
   dataSource!: MatTableDataSource<any>;
   displayedColumns = ['Image','Activité','Prix','Gestion']
@@ -84,5 +83,18 @@ export class SubscriptionComponent implements OnInit
   {
     const params = { subscriptionId: subscription.subscriptionId }
     this.router.navigate(["subscription-details"], { queryParams: params  })
+  }
+
+  deleteSubscription(id: any) 
+  {
+    this.utilsService.deletePopup("Supprimer Abonnement", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
+    .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.subscriptionService.deleteSubscription(id).subscribe({
+          complete: () => this.ngOnInit(),
+          error:(err)=> console.error(err)
+        })
+      }
+    })
   }
 }

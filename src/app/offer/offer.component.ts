@@ -22,7 +22,6 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
 
 export class OfferComponent
 {
-
   dataSource!: MatTableDataSource<any>
   dataSourceBackUp!: MatTableDataSource<any>
   displayedColumns = ['Image','Titre','Activité','Tarif','Gestion']
@@ -107,6 +106,19 @@ export class OfferComponent
     }
 
     return filteredData
+  }
+
+  deleteOffer(id:any)
+  {
+      this.utilsService.deletePopup("Supprimer Offre", "En supprimant cette offre, les options associées seront également supprimés.\nÊtes-vous sûr de vouloir continuer ?", "deleteOperation")
+      .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.offerService.deleteOffer(id).subscribe({
+          complete: () => this.getAllOffers(),
+          error:(err)=> console.error(err)
+        })
+      }
+    })
   }
 }
 

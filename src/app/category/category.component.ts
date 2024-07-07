@@ -59,9 +59,14 @@ export class CategoryComponent implements OnInit
 
   deleteCategory(id:any)
   {
-    this.categoryService.deleteCategory(id).subscribe({
-      complete: () => this.getAllCategories(),
-      error:(err)=> console.error(err)
+      this.utilsService.deletePopup("Supprimer Catégorie", "En supprimant cette catégorie, ses activités et les sessions associées ainsi que les abonnements seront également supprimés.\nÊtes-vous sûr de vouloir continuer ?", "deleteOperation")
+      .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.categoryService.deleteCategory(id).subscribe({
+          complete: () => this.getAllCategories(),
+          error:(err)=> console.error(err)
+        })
+      }
     })
   }
 
@@ -123,5 +128,10 @@ export class CategoryComponent implements OnInit
     }
 
     return filteredData
+  }
+
+  showDeletePopup()
+  {
+    
   }
 }
