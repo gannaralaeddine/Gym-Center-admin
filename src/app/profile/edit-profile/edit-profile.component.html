@@ -38,7 +38,7 @@
           <label for="userDescriptionInput" class="text-primary font-weight-bold">(Bio)</label>
           <textarea type="text" class="form-control border border-primary pl-2 round" id="userDescriptionInput" placeholder="Décrivez-vous..." formControlName="userDescription" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"></textarea>
           <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userDescription'].invalid && profileFormValue.controls['userDescription'].touched">Merci de saisir une description</h5>
-          <h5 class="text-danger text-bold ml-2" *ngIf="this.profileFormValue.controls['userDescription'].getRawValue().length > 255">Le nombre maximum des caractères c'est 255</h5>
+          <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userDescription'].getRawValue().length > 510">Le nombre maximum des caractères c'est 510</h5>
         </div>
 
 
