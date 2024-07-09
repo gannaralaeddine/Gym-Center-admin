@@ -65,17 +65,17 @@ export class RegisterUserComponent
         // this.dialogRef = this.utilsService.loadingSpinnerDialog()
         this.isLoading = true
         console.log("this.selectList: " + this.selectList.selectedIndex + "\nthis.selectedOptionValue: " + this.selectedOptionValue)
-        // switch (this.selectedOptionValue)
-        // {
-        //   case "1": this.registerMember()
-        //     break;
-        //   case "2": this.registerCoach()
-        //     break;
-        //   case "3": this.registerAdmin()
-        //     break;
-        //   default:
-        //     console.log(this.selectedOptionValue)
-        // }
+        switch (this.selectedOptionValue)
+        {
+          case "1": this.registerMember()
+            break;
+          case "2": this.registerCoach()
+            break;
+          case "3": this.registerAdmin()
+            break;
+          default:
+            console.log(this.selectedOptionValue)
+        }
     }
 
     registerMember()
