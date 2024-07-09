@@ -2,15 +2,6 @@
     <div class="col-12">
       <div class="card my-4">
 
-         <!--  <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-            <div class="d-flex ml-6">
-              <div class="ml-5"><h3 class="text-white text-capitalize pl-4 pt-2 add-category-position"><b>gestion des options</b></h3></div>
-             <div class="ml-auto transparent-color mr-4 pr-5 text-left" *ngIf=""><button type="button" class="btn btn-dark mr-3 text-white add-category-position" (click)="addOption()"><i class="material-icons text-sm me-2 text-white">add</i>AJOUTER</button></div>
-            </div>
-          </div>
-        </div> -->
-
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
             <div class="d-flex ml-6">
@@ -30,10 +21,7 @@
     <mat-label>Saisir Titre option</mat-label>
     <input matInput id="optionSearch" (keyup)="applyFilter()" (input)="isValidName()" #input>
 </mat-form-field>
-<h5 class="text-danger text-bold ml-2" *ngIf="!isValid" style="margin-top: -1.5%;margin-left: 1;">Merci de saisir un titre valide</h5>
   
-
-
 
 <div class="main-body" style="margin-left: 1.5%;">
   <div class="mat-elevation-z8">

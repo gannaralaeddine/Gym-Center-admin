@@ -21,7 +21,8 @@ export class UpdateOptionComponent implements OnInit
   optionFormValue!: FormGroup
   option = new Option()
 
-  constructor(private dialogRef: MatDialogRef<UpdateOptionComponent>,
+  constructor(
+    private dialogRef: MatDialogRef<UpdateOptionComponent>,
     private optionFormBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private optionService:OptionService,
@@ -95,8 +96,7 @@ export class UpdateOptionComponent implements OnInit
     this.optionService.addOption(this.option).subscribe({
       next:() => {
         this.utilsService.successDialog("Opération réussite", "Option ajoutée avec succès", true)
-        this.optionFormValue.controls['optionTitle'].setValue("")
-        this.checkValidityForm()
+        this.dialogRef.close()
       },
       error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
     })
