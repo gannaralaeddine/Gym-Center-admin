@@ -63,6 +63,16 @@ export class UpdateOptionComponent implements OnInit
     {
       document.getElementById("updateButton")?.removeAttribute("disabled")
     }
+
+    // enable or disable the add button
+    if (this.optionFormValue.controls['optionTitle'].valid)
+      {
+        document.getElementById("addButton")?.removeAttribute("disabled")
+      }
+      else
+      {
+        document.getElementById("addButton")?.setAttribute("disabled","")
+      }
   }
 
   updateOffer() 
@@ -80,6 +90,15 @@ export class UpdateOptionComponent implements OnInit
 
   addOffer() 
   {
-    
+    this.option.optionName = this.optionFormValue.controls['optionTitle'].getRawValue()
+
+    this.optionService.addOption(this.option).subscribe({
+      next:() => {
+        this.utilsService.successDialog("Opération réussite", "Option ajoutée avec succès", true)
+        this.optionFormValue.controls['optionTitle'].setValue("")
+        this.checkValidityForm()
+      },
+      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false) 
+    })
   }
 }

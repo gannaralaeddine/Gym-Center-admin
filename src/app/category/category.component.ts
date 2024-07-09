@@ -63,8 +63,11 @@ export class CategoryComponent implements OnInit
       .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
         this.categoryService.deleteCategory(id).subscribe({
-          complete: () => this.getAllCategories(),
-          error:(err)=> console.error(err)
+          complete: () => {
+            this.utilsService.successDialog("Opération réussite", "Cette catégorie à été supprimée avec succès", true)
+            this.getAllCategories()
+          },
+          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
     })

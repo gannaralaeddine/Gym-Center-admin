@@ -49,6 +49,7 @@ export class AddSubscriptionComponent implements OnInit
   privateSessionsNumber!: number
   membersList: any
   SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
+  IsEndDateGreater = true
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -139,7 +140,8 @@ export class AddSubscriptionComponent implements OnInit
 
     if (this.data.subscriptionId)
     {
-      if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid || this.subscriptionFormValue.controls['subscriptionStartDate'].invalid || this.subscriptionFormValue.controls['subscriptionEndDate'].invalid)
+      this.isEndDateGreater()
+      if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid || this.subscriptionFormValue.controls['subscriptionStartDate'].invalid || this.subscriptionFormValue.controls['subscriptionEndDate'].invalid || !this.IsEndDateGreater)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -152,11 +154,15 @@ export class AddSubscriptionComponent implements OnInit
     {
       if (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid)
       {
-        document.getElementById("addButton")?.removeAttribute("disabled")
-      }
-      else
-      {
-        document.getElementById("addButton")?.setAttribute("disabled","")
+        this.isEndDateGreater()
+        if (this.IsEndDateGreater)
+        {
+          document.getElementById("addButton")?.removeAttribute("disabled")
+        }
+        else
+        {
+          document.getElementById("addButton")?.setAttribute("disabled","")
+        }
       }
     }
   }
@@ -248,19 +254,8 @@ export class AddSubscriptionComponent implements OnInit
         this.userService.replaceOldPrivateSessionsNumber(this.userId, this.subscriptionFormValue.controls['privateSessionsNumber'].value).subscribe({
           error: (err) => console.error(err)
         })
-        // if (this.privateSessionsNumber !== this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue())
-        // {
-
-
-        //   this.userService.updateMember(this.selectedUser.userId!.toString(),this.selectedUser).subscribe({
-        //     next: (member) => console.log(member),
-        //     error: (err) => console.error(err)
-        //   })
-        // }
       },
-
       error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
-
       complete: () => {
         this.dialogRef.close()
         this.utilsService.successDialog("Opération réussite", "Abonnement édité avec succès", true)
@@ -384,5 +379,20 @@ export class AddSubscriptionComponent implements OnInit
 
 
 
+  }
+
+  isEndDateGreater()
+  {
+    if (this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue().length > 0 && this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue().length > 0)
+    {
+      if (new Date(this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue()).getTime() > new Date(this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue()).getTime())
+      {
+        this.IsEndDateGreater = true
+      }
+      else
+      {
+        this.IsEndDateGreater = false
+      }
+    }
   }
 }

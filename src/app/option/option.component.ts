@@ -133,8 +133,11 @@ export class OptionComponent implements OnInit
       .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
         this.optionService.deleteOption(id).subscribe({
-          complete: () => this.ngOnInit(),
-          error:(err)=> console.error(err)
+          complete: () => {
+            this.utilsService.successDialog("Opération réussite", "Cette option à été supprimée avec succès", true)
+            this.ngOnInit()
+          },
+          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
     })

@@ -114,8 +114,11 @@ export class OfferComponent
       .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
         this.offerService.deleteOffer(id).subscribe({
-          complete: () => this.getAllOffers(),
-          error:(err)=> console.error(err)
+          complete: () => {
+            this.utilsService.successDialog("Opération réussite", "Cette offre à été supprimée avec succès", true)
+            this.getAllOffers()
+          },
+          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
     })

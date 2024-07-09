@@ -117,8 +117,11 @@ export class SessionComponent implements OnInit
       .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
         this.sessionService.deleteSession(id).subscribe({
-          complete: () => this.ngOnInit(),
-          error:(err)=> console.error(err)
+          complete: () => {
+            this.utilsService.successDialog("Opération réussite", "Cette session à été supprimée avec succès", true)
+            this.ngOnInit()
+          },
+          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       }
     })
