@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { RegisterUserComponent } from './register-user/register-user.component';
 
 @Component({
   selector: 'app-user',
@@ -241,6 +242,19 @@ export class UserComponent
           })
         }
       }
+    })
+  }
+
+  openRegisterUserDialog()
+  {
+    const popup = this.dialogRef.open(RegisterUserComponent, {
+      height: "100%",
+      width: "65%",
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "1000ms"
+    })
+    popup.afterClosed().subscribe(() =>{
+      this.getAllUsers()
     })
   }
 }
