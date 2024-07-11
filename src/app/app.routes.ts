@@ -4,7 +4,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { LoginComponent} from "./login/login.component";
 import { CategoryComponent } from './category/category.component';
-import { RegisterComponent } from "./register/register.component";
+import { RegisterComponent } from "./user/register/register.component";
 import { UserComponent } from "./user/user.component";
 import { ActivityComponent } from './activity/activity.component';
 import { DetailsCategoryComponent } from './category/details-category/details-category.component';

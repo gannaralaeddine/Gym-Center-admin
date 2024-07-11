@@ -66,7 +66,7 @@ export class ActivityComponent implements OnInit
           })
         }
       })
-    
+
   }
 
   addOrUpdateDialog(activityId: number)
@@ -85,7 +85,7 @@ export class ActivityComponent implements OnInit
   goToActivityDetails(activity: Activity)
   {
     const params = { actId: activity.actId }
-    this.router.navigate(["activity-details"], { queryParams: params  })
+    this.router.navigate(["activity-details"], { queryParams: params  }).then()
   }
 
   getActivityImage(imageName: string): string
@@ -113,7 +113,7 @@ export class ActivityComponent implements OnInit
   {
     let filteredData = []
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
       if (matTableDataSource.data[i].actName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
       {
