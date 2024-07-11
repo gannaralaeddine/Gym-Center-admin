@@ -54,9 +54,9 @@
 
               <mat-form-field class="example-full-width" [color]="'accent'" [hidden]="subscriptionFormValue.controls['subscriptionActivity'].invalid && isAddOperation">
                 <mat-label>Membre</mat-label>
-                <input type="text" placeholder="Saisir nom du membre" id="memberName" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                <input type="text" placeholder="Saisir nom du membre" id="memberName" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" (keyup)="isMemberInputFieldNotEmpty();checkValidityForm()" (focus)="isMemberInputFieldNotEmpty()">
                 <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.split('-')[1] + ' ' + option.split('-')[2]" (onSelectionChange)="userId = option.split('-')[0]; getMemberById(option.split('-')[0])">{{option.split('-')[1] + " " + option.split('-')[2]}}</mat-option>
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.split('-')[1] + ' ' + option.split('-')[2]" (onSelectionChange)="userId = option.split('-')[0]; getMemberById(option.split('-')[0]); checkValidityForm()">{{option.split('-')[1] + " " + option.split('-')[2]}}</mat-option>
                 </mat-autocomplete>
               </mat-form-field>
 

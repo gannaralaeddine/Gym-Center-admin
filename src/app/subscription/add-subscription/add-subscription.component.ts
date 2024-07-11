@@ -50,6 +50,7 @@ export class AddSubscriptionComponent implements OnInit
   membersList: any
   SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
   IsEndDateGreater = true
+  isNotEmpty!: boolean
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -141,7 +142,7 @@ export class AddSubscriptionComponent implements OnInit
     if (this.data.subscriptionId)
     {
       this.isEndDateGreater()
-      if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid || this.subscriptionFormValue.controls['subscriptionStartDate'].invalid || this.subscriptionFormValue.controls['subscriptionEndDate'].invalid || !this.IsEndDateGreater)
+      if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid || this.subscriptionFormValue.controls['subscriptionStartDate'].invalid || this.subscriptionFormValue.controls['subscriptionEndDate'].invalid || !this.IsEndDateGreater || !this.userId)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -152,7 +153,10 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
-      if (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid)
+      if (
+        (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.userId) || 
+        (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.isNotEmpty)
+      )
       {
         this.isEndDateGreater()
         if (this.IsEndDateGreater)
@@ -163,6 +167,10 @@ export class AddSubscriptionComponent implements OnInit
         {
           document.getElementById("addButton")?.setAttribute("disabled","")
         }
+      }
+      else
+      {
+        document.getElementById("addButton")?.setAttribute("disabled","")
       }
     }
   }
@@ -386,6 +394,19 @@ export class AddSubscriptionComponent implements OnInit
     if (this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue().length > 0 && this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue().length > 0)
     {
       this.IsEndDateGreater = new Date(this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue()).getTime() > new Date(this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue()).getTime();
+    }
+  }
+
+  isMemberInputFieldNotEmpty()
+  {
+    if (this.myControl.value!.length == 0)
+    {
+      this.isNotEmpty = false
+      this.userId = ""
+    }
+    else
+    {
+      this.isNotEmpty = true 
     }
   }
 }
