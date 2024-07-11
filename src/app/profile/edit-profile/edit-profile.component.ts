@@ -30,6 +30,11 @@ export class EditProfileComponent
   systemDate = new Date()
   maxDateInput: any
   userEmail!: string
+  isPhoneNumberValid = true
+  isZipCodeValid = true
+  isCountryNameValid = true
+  isStateNameValid = true
+  isCityNameValid = true
 
   constructor(private userService: UserService, private utilsService: UtilsService, private dialogRef: MatDialogRef<EditProfileComponent>,private sanitizer: DomSanitizer,
                @Inject(MAT_DIALOG_DATA) public data: any, private activityFormBuilder: FormBuilder ) {
@@ -73,7 +78,16 @@ export class EditProfileComponent
       }
       this.profileFormValue.controls['userFirstName'].setValue(user.userFirstName)
       this.profileFormValue.controls['userLastName'].setValue(user.userLastName)
-      this.profileFormValue.controls['userDescription'].setValue(user.userDescription)
+
+      if (user.userDescription)
+      {
+        this.profileFormValue.controls['userDescription'].setValue(user.userDescription)
+      }
+      else
+      {
+        this.profileFormValue.controls['userDescription'].setValue('')
+      }
+
       this.profileFormValue.controls['userPhoneNumber'].setValue(user.userPhoneNumber)
       this.profileFormValue.controls['userCountry'].setValue(user.userCountry)
       this.profileFormValue.controls['userCity'].setValue(user.userCity)
@@ -137,30 +151,61 @@ export class EditProfileComponent
   }
 
   checkValidityForm()
-  {
-
-    if ( this.profileFormValue.controls['userFirstName'].valid && this.profileFormValue.controls['userLastName'].valid
-          && this.profileFormValue.controls['userDescription'].valid && this.profileFormValue.controls['userDescription'].getRawValue().length <= 510
-          && this.profileFormValue.controls['userBirthDate'].valid && this.profileFormValue.controls['userPhoneNumber'].valid && this.profileFormValue.controls['userCountry'].valid
-          && this.profileFormValue.controls['userState'].valid && this.profileFormValue.controls['userCity'].valid
-          && this.profileFormValue.controls['userZipCode'].valid && this.profileFormValue.controls['userHeight'].valid
-          && this.profileFormValue.controls['userHeight'].getRawValue() !== '0' && this.profileFormValue.controls['userWeight'].valid
-          && this.profileFormValue.controls['userWeight'].getRawValue() !== '0' )
+  {    
+    if (this.profileFormValue.controls['userPhoneNumber'].getRawValue() && this.profileFormValue.controls['userPhoneNumber'].getRawValue().length > 0 && Number.isNaN(Number(this.profileFormValue.controls['userPhoneNumber'].getRawValue())) )
     {
-      document.getElementById('updateButton')?.removeAttribute('disabled')
+      this.isPhoneNumberValid = false
+    }
+    else
+    {
+      this.isPhoneNumberValid = true
+    }
+
+    if (this.profileFormValue.controls['userZipCode'].getRawValue() && this.profileFormValue.controls['userZipCode'].getRawValue().length > 0 && Number.isNaN(Number(this.profileFormValue.controls['userZipCode'].getRawValue())) )
+    {
+      this.isZipCodeValid = false
+    }
+    else
+    {
+      this.isZipCodeValid = true
+    }
+
+    if (this.profileFormValue.controls['userCountry'].getRawValue() && this.profileFormValue.controls['userCountry'].getRawValue().length > 0 && this.isValueContainsDigits(this.profileFormValue.controls['userCountry'].getRawValue()))
+    {
+      this.isCountryNameValid = false
+    }
+    else
+    {
+      this.isCountryNameValid = true
+    }
+
+    if (this.profileFormValue.controls['userState'].getRawValue() && this.profileFormValue.controls['userState'].getRawValue().length > 0 && this.isValueContainsDigits(this.profileFormValue.controls['userState'].getRawValue()))
+    {
+      this.isStateNameValid = false
+    }
+    else
+    {
+      this.isStateNameValid = true
+    }
+
+    if (this.profileFormValue.controls['userCity'].getRawValue() && this.profileFormValue.controls['userCity'].getRawValue().length > 0 && this.isValueContainsDigits(this.profileFormValue.controls['userCity'].getRawValue()))
+    {
+      this.isCityNameValid = false
+    }
+    else
+    {
+      this.isCityNameValid = true
     }
 
     if (
-    this.profileFormValue.controls['userFirstName'].invalid || this.profileFormValue.controls['userLastName'].invalid
-    || this.profileFormValue.controls['userDescription'].invalid
-    || this.profileFormValue.controls['userDescription'].getRawValue().length > 510
-    || this.profileFormValue.controls['userBirthDate'].invalid
-    || this.profileFormValue.controls['userPhoneNumber'].invalid || this.profileFormValue.controls['userCountry'].invalid
-    || this.profileFormValue.controls['userState'].invalid || this.profileFormValue.controls['userCity'].invalid
-    || this.profileFormValue.controls['userZipCode'].invalid || this.profileFormValue.controls['userHeight'].invalid
-    || this.profileFormValue.controls['userHeight'].getRawValue() === '0'|| this.profileFormValue.controls['userWeight'].invalid
-    || this.profileFormValue.controls['userWeight'].getRawValue() === '0'
-    )
+        ((this.profileFormValue.controls['userFirstName'].invalid && this.profileFormValue.controls['userFirstName'].touched) || (this.profileFormValue.controls['userFirstName'].getRawValue().length == 0)) 
+        || (this.profileFormValue.controls['userLastName'].invalid && this.profileFormValue.controls['userLastName'].touched || (this.profileFormValue.controls['userLastName'].getRawValue().length == 0))
+        || (!this.isPhoneNumberValid && this.profileFormValue.controls['userPhoneNumber'].touched)
+        || (!this.isCountryNameValid && this.profileFormValue.controls['userCountry'].touched)
+        || (!this.isStateNameValid && this.profileFormValue.controls['userState'].touched)
+        || (!this.isCityNameValid && this.profileFormValue.controls['userCity'].touched)
+        || (!this.isZipCodeValid && this.profileFormValue.controls['userZipCode'].touched)
+      )
     {
       document.getElementById('updateButton')?.setAttribute('disabled','')
     }
@@ -170,5 +215,25 @@ export class EditProfileComponent
     }
   }
 
+  isValueContainsDigits(value: String)
+  {
+    let digit = 0
+    let result = false
+
+    while (digit <= 9)
+    {
+      if (value.includes(digit.toString()))
+      {
+        result = true
+        break
+      }
+      else
+      {
+        digit = digit + 1
+      }
+    }
+
+    return result
+  }
 }
 

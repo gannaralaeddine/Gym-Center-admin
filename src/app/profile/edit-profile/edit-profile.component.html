@@ -15,13 +15,13 @@
           <div class="form-group child-cell">
             <label for="userFirstName" class="text-primary font-weight-bold">Prénom</label>
             <input type="text" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" formControlName="userFirstName" class="form-control border border-primary pl-2 round" id="userFirstName" name="userFirstName" placeholder="saisir votre prénom" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" (focus)="checkValidityForm()">
-            <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="profileFormValue.controls['userFirstName'].invalid && profileFormValue.controls['userFirstName'].touched">Merci de saisir un prénom valide</h5>
+            <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="(profileFormValue.controls['userFirstName'].invalid && profileFormValue.controls['userFirstName'].touched) || (this.profileFormValue.controls['userFirstName'].getRawValue().length == 0)">Merci de saisir un prénom valide</h5>
           </div>
           <span class="margin-center"  ></span>
           <div class="form-group child-cell">
             <label for="userLastName" class="text-primary font-weight-bold">Nom</label>
             <input type="text" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" formControlName="userLastName" class="form-control border border-primary pl-2 round" id="userLastName" name="userLastName" placeholder="saisir votre nom" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
-            <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="profileFormValue.controls['userLastName'].invalid && profileFormValue.controls['userLastName'].touched">Merci de saisir un nom valide</h5>
+            <h5 class="text-danger text-bold ml-1 mt-1" *ngIf="(profileFormValue.controls['userLastName'].invalid && profileFormValue.controls['userLastName'].touched) || (this.profileFormValue.controls['userLastName'].getRawValue().length == 0)">Merci de saisir un nom valide</h5>
           </div>
           <span class="margin-center"  ></span>
           <div class="form-group child-cell">
@@ -46,28 +46,30 @@
           <div class="form-group child">
             <label for="userBirthDateInput" class="text-primary font-weight-bold" >Date de naissance</label>
             <input type="date"  class="form-control border border-primary pl-2 round"  id="userBirthDateInput" formControlName="userBirthDate" (change)="checkValidityForm()" [max]="maxDateInput"/>
+            <!-- <h5 class="text-danger text-bold ml-2" [hidden]="true">Merci de choisir une date de naissance</h5> -->
             <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userBirthDate'].invalid && profileFormValue.controls['userBirthDate'].touched">Merci de choisir une date de naissance</h5>
           </div>
           <span class="margin-center"></span>
           <div class="form-group child">
             <label for="userPhoneNumberInput" class="text-primary font-weight-bold">Numéro de téléphone</label>
             <input type="text" class="form-control border border-primary pl-2 round" pattern="^[0-9]*$" id="userPhoneNumberInput" placeholder="saisir votre numéro de téléphone" formControlName="userPhoneNumber" maxlength="8" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"/>
-            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userPhoneNumber'].invalid && profileFormValue.controls['userPhoneNumber'].touched">Merci de saisir un numéro valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="(profileFormValue.controls['userPhoneNumber'].invalid && profileFormValue.controls['userPhoneNumber'].touched) || !isPhoneNumberValid">Merci de saisir un numéro valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userPhoneNumber'].getRawValue() !== null && profileFormValue.controls['userPhoneNumber'].touched && isPhoneNumberValid && profileFormValue.controls['userPhoneNumber'].getRawValue().length < 8">Le numéro de téléphone doit contenir 8 chiffres</h5>
           </div>
         </div>
 
 
         <div class='parent-cell'>
           <div class="form-group child">
-            <label for="userCountryInput" class="text-primary font-weight-bold" >Pays</label>
+            <label for="userCountryInput" class="text-primary font-weight-bold">Pays</label>
             <input type="text"  class="form-control border border-primary pl-2 round" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" id="userCountryInput" placeholder="saisir votre pays" formControlName="userCountry" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"/>
-            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userCountry'].invalid && profileFormValue.controls['userCountry'].touched">Merci de saisir un pays valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="(profileFormValue.controls['userCountry'].invalid && profileFormValue.controls['userCountry'].touched) || !isCountryNameValid">Merci de saisir un nom de pays valide</h5>
           </div>
           <span class="margin-center"></span>
           <div class="form-group child">
             <label for="userStateInput" class="text-primary font-weight-bold">État</label>
             <input type="text" class="form-control border border-primary pl-2 round" id="userStateInput" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" placeholder="Saisir votre état" formControlName="userState" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"/>
-            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userState'].invalid && profileFormValue.controls['userState'].touched">Merci de saisir un État valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="(profileFormValue.controls['userState'].invalid && profileFormValue.controls['userState'].touched) || !isStateNameValid">Merci de saisir un nom d'État valide</h5>
           </div>
         </div>
 
@@ -76,13 +78,14 @@
           <div class="form-group child">
             <label for="userCityInput" class="text-primary font-weight-bold">Ville</label>
             <input type="text" class="form-control border border-primary pl-2 round" id="userCityInput" placeholder="saisir votre ville" formControlName="userCity" pattern="^[A-Za-zéèçïîô ]*[A-Za-zéèçïîô ][A-Za-zéèçïîô ]*$" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"/>
-            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userCity'].invalid && profileFormValue.controls['userCity'].touched">Merci de saisir un nom valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="(profileFormValue.controls['userCity'].invalid && profileFormValue.controls['userCity'].touched) ||  !isCityNameValid">Merci de saisir un nom de ville valide</h5>
           </div>
           <span class="margin-center"></span>
           <div class="form-group child">
             <label for="userZipCodeInput" class="text-primary font-weight-bold">Code postal</label>
-            <input type="text" class="form-control border border-primary pl-2 round" pattern="^[0-9]*$" id="userZipCodeInput" placeholder="saisir votre code postal" formControlName="userZipCode" (blur)="checkValidityForm()" (keyup)="checkValidityForm()"/>
-            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userZipCode'].invalid && profileFormValue.controls['userZipCode'].touched">Merci de saisir un numéro valide</h5>
+            <input type="text" class="form-control border border-primary pl-2 round" pattern="^[0-9]*$" id="userZipCodeInput" placeholder="saisir votre code postal" formControlName="userZipCode" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" maxlength="4"/>
+            <h5 class="text-danger text-bold ml-2" *ngIf="(profileFormValue.controls['userZipCode'].invalid && profileFormValue.controls['userZipCode'].touched) || !isZipCodeValid">Merci de saisir un code postal valide</h5>
+            <h5 class="text-danger text-bold ml-2" *ngIf="profileFormValue.controls['userZipCode'].getRawValue() !== null && profileFormValue.controls['userZipCode'].touched && isZipCodeValid && profileFormValue.controls['userZipCode'].getRawValue().length < 4">Le code postal doit contenir 4 chiffres</h5>
           </div>
         </div>
 
