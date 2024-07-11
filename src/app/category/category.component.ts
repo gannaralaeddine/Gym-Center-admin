@@ -106,7 +106,7 @@ export class CategoryComponent implements OnInit
   {
     const params = { catId: category.catId }
 
-    this.router.navigate(["category-details"], { queryParams: params  })
+    this.router.navigate(["category-details"], { queryParams: params  }).then()
   }
 
   applyFilter(event: Event)
@@ -122,7 +122,7 @@ export class CategoryComponent implements OnInit
   {
     let filteredData = []
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
       if (matTableDataSource.data[i].catName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
       {
@@ -135,6 +135,6 @@ export class CategoryComponent implements OnInit
 
   showDeletePopup()
   {
-    
+
   }
 }

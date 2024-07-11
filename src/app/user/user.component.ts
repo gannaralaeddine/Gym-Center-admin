@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import  {UserService } from "../services/user.service";
 import { AddCategoryComponent } from "../category/add-category/add-category.component";
 import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileComponent } from '../profile/edit-profile/edit-profile.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { RegisterUserComponent } from './register-user/register-user.component';
+import {RegisterComponent} from "./register/register.component";
 
 @Component({
   selector: 'app-user',
@@ -96,8 +96,8 @@ export class UserComponent
     goToUserProfile(user: User)
     {
       const params = { userEmail: user.userEmail }
-      this.router.navigate(["profile"], { queryParams: params  })
-    }
+      this.router.navigate(["profile"], {queryParams: params}).then()
+     }
 
     editProfile(user: any)
     {
@@ -193,7 +193,7 @@ export class UserComponent
     let filteredData = []
     let fullName
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
       fullName = matTableDataSource.data[i].userFirstName + ' ' + matTableDataSource.data[i].userLastName
       if ((fullName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1) || (matTableDataSource.data[i].userEmail.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1))
@@ -205,7 +205,7 @@ export class UserComponent
     return filteredData
   }
 
-  deleteUser(user: any) 
+  deleteUser(user: any)
   {
     this.utilsService.deletePopup("Supprimer Utilisateur", "En confirmant cette opération, toutes autres choses associées, telles que les abonnements, les sessions privées, seront supprimées par conséquent.\nÊtes-vous sûr de continuer ?", "deleteOperation")
     .afterClosed()
@@ -247,9 +247,9 @@ export class UserComponent
 
   openRegisterUserDialog()
   {
-    const popup = this.dialogRef.open(RegisterUserComponent, {
-      height: "100%",
-      width: "65%",
+    const popup = this.dialogRef.open(RegisterComponent, {
+      height: "90%",
+      width: "35%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms"
     })

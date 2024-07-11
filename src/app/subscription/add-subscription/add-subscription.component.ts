@@ -385,14 +385,7 @@ export class AddSubscriptionComponent implements OnInit
   {
     if (this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue().length > 0 && this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue().length > 0)
     {
-      if (new Date(this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue()).getTime() > new Date(this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue()).getTime())
-      {
-        this.IsEndDateGreater = true
-      }
-      else
-      {
-        this.IsEndDateGreater = false
-      }
+      this.IsEndDateGreater = new Date(this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue()).getTime() > new Date(this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue()).getTime();
     }
   }
 }

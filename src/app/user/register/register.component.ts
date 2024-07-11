@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import { UserService } from "../services/user.service";
-import { User } from "../user/user";
-import { UtilsService } from "../serviceutils/utils.service";
+import { UserService } from "../../services/user.service";
+import { User } from "../user";
+import { UtilsService } from "../../serviceutils/utils.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {CoachModule} from "../user/coach.module";
-import {MemberModule} from "../user/member.module";
-import {AuthService} from "../auth/auth.service";
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import {CoachModule} from "../coach.module";
+import {MemberModule} from "../member.module";
+import {AuthService} from "../../auth/auth.service";
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -59,11 +59,11 @@ export class RegisterComponent
 
     createUser()
     {
-        console.log("email: " + this.userForm.value.userEmail)
-        this.selectList =  document.getElementById("userRoleSelect") as  HTMLSelectElement
+        this.selectList =  document.getElementById("register_userRoleSelect") as  HTMLSelectElement
         this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
-        // this.dialogRef = this.utilsService.loadingSpinnerDialog()
         this.isLoading = true
+
+      console.log("selected item: " + this.selectedOptionValue)
 
         switch (this.selectedOptionValue)
         {
@@ -74,7 +74,7 @@ export class RegisterComponent
           case "3": this.registerAdmin()
             break;
           default:
-            console.log(this.selectedOptionValue)
+            this.utilsService.successDialog("Opération échouée", "Veuillez choisir le type de compte svp !", false)
         }
     }
 
@@ -103,22 +103,6 @@ export class RegisterComponent
             default:
             { this.utilsService.successDialog("Opération échouée", err.message, false); break }
           }
-          //   this.dialogRef.afterOpened().subscribe(() => {
-          //   if (err.status)
-          //   {
-          //     this.dialogRef.close()
-          //   }
-          // })
-          //
-          // this.dialogRef.afterClosed().subscribe(() => {
-          //   switch (err.status)
-          //   {
-          //     case 302:
-          //     { this.utilsService.successDialog("Opération échouée", "Compte déjà existe! Veuillez essayer avec un autre E-mail!", false); break }
-          //     default:
-          //     { this.utilsService.successDialog("Opération échouée", err.message, false); break }
-          //   }
-          // })
         },
       })
     }

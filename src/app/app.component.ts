@@ -29,11 +29,11 @@ export class AppComponent
 
         if (this.isLoggedIn())
         {
-          this.router.navigate(["home"])
+          this.router.navigate(["home"]).then()
         }
         else
         {
-          this.router.navigate([""])
+          this.router.navigate([""]).then()
         }
       }
   }
@@ -52,7 +52,7 @@ export class AppComponent
     this.isClicked = false
     this.openOrCloseSideBarMenu()
     this.authService.clearLocalStorage()
-    this.router.navigate([""])
+    this.router.navigate([""]).then()
   }
 
   openOrCloseSideBarMenu()

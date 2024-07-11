@@ -299,11 +299,11 @@ function navbarBlurOnScroll(id) {
     }, 10);
   }
 
-  var isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+  var isWindows = navigator.platform.indexOf('Win') > -1;
 
   if (isWindows) {
     var content = document.querySelector('.main-content');
-    if (navbarScrollActive == 'true') {
+    if (navbarScrollActive === 'true') {
       content.addEventListener('ps-scroll-y', debounce(function() {
         if (content.scrollTop > scrollDistance) {
           blurNavbar();
@@ -847,7 +847,7 @@ if (indicators) {
             const element = entry.target;
             const indicator = document.querySelector(`a[href='#${element.id}']`);
             indicator.classList.add("active");
-            return;
+
           }
         });
       }, {
