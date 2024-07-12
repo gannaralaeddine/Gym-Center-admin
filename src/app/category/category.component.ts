@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {UtilsService} from "../serviceutils/utils.service";
+import { Overlay, ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class CategoryComponent implements OnInit
     private categoryService: CategoryService,
     private utilsService: UtilsService,
     private dialogRef: MatDialog,
-    private router: Router)
+    private router: Router,
+    private overlay: Overlay)
   {
     this.isCategoryUpdated = false
   }
@@ -95,7 +97,8 @@ export class CategoryComponent implements OnInit
       width: "40%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
-      data: { categoryId: categoryId }
+      data: { categoryId: categoryId },
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
     })
     popup.afterClosed().subscribe(() =>{
       this.getAllCategories()
@@ -131,10 +134,5 @@ export class CategoryComponent implements OnInit
     }
 
     return filteredData
-  }
-
-  showDeletePopup()
-  {
-
   }
 }
