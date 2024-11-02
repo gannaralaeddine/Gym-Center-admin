@@ -18,6 +18,7 @@ import { OfferDetailsComponent } from './offer/offer-details/offer-details.compo
 import { OfferComponent } from './offer/offer.component';
 import { OptionComponent } from './option/option.component';
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
+import { TrainingHistoryComponent } from './training-history/training-history.component';
 
 export const routes: Routes = [
   {path: 'app-component', component: AppComponent},
@@ -29,7 +30,7 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'activity', component: ActivityComponent},
-  {path: 'users', component: UserComponent, /* canActivate: [AuthGuard], data: {roles: "ADMIN"} */},
+  {path: 'users', component: UserComponent},
   {path: 'category-details', component: DetailsCategoryComponent},
   {path: 'activity-details', component: DetailsActivityComponent},
   {path: 'session-details', component: DetailsSessionComponent},
@@ -38,5 +39,6 @@ export const routes: Routes = [
   {path: 'session', component: SessionComponent},
   {path: 'subscription', component: SubscriptionComponent},
   {path: 'offer', component: OfferComponent },
-  {path: 'option', component: OptionComponent }
+  {path: 'option', component: OptionComponent },
+  {path: 'training-history', component: TrainingHistoryComponent }
 ];
