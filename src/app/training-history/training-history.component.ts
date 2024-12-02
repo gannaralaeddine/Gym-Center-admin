@@ -1,13 +1,17 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TrainingHistoryService } from '../services/training-history.service';
 import { UtilsService } from '../serviceutils/utils.service';
 import { Router } from '@angular/router';
 import { HistoryObject } from './history-object';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @Component({
@@ -22,7 +26,19 @@ import { DatePipe } from '@angular/common';
     ]),
   ],
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatIconModule, DatePipe]
+  imports: [
+    MatTableModule, 
+    MatButtonModule, 
+    MatIconModule, 
+    DatePipe, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatIconModule, 
+    MatPaginatorModule, 
+    MatTableModule, 
+    MatSortModule,
+    NgIf
+  ]
 })
 
 
@@ -30,12 +46,14 @@ export class TrainingHistoryComponent
 {
 
   dataSource!: any
+  dataSourceBackUp!: MatTableDataSource<any>
   columnsToDisplay = ['image', 'full name', 'management']
   trainingHistoryColumns: string[] = ['date', 'checkin time', 'checkout time']
   trainingHistoryDataSource: HistoryObject[] = []
   userTrainingHistories!: HistoryObject[]
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand']
   expandedElement?: HistoryObject | null
+  @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(
     private trainingHistoryService: TrainingHistoryService, 
@@ -44,7 +62,8 @@ export class TrainingHistoryComponent
   {
     this.trainingHistoryService.getAllTrainingHistories().subscribe({
       next: (element: any) => {
-        this.dataSource = element
+        this.dataSource = new MatTableDataSource(element)
+        this.dataSourceBackUp = this.dataSource
         element.forEach((trainingHistory: any) => {
           // let historyObject = new HistoryObject(trainingHistory.checkInTime.split("T")[0], trainingHistory.checkInTime.split("T")[1].substring(0,5), trainingHistory.checkOutTime.split("T")[1].substring(0,5))
           this.trainingHistoryDataSource.push(trainingHistory)
@@ -54,6 +73,29 @@ export class TrainingHistoryComponent
     })
   }
 
+  applyFilter(event: Event)
+  {
+    const filterValue = (event.target as HTMLInputElement).value
+    this.dataSource = new MatTableDataSource(this.filterByName(this.dataSourceBackUp,filterValue.trim().toLowerCase()))
+    this.dataSource.paginator = this.paginator
+  }
+
+  filterByName(matTableDataSource: MatTableDataSource<any>, filter: string)
+  {
+    let filteredData = []
+
+    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    {
+      let userFullName = (matTableDataSource.data[i].user.userLastName + " " + matTableDataSource.data[i].user.userFirstName).trim().toLowerCase()
+
+      if (userFullName.indexOf(filter.trim().toLowerCase()) != -1)
+      {
+        filteredData.push(matTableDataSource.data[i])
+      }
+    }
+
+    return filteredData
+  }
   getUserImage(imageName: string): string
     {
         if (imageName)
@@ -82,7 +124,5 @@ export class TrainingHistoryComponent
         this.userTrainingHistories.push(element)
       }
     })
-  
-    console.log(this.userTrainingHistories)
   }
 }

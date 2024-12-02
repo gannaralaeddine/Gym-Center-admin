@@ -13,6 +13,11 @@
   </div>
 </div>
 
+  <mat-form-field [color]="'accent'" style="margin-left: 1.5%;">
+    <mat-label>Chercher membre</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Saisir un nom du membre pour chercher" #input>
+  </mat-form-field>
+
 <table style="margin-left: 1.5%;" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
  
   <ng-container matColumnDef="image">
@@ -89,4 +94,9 @@
       (click)="expandedElement = expandedElement === element ? null : element">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="3" *ngIf="dataSourceBackUp.data.length === 0">Il n'y a pas encore d'historique</td>
+    <td class="mat-cell" colspan="3" *ngIf="dataSourceBackUp.data.length > 0 && dataSource.data.length ===  0 "><h2 style="font-size: medium; color: #F44335; font-size: medium; text-align: center;">Il n'y a pas des membres avec le nom: {{input.value}}</h2></td>
+  </tr>
 </table>
