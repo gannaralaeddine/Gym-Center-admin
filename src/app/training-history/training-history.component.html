@@ -28,8 +28,8 @@
   </ng-container>
 
   <ng-container matColumnDef="full name">
-    <th mat-header-cell *matHeaderCellDef>Nom & Prénom</th>
-    <td mat-cell *matCellDef="let element" (click)="showUserTrainingHistories(element.userId)"> {{element.userLastName}} {{element.userFirstName}} </td>
+    <th mat-header-cell *matHeaderCellDef class="text-center">Nom & Prénom</th>
+    <td mat-cell *matCellDef="let element" (click)="showUserTrainingHistories(element.userId)" class="text-center"> {{element.userLastName}} {{element.userFirstName}} </td>
   </ng-container>
 
   <ng-container matColumnDef="management">
@@ -56,30 +56,51 @@
   </ng-container>
 
   <ng-container matColumnDef="expandedDetail">
+
     <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length" style="text-align: center;">
       <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <table mat-table [dataSource]="userTrainingHistoriesTable" class="mat-elevation-z8">
+        <table>
+          <td>
+            <span style="font-size: medium; color: #129212; font-weight: 200;"><b>Filtrage&nbsp;par&nbsp;date:</b></span>
+          </td>
+          <td>
+            <form [formGroup]="dateFilterFormValue">
+              <div class="form-group">
+                <input type="date" id="filterDate" class="form-control border border-secondary pl-2 round" formControlName="dateFilterValue" (change)="filterByDate()" style="margin-left: 2%;">
+              </div>
+            </form>
+          </td>
+        </table>
+       
+        <table mat-table [dataSource]="userTrainingHistoriesTable" class="mat-elevation-z8" style="margin-top: 5%; margin-left: -21%; margin-bottom: 2%;">
 
-          <!-- Position Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let element"> {{element.checkInTime | date: "dd MMM yyyy" : "fr"}} </td>
           </ng-container>
 
-          <!-- Name Column -->
+       
           <ng-container matColumnDef="checkin time">
-            <th mat-header-cell *matHeaderCellDef>Temps Entrée</th>
-            <td mat-cell *matCellDef="let element"> {{element.checkInTime | date: "HH:mm"}} </td>
+            <th mat-header-cell *matHeaderCellDef class="text-center">Temps Entrée</th>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.checkInTime | date: "HH:mm"}} </td>
           </ng-container>
 
-          <!-- Weight Column -->
+       
           <ng-container matColumnDef="checkout time">
-            <th mat-header-cell *matHeaderCellDef>Temps Sortie</th>
-            <td mat-cell *matCellDef="let element"> {{element.checkOutTime | date: "HH:mm"}} </td>
+            <th mat-header-cell *matHeaderCellDef class="text-center">Temps Sortie</th>
+            <td mat-cell *matCellDef="let element" class="text-center"> 
+              <span *ngIf="element.checkOutTime">{{element.checkOutTime | date: "HH:mm"}}</span>
+              <span *ngIf="!element.checkOutTime" style="font-size: medium; color: #129212; font-weight: 200;"><b>Encore dans la salle</b></span>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="trainingHistoryColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: trainingHistoryColumns;"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="3" *ngIf="userTrainingHistoriesTable.length == 0"><span style="font-size: medium; color: #129212; font-weight: 200;"><b>Il n'y a pas d'historique avec cette date</b></span></td>
+          </tr>
+
         </table>
 
 

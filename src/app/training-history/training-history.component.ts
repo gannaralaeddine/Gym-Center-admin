@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
@@ -37,7 +38,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ]
 })
 
@@ -46,17 +48,23 @@ export class TrainingHistoryComponent
 {
   usersDataSource!: MatTableDataSource<any>
   usersDataSourceBackUp!: MatTableDataSource<any>
+
   allTrainingHistoriesTable: HistoryObject[] = []
+
   userTrainingHistoriesTable!: HistoryObject[]
+  userTrainingHistoriesTableBackUp!: HistoryObject[]
+
   columnsToDisplay = ['image', 'full name', 'management']
   trainingHistoryColumns: string[] = ['date', 'checkin time', 'checkout time']
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand']
   expandedElement?: HistoryObject | null
   @ViewChild(MatPaginator) paginator!: MatPaginator
-
+  dateFilterFormValue !: FormGroup
+  
   constructor(
     private trainingHistoryService: TrainingHistoryService,
     private utilsService: UtilsService,
+    private dateFilterFormBuilder: FormBuilder,
     private router: Router)
   {
     this.trainingHistoryService.getAllTrainingHistories().subscribe({
@@ -74,6 +82,10 @@ export class TrainingHistoryComponent
         this.usersDataSourceBackUp = this.usersDataSource
       },
       error: (err) => console.error(err)
+    })
+
+    this.dateFilterFormValue = this.dateFilterFormBuilder.group({
+      dateFilterValue : ['']
     })
   }
 
@@ -100,6 +112,25 @@ export class TrainingHistoryComponent
 
     return filteredData
   }
+
+  
+  filterByDate()
+  {
+    let filteredData = []
+
+    for (let i = 0; i < this.userTrainingHistoriesTableBackUp.length; i++)
+    {
+      let date = new Date(this.userTrainingHistoriesTableBackUp[i].checkInTime).toISOString().split('T')[0]
+      
+      if (date.indexOf(this.dateFilterFormValue.value.dateFilterValue) != -1)
+      {
+        filteredData.push(this.userTrainingHistoriesTableBackUp[i])
+      }
+    }
+
+    this.userTrainingHistoriesTable = filteredData
+  }
+
   getUserImage(imageName: string): string
     {
         if (imageName)
@@ -128,5 +159,13 @@ export class TrainingHistoryComponent
         this.userTrainingHistoriesTable.push(element)
       }
     })
+
+    this.userTrainingHistoriesTableBackUp = this.userTrainingHistoriesTable
+  }
+
+  showDateValue() 
+  {
+    // const filterDateInput = document.getElementById("filterDate") as HTMLInputElement
+      console.log(this.dateFilterFormValue.value.dateFilterValue)
   }
 }

@@ -1,13 +1,13 @@
 export class HistoryObject 
 {
-    Date: any
-    CheckinTime: any
-    CheckoutTime: any
+    date: any
+    checkInTime: any
+    checkOutTime: any
 
     constructor(Date: any, CheckinTime: any, CheckoutTime: any)
     {
-        this.Date = Date
-        this.CheckinTime = CheckinTime
-        this.CheckoutTime = CheckoutTime
+        this.date = Date
+        this.checkInTime = CheckinTime
+        this.checkOutTime = CheckoutTime
     }
 }
