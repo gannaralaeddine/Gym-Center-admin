@@ -44,14 +44,12 @@ import { MatSortModule } from '@angular/material/sort';
 
 export class TrainingHistoryComponent
 {
-
-  dataSource!: any
   usersDataSource!: MatTableDataSource<any>
-  dataSourceBackUp!: MatTableDataSource<any>
+  usersDataSourceBackUp!: MatTableDataSource<any>
+  allTrainingHistoriesTable: HistoryObject[] = []
+  userTrainingHistoriesTable!: HistoryObject[]
   columnsToDisplay = ['image', 'full name', 'management']
   trainingHistoryColumns: string[] = ['date', 'checkin time', 'checkout time']
-  trainingHistoryDataSource: HistoryObject[] = []
-  userTrainingHistories!: HistoryObject[]
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand']
   expandedElement?: HistoryObject | null
   @ViewChild(MatPaginator) paginator!: MatPaginator
@@ -63,11 +61,8 @@ export class TrainingHistoryComponent
   {
     this.trainingHistoryService.getAllTrainingHistories().subscribe({
       next: (element: any) => {
-        this.dataSource = new MatTableDataSource(element)
-        this.dataSourceBackUp = this.dataSource
         element.forEach((trainingHistory: any) => {
-          // let historyObject = new HistoryObject(trainingHistory.checkInTime.split("T")[0], trainingHistory.checkInTime.split("T")[1].substring(0,5), trainingHistory.checkOutTime.split("T")[1].substring(0,5))
-          this.trainingHistoryDataSource.push(trainingHistory)
+          this.allTrainingHistoriesTable.push(trainingHistory)
         })
       },
       error: (err) => console.error(err)
@@ -76,7 +71,7 @@ export class TrainingHistoryComponent
     this.trainingHistoryService.getAllDistinctUsers().subscribe({
       next: (element: any) => {
         this.usersDataSource = new MatTableDataSource(element)
-        this.dataSourceBackUp = this.usersDataSource
+        this.usersDataSourceBackUp = this.usersDataSource
       },
       error: (err) => console.error(err)
     })
@@ -85,8 +80,8 @@ export class TrainingHistoryComponent
   applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value
-    this.dataSource = new MatTableDataSource(this.filterByName(this.dataSourceBackUp,filterValue.trim().toLowerCase()))
-    this.dataSource.paginator = this.paginator
+    this.usersDataSource = new MatTableDataSource(this.filterByName(this.usersDataSourceBackUp,filterValue.trim().toLowerCase()))
+    this.usersDataSource.paginator = this.paginator
   }
 
   filterByName(matTableDataSource: MatTableDataSource<any>, filter: string)
@@ -95,7 +90,7 @@ export class TrainingHistoryComponent
 
     for (let i = 0; i < matTableDataSource.data.length; i++)
     {
-      let userFullName = (matTableDataSource.data[i].user.userLastName + " " + matTableDataSource.data[i].user.userFirstName).trim().toLowerCase()
+      let userFullName = (matTableDataSource.data[i].userLastName + " " + matTableDataSource.data[i].userFirstName).trim().toLowerCase()
 
       if (userFullName.indexOf(filter.trim().toLowerCase()) != -1)
       {
@@ -125,12 +120,12 @@ export class TrainingHistoryComponent
 
   showUserTrainingHistories(userId: any)
   {
-    this.userTrainingHistories = []
+    this.userTrainingHistoriesTable = []
 
-    this.trainingHistoryDataSource.forEach((element: any) => {
+    this.allTrainingHistoriesTable.forEach((element: any) => {
       if (element.user.userId == userId)
       {
-        this.userTrainingHistories.push(element)
+        this.userTrainingHistoriesTable.push(element)
       }
     })
   }
