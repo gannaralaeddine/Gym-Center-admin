@@ -151,6 +151,7 @@ export class TrainingHistoryComponent
 
   showUserTrainingHistories(userId: any)
   {
+    this.dateFilterFormValue.controls['dateFilterValue'].setValue("")
     this.userTrainingHistoriesTable = []
 
     this.allTrainingHistoriesTable.forEach((element: any) => {
@@ -161,11 +162,5 @@ export class TrainingHistoryComponent
     })
 
     this.userTrainingHistoriesTableBackUp = this.userTrainingHistoriesTable
-  }
-
-  showDateValue() 
-  {
-    // const filterDateInput = document.getElementById("filterDate") as HTMLInputElement
-      console.log(this.dateFilterFormValue.value.dateFilterValue)
   }
 }
