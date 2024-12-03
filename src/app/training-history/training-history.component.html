@@ -19,7 +19,7 @@
   </mat-form-field>
 
 <table style="margin-left: 1.5%;" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
- 
+
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef>Image</th>
     <td mat-cell *matCellDef="let element" (click)="showUserTrainingHistories(element.user.userId)">
@@ -41,13 +41,13 @@
 
   <ng-container matColumnDef="expand">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-    <td mat-cell *matCellDef="let element" (mouseover)="showUserTrainingHistories(element.user.userId)">
-      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-        @if (expandedElement === element) 
+    <td mat-cell *matCellDef="let element" >
+      <button mat-icon-button aria-label="expand row" (click)="showUserTrainingHistories(element.user.userId)">
+        @if (expandedElement === element)
         {
           <mat-icon>keyboard_arrow_up</mat-icon>
-        } 
-        @else 
+        }
+        @else
         {
           <mat-icon>keyboard_arrow_down</mat-icon>
         }
@@ -59,30 +59,30 @@
     <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length" style="text-align: center;">
       <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
         <table mat-table [dataSource]="userTrainingHistories" class="mat-elevation-z8">
-        
+
           <!-- Position Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let element"> {{element.checkInTime | date: "dd MMM yyyy" : "fr"}} </td>
           </ng-container>
-        
+
           <!-- Name Column -->
           <ng-container matColumnDef="checkin time">
             <th mat-header-cell *matHeaderCellDef>Temps Entrée</th>
             <td mat-cell *matCellDef="let element"> {{element.checkInTime | date: "HH:mm"}} </td>
           </ng-container>
-        
+
           <!-- Weight Column -->
           <ng-container matColumnDef="checkout time">
             <th mat-header-cell *matHeaderCellDef>Temps Sortie</th>
             <td mat-cell *matCellDef="let element"> {{element.checkOutTime | date: "HH:mm"}} </td>
           </ng-container>
-        
+
           <tr mat-header-row *matHeaderRowDef="trainingHistoryColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: trainingHistoryColumns;"></tr>
         </table>
-        
-        
+
+
       </div>
     </td>
   </ng-container>
