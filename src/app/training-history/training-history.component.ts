@@ -27,25 +27,26 @@ import { MatSortModule } from '@angular/material/sort';
   ],
   standalone: true,
   imports: [
-    MatTableModule, 
-    MatButtonModule, 
-    MatIconModule, 
-    DatePipe, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatIconModule, 
-    MatPaginatorModule, 
-    MatTableModule, 
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    DatePipe,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule,
     MatSortModule,
     NgIf
   ]
 })
 
 
-export class TrainingHistoryComponent  
+export class TrainingHistoryComponent
 {
 
   dataSource!: any
+  usersDataSource!: MatTableDataSource<any>
   dataSourceBackUp!: MatTableDataSource<any>
   columnsToDisplay = ['image', 'full name', 'management']
   trainingHistoryColumns: string[] = ['date', 'checkin time', 'checkout time']
@@ -56,9 +57,9 @@ export class TrainingHistoryComponent
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(
-    private trainingHistoryService: TrainingHistoryService, 
-    private utilsService: UtilsService, 
-    private router: Router) 
+    private trainingHistoryService: TrainingHistoryService,
+    private utilsService: UtilsService,
+    private router: Router)
   {
     this.trainingHistoryService.getAllTrainingHistories().subscribe({
       next: (element: any) => {
@@ -68,6 +69,14 @@ export class TrainingHistoryComponent
           // let historyObject = new HistoryObject(trainingHistory.checkInTime.split("T")[0], trainingHistory.checkInTime.split("T")[1].substring(0,5), trainingHistory.checkOutTime.split("T")[1].substring(0,5))
           this.trainingHistoryDataSource.push(trainingHistory)
         })
+      },
+      error: (err) => console.error(err)
+    })
+
+    this.trainingHistoryService.getAllDistinctUsers().subscribe({
+      next: (element: any) => {
+        this.usersDataSource = new MatTableDataSource(element)
+        this.dataSourceBackUp = this.usersDataSource
       },
       error: (err) => console.error(err)
     })
@@ -84,7 +93,7 @@ export class TrainingHistoryComponent
   {
     let filteredData = []
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
       let userFullName = (matTableDataSource.data[i].user.userLastName + " " + matTableDataSource.data[i].user.userFirstName).trim().toLowerCase()
 
@@ -119,7 +128,7 @@ export class TrainingHistoryComponent
     this.userTrainingHistories = []
 
     this.trainingHistoryDataSource.forEach((element: any) => {
-      if (element.user.userId === userId)
+      if (element.user.userId == userId)
       {
         this.userTrainingHistories.push(element)
       }
