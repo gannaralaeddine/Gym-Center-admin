@@ -254,7 +254,8 @@ export class UserComponent
       exitAnimationDuration: "1000ms"
     })
     popup.afterClosed().subscribe(() =>{
-      this.getAllUsers()
+      console.log("dialog closed !!")
+      this.getAllUsersFromApi()
     })
   }
 }
