@@ -1,75 +1,101 @@
 <div class="container-fluid px-2 px-md-4">
 
-    <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
-      <span class="mask  bg-gradient-primary opacity-6"></span>
-    </div>
+  <div class="page-header min-height-300 border-radius-xl mt-4"
+    style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+    <span class="mask  bg-gradient-primary opacity-6"></span>
+  </div>
 
-    <div class="card card-body mx-3 mx-md-4 mt-n6">
-      <div class="row gx-4 mb-2">
+  <div class="card card-body mx-3 mx-md-4 mt-n6">
+    <div class="row gx-4 mb-2">
 
-        <img [src]="getImage(offer.offerActivity.actImage)" height="600" width="500" alt="Activity Image" class="mb-3">
+      <img [src]="getImage(offer.offerActivity.actImage)" height="600" width="500" alt="Activity Image" class="mb-3">
 
-        <div class="row">
-          <div class="col-lg-4 col-md-6">
-            <div class="nav-wrapper position-relative">
-              <h2 class="mb-0">Offre: {{offer.offerTitle}}</h2>
-            </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="nav-wrapper position-relative">
+            <h2 class="mb-0">Offre: {{offer.offerTitle}}</h2>
           </div>
+        </div>
 
-          <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-            <div class="nav-wrapper position-relative end-0">
-              <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab" aria-selected="false" (click)="updateDialog()">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path fill="#fff" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                    <span class="ms-1 text-white">Modifier cette offre</span>
-                  </a>
-                </li>
-              </ul>
+        <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+          <div class="nav-wrapper position-relative end-0">
+            <ul class="nav nav-pills nav-fill p-1 bg-color" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:" role="tab"
+                  aria-selected="false" (click)="updateDialog()">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                    <path fill="#fff"
+                      d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
+                  </svg>
+                  <span class="ms-1 text-white">Modifier cette offre</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-4">
+          <h2 class="mt-1 float-left">Période</h2>
+          <div class="card" style="width: 14rem;margin-top: 18%;">
+            <img src="../../../assets/img/period.jpg" height="180" width="250" alt="img-blur-shadow"
+              class="img-fluid shadow border-radius-xl mb-2">
+            <div class="card-body" style="padding-bottom: 18.5%; padding-top: 18.5%;">
+              @if (offer.offerPeriod == 12)
+              {
+              <a class="card-text">
+                <h3 class="text-center">1 an</h3>
+              </a>
+              }
+              @else
+              {
+              <a class="card-text">
+                <h3 class="text-center">{{offer.offerPeriod}} mois</h3>
+              </a>
+              }
             </div>
           </div>
         </div>
 
-        <div class="row">
-
-            <div class="col-4">
-                <h2 class="mt-1 float-left">Période</h2>
-                <div class="card" style="width: 14rem;margin-top: 18%;">
-                <img src="../../../assets/img/period.jpg" height="180" width="250" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
-                <div class="card-body" style="padding-bottom: 18.5%; padding-top: 18.5%;">
-                    <a class="card-text"><h3 class="text-center">{{period}}</h3></a>
-                </div>
-                </div>
+        <div class="col-4">
+          <h2 class="mt-1 float-left">Tarif</h2>
+          <div class="card" style="width: 14rem;margin-top: 18%;">
+            <img src="../../../assets/img/pricing.png" height="150" width="270" alt="img-blur-shadow"
+              class="img-fluid shadow border-radius-xl mb-2">
+            <div class="card-body" style="padding-bottom: 16%; padding-top: 16%;">
+              <a class="card-text">
+                <h3 class="text-center">{{offer.offerPrice}} Dinars</h3>
+              </a>
             </div>
-
-            <div class="col-4">
-                <h2 class="mt-1 float-left">Tarif</h2>
-                <div class="card" style="width: 14rem;margin-top: 18%;">
-                <img src="../../../assets/img/pricing.png" height="150" width="270"  alt="img-blur-shadow" class="img-fluid shadow border-radius-xl mb-2">
-                <div class="card-body" style="padding-bottom: 16%; padding-top: 16%;">
-                    <a class="card-text"><h3 class="text-center">{{offer.offerPrice}} Dinars</h3></a>
-                </div>
-                </div>
-            </div>
-
-            <div class="col-4 text-end">
-                <h2 class="mt-1 float-left" style="margin-bottom: 4.5%;">Activité</h2>
-                <div class="card" style="width: 14rem;margin-top: 18%;">
-                <span style="height: 40%;"><img [src]="getImage(offer.offerActivity.actImage)"   alt="img-blur-shadow" class="img-activity img-fluid shadow border-radius-xl mb-2" (click)="goToCategoryDetails()"></span>
-                <div class="card-body" style="padding-bottom: 11%;padding-top: 11%;">
-                    <a class="card-text" href="javascript:"><h3 class="text-center" (click)="goToCategoryDetails()">{{offer.offerActivity.actName}}</h3></a>
-                </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <div class="col-4 text-end">
+          <h2 class="mt-1 float-left" style="margin-bottom: 4.5%;">Activité</h2>
+          <div class="card" style="width: 14rem;margin-top: 18%;">
+            <span style="height: 40%;"><img [src]="getImage(offer.offerActivity.actImage)" alt="img-blur-shadow"
+                class="img-activity img-fluid shadow border-radius-xl mb-2" (click)="goToCategoryDetails()"></span>
+            <div class="card-body" style="padding-bottom: 11%;padding-top: 11%;">
+              <a class="card-text" href="javascript:">
+                <h3 class="text-center" (click)="goToCategoryDetails()">{{offer.offerActivity.actName}}</h3>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
     <div class="mt-2">
       <h2>Options:</h2>
       <mat-list style="margin-top: -2%;">
-        <mat-list-item *ngFor="let option of offer.offerOption" style="font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem; font-style: italic;">
-          <span matListItemTitle><svg xmlns="http://www.w3.org/2000/svg" height="6" width="6" viewBox="0 0 512 512"><path fill="black" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>  {{option.optionName}}</span>
+        <mat-list-item *ngFor="let option of offer.offerOption"
+          style="font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem; font-style: italic;">
+          <span matListItemTitle><svg xmlns="http://www.w3.org/2000/svg" height="6" width="6" viewBox="0 0 512 512">
+              <path fill="black" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+            </svg> {{option.optionName}}</span>
         </mat-list-item>
       </mat-list>
     </div>
-</div>
+  </div>

@@ -11,6 +11,7 @@ import { Activity } from '../../activity/activity';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { OptionService } from '../../services/option.service';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -22,19 +23,22 @@ import { OptionService } from '../../services/option.service';
 export class AddOfferComponent implements OnInit
 {
   offerFormValue!: FormGroup
-  offers: any
-  activities: any
+  offers!: any
+  activities!: any
+  categories!: any
   offerId!: any
   offer = new Offer()
-  activityId: any
   isAddOperation = true
   minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
   selectedOptions = new FormControl('');
-  allOptionsList: any
+  allOptionsList!: any
+  isCategorySelected = false
+  activitiesList: Activity[] = [] 
 
   constructor(
     private offerFormBuilder: FormBuilder,
     private activityService: ActivityService,
+    private categoryService: CategoryService,
     private offerService: OfferService,
     private optionService: OptionService,
     private utilsService: UtilsService,
@@ -43,63 +47,79 @@ export class AddOfferComponent implements OnInit
 
   ngOnInit()
   {
-     if (this.offerId)
+    if (this.offerId)
     {
       this.isAddOperation = false;
       this.getOffer(this.offerId)
-      this.getAllActivities()
+      this.getAllCategories()
     }
 
     this.offerFormValue = this.offerFormBuilder.group({
       offerTitle : ['',Validators.required],
       offerPeriod : ['',Validators.required],
       offerPrice : ['',Validators.required],
+      offerCategory: ['',Validators.required],
       offerActivity: ['',Validators.required]
     })
 
-    this.getAllActivities()
+    this.getAllCategories()
     this.getAllOptions()
   }
 
   getOffer(offerId: any)
   {
-    if (isNaN(offerId) || offerId <= 0) {
-      console.error('Invalid sessionId provided');
-      return; // Or handle the error appropriately
-    }
     this.offerService.getOffer(offerId).subscribe({
       next: (offerObject) => {
-
         this.offerFormValue.controls['offerTitle'].setValue(offerObject.offerTitle)
         this.offerFormValue.controls['offerPeriod'].setValue(offerObject.offerPeriod)
         this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
-        this.populateActivitiesList(offerObject)
-
+        this.populateCategoriesList(offerObject)
         this.offer = offerObject as Offer
       },
       error: (err) => console.error(err)
     })
   }
 
-  getActivity(id?: any)
+  getCategory(id?: any)
   {
     if (!id)
     {
-      if (isNaN(this.offerFormValue.value.offerActivity) || this.offerFormValue.value.offerActivity <= 0) {
-        console.log("error id isNAN !!!")
-        return
-      }
-      this.activityService.getActivity(this.offerFormValue.value.offerActivity).subscribe({
-        next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
+      this.categoryService.getActivitiesOfCategory(this.offerFormValue.value.offerCategory).subscribe({
+        next: (activitiesList) => this.activities = activitiesList,
         error: (err) => console.error(err)
       })
     }
     else
     {
-      if (isNaN(id) || id <= 0) {
-        console.log("error id isNAN !!!")
-        return
-      }
+      this.activityService.getActivity(id).subscribe({
+        next: (activityObject) => {
+          this.offer.offerActivity = activityObject as Activity
+        },
+        error: (err) => console.error(err)
+      })
+
+      this.categoryService.getActivitiesOfCategory(id).subscribe({
+        next: (activitiesList) => this.activities = activitiesList as Activity[],
+        error: (err) => console.error(err)
+      })
+    }
+  }
+
+  getActivity(id?: any)
+  {
+    if (!id)
+    {
+      (this.activities as Activity[]).forEach((activity: Activity) => {
+        
+        if (activity.actId == this.offerFormValue.value.offerActivity)
+        {
+          this.offer.offerActivity = activity
+          return
+        }
+      }) 
+    }
+    else
+    {
       this.activityService.getActivity(id).subscribe({
         next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
         error: (err) => console.error(err)
@@ -107,10 +127,13 @@ export class AddOfferComponent implements OnInit
     }
   }
 
-  getAllActivities()
+  getAllCategories()
   {
-    this.activityService.getAllActivities().subscribe({
-      next: (activitiesList) => this.activities = activitiesList,
+    this.categoryService.getAllCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories
+        console.log(this.categories)
+      },
       error: (err) => console.error(err)
     })
   }
@@ -123,6 +146,8 @@ export class AddOfferComponent implements OnInit
       error: (err) => console.error(err)
     })
   }
+
+
   checkValidityForm()
   {
     if (this.offerFormValue.controls['offerTitle'].invalid && this.offerFormValue.controls['offerTitle'].touched)
@@ -152,6 +177,15 @@ export class AddOfferComponent implements OnInit
       document.getElementById('offerPriceInput')!.className = "form-control border border-dark pl-2 round"
     }
 
+    if (this.offerFormValue.controls['offerCategory'].invalid && this.offerFormValue.controls['offerCategory'].touched)
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-danger pl-2 round"
+    }
+    else
+    {
+      document.getElementById('categorySelectList')!.className = "form-control border border-dark pl-2 round"
+    }
+
     if (this.offerFormValue.controls['offerActivity'].invalid && this.offerFormValue.controls['offerActivity'].touched)
     {
       document.getElementById('activitySelectList')!.className = "form-control border border-danger pl-2 round"
@@ -174,7 +208,7 @@ export class AddOfferComponent implements OnInit
     }
     else
     {
-      if (this.offerFormValue.controls['offerTitle'].valid && this.offerFormValue.controls['offerPeriod'].valid && this.offerFormValue.controls['offerPrice'].valid && this.offerFormValue.controls['offerActivity'].valid)
+      if (this.offerFormValue.controls['offerTitle'].valid && this.offerFormValue.controls['offerPeriod'].valid && this.offerFormValue.controls['offerPrice'].valid && this.offerFormValue.controls['offerCategory'].valid && this.offerFormValue.controls['offerActivity'].valid)
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -205,9 +239,9 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    console.log(this.offer)
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {
+        console.log(this.offer)
         this.closeDialog()
         this.utilsService.successDialog("Opération réussite", "Offre ajouté avec succès", true)
       },
@@ -220,44 +254,112 @@ export class AddOfferComponent implements OnInit
     this.dialogRef.close()
   }
 
+  populateCategoriesList(offer: any)
+  {
+    let optionTag!: HTMLOptionElement
+    let selectTag!: HTMLSelectElement
+
+    // remove old select list
+    let formGroupCategorySelectList = document.getElementById("categorySelectList")?.parentElement
+    document.getElementById("categorySelectList")?.remove()
+
+    // create new select list without options to choose
+    selectTag = document.createElement("select")
+    selectTag.setAttribute("formcontrolname","offerCategory")
+    selectTag.setAttribute("class","form-control border border-dark pl-2 round")
+    selectTag.setAttribute("id","categorySelectList")
+    selectTag.setAttribute("style","width: 97%; margin-left: 0.25%;")
+    selectTag.addEventListener('change',() => {
+      this.getCategory(selectTag[selectTag.selectedIndex].getAttribute("value"))
+    })
+    formGroupCategorySelectList?.appendChild(selectTag)
+
+    // put selected category as default option
+    let categorySelectList = document.getElementById("categorySelectList")
+    optionTag = document.createElement("option")
+    optionTag.setAttribute("value",offer.offerActivity.category.catId.toString())
+    optionTag.textContent = offer.offerActivity.category.catName
+    categorySelectList?.appendChild(optionTag)
+
+    // insert other categories as alternative options
+    this.categoryService.getAllCategories().subscribe({
+      next: (categories) => {
+          for (let i = 0; i < categories.length; i++)
+          {
+            if (categories[i].catId != offer.offerActivity.category.catId)
+            {
+              optionTag = document.createElement("option")
+              optionTag.setAttribute("value",categories[i].catId.toString())
+              optionTag.textContent = categories[i].catName
+              categorySelectList?.appendChild(optionTag)
+            }
+          }
+        },
+      error: (err) => console.error(err)
+    })
+  }
+
   populateActivitiesList(offer: any)
   {
     let optionTag!: HTMLOptionElement
     let selectTag!: HTMLSelectElement
 
+    // remove old select list
     let formGroupActivitySelectList = document.getElementById("activitySelectList")?.parentElement
     document.getElementById("activitySelectList")?.remove()
 
+    // create new select list without options to choose
     selectTag = document.createElement("select")
     selectTag.setAttribute("formcontrolname","offerActivity")
     selectTag.setAttribute("class","form-control border border-dark pl-2 round")
     selectTag.setAttribute("id","activitySelectList")
-    selectTag.addEventListener('change',()=>{
+    selectTag.setAttribute("style","width: 97%; margin-left: 0.25%;")
+    selectTag.addEventListener('change',() => {
       this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
     })
     formGroupActivitySelectList?.appendChild(selectTag)
 
+    // put selected activity as default option
     let activitySelectList = document.getElementById("activitySelectList")
     optionTag = document.createElement("option")
     optionTag.setAttribute("value",offer.offerActivity.actId.toString())
     optionTag.textContent = offer.offerActivity.actName
     activitySelectList?.appendChild(optionTag)
 
-    this.activityService.getAllActivities().subscribe({
-      next: (activities) => {
-        for (let i = 0; i < activities.length; i++)
+    // retrieve related activities to selected category
+    this.categoryService.getActivitiesOfCategory(offer.offerActivity.category.catId).subscribe({
+      next: (activitiesList: any) => {
+        // insert other activities as alternative options
+        for (let i = 0; i < activitiesList.length; i++)
         {
-          if (activities[i].actId != offer.offerActivity.actId)
+          if (activitiesList[i].actId != offer.offerActivity.actId)
           {
             optionTag = document.createElement("option")
-            optionTag.setAttribute("value",this.activities[i].actId.toString())
-            optionTag.textContent = this.activities[i].actName
+            optionTag.setAttribute("value",activitiesList[i].actId.toString())
+            optionTag.textContent = activitiesList[i].actName
             activitySelectList?.appendChild(optionTag)
           }
         }
       },
       error: (err) => console.error(err)
     })
+
+    // insert other categories as alternative options
+    /* this.categoryService.getAllCategories().subscribe({
+      next: (categories) => {
+          for (let i = 0; i < categories.length; i++)
+          {
+            if (categories[i].catId != offer.offerActivity.category.catId)
+            {
+              optionTag = document.createElement("option")
+              optionTag.setAttribute("value",categories[i].catId.toString())
+              optionTag.textContent = categories[i].catName
+              activitySelectList?.appendChild(optionTag)
+            }
+          }
+        },
+      error: (err) => console.error(err)
+    })*/
   }
 
   showOptions()
