@@ -14,6 +14,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, startWith } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import {User} from "../../user/user";
+import { CategoryService } from '../../services/category.service';
+import { Offer } from '../../offer/offer';
+import { OfferService } from '../../services/offer.service.';
 
 
 @Component({
@@ -38,6 +41,7 @@ export class AddSubscriptionComponent implements OnInit
   subscriptionFormValue !: FormGroup
   isAddOperation = true
   activities: any
+  categories: any
   activitySubscriptions!: Subscription[]
   subscriptionObject = new Subscription()
   subscriptionActivity!: Activity
@@ -51,10 +55,14 @@ export class AddSubscriptionComponent implements OnInit
   SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
   IsEndDateGreater = true
   isNotEmpty!: boolean
+  isCategorySelected = false
+  offers!: Offer[]
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
+    private categoryService: CategoryService,
     private userService: UserService,
+    private offerService: OfferService,
     private utilsService: UtilsService,
     private subscriptionFormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddSubscriptionComponent>,
@@ -66,20 +74,29 @@ export class AddSubscriptionComponent implements OnInit
       this.getSubscription(this.data.subscriptionId)
     }
 
-    this.subscriptionFormValue = this.subscriptionFormBuilder.group({
-      subscriptionPrice : ['',Validators.required],
-      subscriptionStartDate : ['',Validators.required],
-      subscriptionEndDate : ['',Validators.required],
-      subscriptionActivity:['',Validators.required],
-      privateSessionsNumber:['',Validators.required]
-    })
+   
 
-    this.getAllActivities()
+    this.getAllCategories()
   }
+
+ 
   ngOnInit()
-  {
+
+  { this.subscriptionFormValue = this.subscriptionFormBuilder.group({
+    subscriptionActivity:['',Validators.required],
+    subscriptionOffer:['',Validators.required],
+    subscriptionCategory:['',Validators.required],
+    privateSessionsNumber:['',Validators.required]
+  })
+
+
     this.userService.retrieveAllMembers().subscribe({
       next: (members:any) => this.membersList = members,
+      error: (err) => console.error(err)
+    })
+
+    this.offerService.getAllOffers().subscribe({
+      next: (offers) => this.offers = offers,
       error: (err) => console.error(err)
     })
   }
@@ -103,32 +120,6 @@ export class AddSubscriptionComponent implements OnInit
       document.getElementById('privateSessionsNumber')!.className = "form-control border border-dark pl-2 round"
     }
 
-    if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid && this.subscriptionFormValue.controls['subscriptionPrice'].touched)
-      {
-        document.getElementById('subscriptionNameInput')!.className = "form-control border border-danger pl-2 round"
-      }
-      else
-      {
-        document.getElementById('subscriptionNameInput')!.className = "form-control border border-dark pl-2 round"
-      }
-
-    if (this.subscriptionFormValue.controls['subscriptionStartDate'].invalid && this.subscriptionFormValue.controls['subscriptionStartDate'].touched)
-    {
-      document.getElementById('subscriptionStartDateInput')!.className = "form-control border border-danger pl-2 round"
-    }
-    else
-    {
-      document.getElementById('subscriptionStartDateInput')!.className = "form-control border border-dark pl-2 round"
-    }
-
-    if (this.subscriptionFormValue.controls['subscriptionEndDate'].invalid && this.subscriptionFormValue.controls['subscriptionEndDate'].touched)
-    {
-      document.getElementById('subscriptionEndDateInput')!.className = "form-control border border-danger pl-2 round"
-    }
-    else
-    {
-      document.getElementById('subscriptionEndDateInput')!.className = "form-control border border-dark pl-2 round"
-    }
 
     if (this.subscriptionFormValue.controls['subscriptionActivity'].invalid && this.subscriptionFormValue.controls['subscriptionActivity'].touched)
     {
@@ -141,8 +132,8 @@ export class AddSubscriptionComponent implements OnInit
 
     if (this.data.subscriptionId)
     {
-      this.isEndDateGreater()
-      if (this.subscriptionFormValue.controls['subscriptionPrice'].invalid || this.subscriptionFormValue.controls['subscriptionStartDate'].invalid || this.subscriptionFormValue.controls['subscriptionEndDate'].invalid || !this.IsEndDateGreater || !this.userId)
+
+      if (this.subscriptionFormValue.controls['privateSessionsNumber'].invalid || !this.userId)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
       }
@@ -154,11 +145,10 @@ export class AddSubscriptionComponent implements OnInit
     else
     {
       if (
-        (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.userId) || 
-        (this.subscriptionFormValue.controls['subscriptionPrice'].valid && this.subscriptionFormValue.controls['subscriptionStartDate'].valid && this.subscriptionFormValue.controls['subscriptionEndDate'].valid && this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.isNotEmpty)
+        
+        this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.subscriptionFormValue.controls['subscriptionCategory'].valid
       )
       {
-        this.isEndDateGreater()
         if (this.IsEndDateGreater)
         {
           document.getElementById("addButton")?.removeAttribute("disabled")
@@ -189,7 +179,7 @@ export class AddSubscriptionComponent implements OnInit
       this.userService.retrieveAllMembers().subscribe({
         next: (members) => {
           (members as User[]).forEach((user: User) => {
-            this.options.push(user.userId + "-" +user.userFirstName + "-" + user.userLastName)
+            this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
           })
           this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
         },
@@ -199,10 +189,7 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
-      if (isNaN(this.subscriptionFormValue.value.subscriptionActivity) || this.subscriptionFormValue.value.subscriptionActivity <= 0) {
-        console.log("error id isNAN !!!")
-        return
-      }
+      
       this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
         next: (activity) => {
           this.subscriptionObject.subscriptionActivity = activity as Activity
@@ -222,20 +209,18 @@ export class AddSubscriptionComponent implements OnInit
     }
   }
 
-  getAllActivities()
+  getAllCategories() 
   {
-    this.activityService.getAllActivities().subscribe({
-      next: (activities) => this.activities = activities,
+    this.categoryService.getAllCategories().subscribe({
+      next: (categories) => this.categories = categories,
       error: (err) => console.error(err)
     })
   }
 
   addSubscription()
   {
-    this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
-    this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
-    this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
-
+    this.getActivity(this.subscriptionFormValue.value.subscriptionActivity)
+    
     this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
       next:() => {
         this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail,this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
@@ -292,6 +277,17 @@ export class AddSubscriptionComponent implements OnInit
     },
       error: (err) => console.error(err)
     })
+  }
+
+  getCategory(id?: any)
+  {
+    if (!id)
+    {
+      this.categoryService.getActivitiesOfCategory(this.subscriptionFormValue.value.subscriptionCategory).subscribe({
+        next: (categoriesList) => this.activities = categoriesList,
+        error: (err) => console.error(err)
+      })
+    }
   }
 
   populateActivitySelectList(subscription: any)
@@ -389,13 +385,6 @@ export class AddSubscriptionComponent implements OnInit
 
   }
 
-  isEndDateGreater()
-  {
-    if (this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue().length > 0 && this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue().length > 0)
-    {
-      this.IsEndDateGreater = new Date(this.subscriptionFormValue.controls['subscriptionEndDate'].getRawValue()).getTime() > new Date(this.subscriptionFormValue.controls['subscriptionStartDate'].getRawValue()).getTime();
-    }
-  }
 
   isMemberInputFieldNotEmpty()
   {
@@ -408,5 +397,22 @@ export class AddSubscriptionComponent implements OnInit
     {
       this.isNotEmpty = true 
     }
+  }
+
+  getOffer()
+  {
+    this.offers.forEach((offer) => {
+      if(offer.offerId == this.subscriptionFormValue.value.subscriptionOffer)
+      {
+        this.subscriptionObject.subscriptionPrice = offer.offerPrice
+        this.subscriptionObject.subscriptionStartDate = new Date().toISOString().split('T')[0]
+        this.subscriptionObject.subscriptionEndDate = new Date(
+          new Date(this.subscriptionObject.subscriptionStartDate).getFullYear(),
+          new Date(this.subscriptionObject.subscriptionStartDate).getMonth() + offer.offerPeriod,
+          new Date(this.subscriptionObject.subscriptionStartDate).getDate()
+        ).toISOString().split('T')[0]
+        return
+      }
+    })
   }
 }
