@@ -34,9 +34,10 @@ export class DetailsSessionComponent implements OnInit
   sessionActivityImage: any
   sessionImages!: any
   sessionTotalPlaces: any
-  sessionDeadline: any
+  sessionDate: any
   sessionMembers: any
   sessionReservedPlaces: any
+  sessionPrice: any
 
   constructor(
     private router: ActivatedRoute,
@@ -83,12 +84,13 @@ export class DetailsSessionComponent implements OnInit
     this.sessionCoach = session.sessionCoach
     this.sessionTotalPlaces = session.sessionTotalPlaces
     this.sessionReservedPlaces = session.sessionReservedPlaces
-    this.sessionDeadline = session.sessionDeadline
+    this.sessionDate = session.sessionDate
     this.sessionActivityImage = this.utilsService.getImage(session.sessionActivity.actImage)
     this.sessionImage = this.utilsService.getImage(session.sessionImage)
     this.sessionImages = this.utilsService.deleteItemFromArray(session.sessionImages, session.sessionImage)
     this.sessionMembers = session.sessionMembers
-    console.log(this.sessionMembers)
+    this.sessionPrice = session.sessionPrice
+    console.log(session)
   }
 
   addImages()

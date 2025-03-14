@@ -104,8 +104,11 @@ export class OfferDetailsComponent implements OnInit
 
   getImage(imageName: any)
   {
-    return this.utilsService.getImage(imageName)
-  }
+    if (imageName) {
+      return this.utilsService.getImage(imageName)
+    }
+      return "../assets/img/icons/ic_refresh.svg"
+    }
 
   goToCategoryDetails()
   {

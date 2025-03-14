@@ -24,7 +24,6 @@ import { Overlay, ScrollStrategyOptions } from '@angular/cdk/overlay';
 })
 export class CategoryComponent implements OnInit
 {
-  categories: any
   isCategoryUpdated!: Boolean
   category!: Category
   dataSource!: MatTableDataSource<any>;
@@ -95,6 +94,7 @@ export class CategoryComponent implements OnInit
 
     const popup = this.dialogRef.open(AddCategoryComponent, {
       width: "40%",
+      height: "60%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
       data: { categoryId: categoryId },

@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,7 +34,7 @@ export class OfferComponent
     private router: Router
     ) {}
 
-    
+
   ngOnInit()
   {
     this.getAllOffers()
@@ -44,6 +44,7 @@ export class OfferComponent
   {
       const popup = this.dialogRef.open(AddOfferComponent, {
         width: "40%",
+        height: "90%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
         data: { offerId: id }
@@ -51,21 +52,20 @@ export class OfferComponent
       popup.afterClosed().subscribe(() =>{
         this.getAllOffers()
       })
-    
+
   }
 
-  getAllOffers() 
+  getAllOffers()
   {
     this.offerService.getAllOffers().subscribe({
       next :(res) => {
-        console.log(res)
         this.dataSource = new MatTableDataSource(res as any)
         this.dataSource.paginator = this.paginator
       },
         error: (err) => console.error(err)
       })
   }
-  
+
   applyFilter(event: Event)
   {
     const filterValue = (event.target as HTMLInputElement).value
@@ -97,9 +97,9 @@ export class OfferComponent
   {
     let filteredData = []
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
-      if (matTableDataSource.data[i].offerName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
+      if (matTableDataSource.data[i].offerTitle.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
       {
         filteredData.push(matTableDataSource.data[i])
       }
@@ -124,4 +124,3 @@ export class OfferComponent
     })
   }
 }
-

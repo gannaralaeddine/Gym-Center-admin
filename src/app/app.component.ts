@@ -29,7 +29,7 @@ export class AppComponent
 
         if (this.isLoggedIn())
         {
-          this.router.navigate(["home"]).then()
+          this.router.navigate(["users"]).then()
         }
         else
         {

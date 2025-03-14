@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../../serviceutils/utils.service';
 import { OfferService } from '../../services/offer.service.';
 import { Offer } from '../offer';
@@ -12,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { OptionService } from '../../services/option.service';
 import { CategoryService } from '../../services/category.service';
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-add-offer',
@@ -23,17 +23,17 @@ import { CategoryService } from '../../services/category.service';
 export class AddOfferComponent implements OnInit
 {
   offerFormValue!: FormGroup
-  offers!: any
   activities!: any
   categories!: any
   offerId!: any
   offer = new Offer()
   isAddOperation = true
-  minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
+  // minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
   selectedOptions = new FormControl('');
   allOptionsList!: any
   isCategorySelected = false
-  activitiesList: Activity[] = [] 
+  selectedActivityOption: any
+  selectedCategoryOption: any
 
   constructor(
     private offerFormBuilder: FormBuilder,
@@ -45,13 +45,12 @@ export class AddOfferComponent implements OnInit
     private dialogRef: MatDialogRef<AddOfferComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {this.offerId = this.data.offerId}
 
-  ngOnInit()
+  async ngOnInit()
   {
     if (this.offerId)
     {
       this.isAddOperation = false;
-      this.getOffer(this.offerId)
-      this.getAllCategories()
+      await this.getOffer(this.offerId)
     }
 
     this.offerFormValue = this.offerFormBuilder.group({
@@ -66,15 +65,16 @@ export class AddOfferComponent implements OnInit
     this.getAllOptions()
   }
 
-  getOffer(offerId: any)
+  async getOffer(offerId: any)
   {
     this.offerService.getOffer(offerId).subscribe({
       next: (offerObject) => {
         this.offerFormValue.controls['offerTitle'].setValue(offerObject.offerTitle)
         this.offerFormValue.controls['offerPeriod'].setValue(offerObject.offerPeriod)
         this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
-        this.populateCategoriesList(offerObject)
         this.offer = offerObject as Offer
+        this.selectedCategoryOption = new FormControl(this.offer.offerActivity.category.catId)
+        this.getActivitiesByCategory(this.offer)
       },
       error: (err) => console.error(err)
     })
@@ -82,49 +82,36 @@ export class AddOfferComponent implements OnInit
 
   getCategory(id?: any)
   {
-    if (!id)
-    {
-      this.categoryService.getActivitiesOfCategory(this.offerFormValue.value.offerCategory).subscribe({
-        next: (activitiesList) => this.activities = activitiesList,
-        error: (err) => console.error(err)
-      })
-    }
-    else
-    {
-      this.activityService.getActivity(id).subscribe({
-        next: (activityObject) => {
-          this.offer.offerActivity = activityObject as Activity
-        },
-        error: (err) => console.error(err)
-      })
-
-      this.categoryService.getActivitiesOfCategory(id).subscribe({
-        next: (activitiesList) => this.activities = activitiesList as Activity[],
-        error: (err) => console.error(err)
-      })
-    }
+    this.selectedActivityOption = new FormControl(-1)
+    // if (!id)
+    // {
+    //   this.categoryService.getActivitiesOfCategory(this.offerFormValue.value.offerCategory).subscribe({
+    //     next: (activitiesList) => this.activities = activitiesList,
+    //     error: (err) => console.error(err)
+    //   })
+    // }
+    // else
+    // {
+    //   // this.activityService.getActivity(id).subscribe({
+    //   //   next: (activityObject) => {
+    //   //     this.offer.offerActivity = activityObject as Activity
+    //   //   },
+    //   //   error: (err) => console.error(err)
+    //   // })
+    //
+    //   this.categoryService.getActivitiesOfCategory(id).subscribe({
+    //     next: (activitiesList) => {
+    //       this.activities = activitiesList as Activity[]
+    //
+    //     },
+    //     error: (err) => console.error(err)
+    //   })
+    // }
   }
 
-  getActivity(id?: any)
+  async getActivity(id?: any): Promise<Activity>
   {
-    if (!id)
-    {
-      (this.activities as Activity[]).forEach((activity: Activity) => {
-        
-        if (activity.actId == this.offerFormValue.value.offerActivity)
-        {
-          this.offer.offerActivity = activity
-          return
-        }
-      }) 
-    }
-    else
-    {
-      this.activityService.getActivity(id).subscribe({
-        next: (activityObject) => this.offer.offerActivity = activityObject as Activity,
-        error: (err) => console.error(err)
-      })
-    }
+      return await lastValueFrom(this.activityService.getActivity(id));
   }
 
   getAllCategories()
@@ -132,7 +119,6 @@ export class AddOfferComponent implements OnInit
     this.categoryService.getAllCategories().subscribe({
       next: (categories) => {
         this.categories = categories
-        console.log(this.categories)
       },
       error: (err) => console.error(err)
     })
@@ -205,10 +191,22 @@ export class AddOfferComponent implements OnInit
       {
         document.getElementById("updateButton")?.removeAttribute("disabled")
       }
+      if (this.selectedActivityOption.value != -1)
+      {
+        console.log("selectedActivityOption enabled")
+        console.log(this.selectedActivityOption.value)
+        document.getElementById("addButton")?.removeAttribute("disabled")
+      }
+      else
+      {
+        console.log("selectedActivityOption disabled")
+        console.log(this.selectedActivityOption.value)
+        document.getElementById("addButton")?.setAttribute("disabled","")
+      }
     }
     else
     {
-      if (this.offerFormValue.controls['offerTitle'].valid && this.offerFormValue.controls['offerPeriod'].valid && this.offerFormValue.controls['offerPrice'].valid && this.offerFormValue.controls['offerCategory'].valid && this.offerFormValue.controls['offerActivity'].valid)
+      if (this.offerFormValue.controls['offerTitle'].valid && this.offerFormValue.controls['offerPeriod'].valid && this.offerFormValue.controls['offerPrice'].valid && this.offerFormValue.controls['offerCategory'].valid && this.offerFormValue.controls['offerActivity'].valid )
       {
         document.getElementById("addButton")?.removeAttribute("disabled")
       }
@@ -217,15 +215,17 @@ export class AddOfferComponent implements OnInit
         document.getElementById("addButton")?.setAttribute("disabled","")
       }
     }
+
   }
 
-  updateOffer()
+  async updateOffer()
   {
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
+    this.offer.offerActivity = await this.getActivity(this.selectedActivityOption.value)
 
-    this.offerService.updateOffer(this.offerId,this.offer).subscribe({
+    this.offerService.updateOffer(this.offerId, this.offer).subscribe({
       next:() => {
         this.closeDialog()
         this.utilsService.successDialog("Opération réussite", "Offre mise à jour avec succès", true)
@@ -241,7 +241,6 @@ export class AddOfferComponent implements OnInit
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {
-        console.log(this.offer)
         this.closeDialog()
         this.utilsService.successDialog("Opération réussite", "Offre ajouté avec succès", true)
       },
@@ -252,114 +251,6 @@ export class AddOfferComponent implements OnInit
   closeDialog()
   {
     this.dialogRef.close()
-  }
-
-  populateCategoriesList(offer: any)
-  {
-    let optionTag!: HTMLOptionElement
-    let selectTag!: HTMLSelectElement
-
-    // remove old select list
-    let formGroupCategorySelectList = document.getElementById("categorySelectList")?.parentElement
-    document.getElementById("categorySelectList")?.remove()
-
-    // create new select list without options to choose
-    selectTag = document.createElement("select")
-    selectTag.setAttribute("formcontrolname","offerCategory")
-    selectTag.setAttribute("class","form-control border border-dark pl-2 round")
-    selectTag.setAttribute("id","categorySelectList")
-    selectTag.setAttribute("style","width: 97%; margin-left: 0.25%;")
-    selectTag.addEventListener('change',() => {
-      this.getCategory(selectTag[selectTag.selectedIndex].getAttribute("value"))
-    })
-    formGroupCategorySelectList?.appendChild(selectTag)
-
-    // put selected category as default option
-    let categorySelectList = document.getElementById("categorySelectList")
-    optionTag = document.createElement("option")
-    optionTag.setAttribute("value",offer.offerActivity.category.catId.toString())
-    optionTag.textContent = offer.offerActivity.category.catName
-    categorySelectList?.appendChild(optionTag)
-
-    // insert other categories as alternative options
-    this.categoryService.getAllCategories().subscribe({
-      next: (categories) => {
-          for (let i = 0; i < categories.length; i++)
-          {
-            if (categories[i].catId != offer.offerActivity.category.catId)
-            {
-              optionTag = document.createElement("option")
-              optionTag.setAttribute("value",categories[i].catId.toString())
-              optionTag.textContent = categories[i].catName
-              categorySelectList?.appendChild(optionTag)
-            }
-          }
-        },
-      error: (err) => console.error(err)
-    })
-  }
-
-  populateActivitiesList(offer: any)
-  {
-    let optionTag!: HTMLOptionElement
-    let selectTag!: HTMLSelectElement
-
-    // remove old select list
-    let formGroupActivitySelectList = document.getElementById("activitySelectList")?.parentElement
-    document.getElementById("activitySelectList")?.remove()
-
-    // create new select list without options to choose
-    selectTag = document.createElement("select")
-    selectTag.setAttribute("formcontrolname","offerActivity")
-    selectTag.setAttribute("class","form-control border border-dark pl-2 round")
-    selectTag.setAttribute("id","activitySelectList")
-    selectTag.setAttribute("style","width: 97%; margin-left: 0.25%;")
-    selectTag.addEventListener('change',() => {
-      this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
-    })
-    formGroupActivitySelectList?.appendChild(selectTag)
-
-    // put selected activity as default option
-    let activitySelectList = document.getElementById("activitySelectList")
-    optionTag = document.createElement("option")
-    optionTag.setAttribute("value",offer.offerActivity.actId.toString())
-    optionTag.textContent = offer.offerActivity.actName
-    activitySelectList?.appendChild(optionTag)
-
-    // retrieve related activities to selected category
-    this.categoryService.getActivitiesOfCategory(offer.offerActivity.category.catId).subscribe({
-      next: (activitiesList: any) => {
-        // insert other activities as alternative options
-        for (let i = 0; i < activitiesList.length; i++)
-        {
-          if (activitiesList[i].actId != offer.offerActivity.actId)
-          {
-            optionTag = document.createElement("option")
-            optionTag.setAttribute("value",activitiesList[i].actId.toString())
-            optionTag.textContent = activitiesList[i].actName
-            activitySelectList?.appendChild(optionTag)
-          }
-        }
-      },
-      error: (err) => console.error(err)
-    })
-
-    // insert other categories as alternative options
-    /* this.categoryService.getAllCategories().subscribe({
-      next: (categories) => {
-          for (let i = 0; i < categories.length; i++)
-          {
-            if (categories[i].catId != offer.offerActivity.category.catId)
-            {
-              optionTag = document.createElement("option")
-              optionTag.setAttribute("value",categories[i].catId.toString())
-              optionTag.textContent = categories[i].catName
-              activitySelectList?.appendChild(optionTag)
-            }
-          }
-        },
-      error: (err) => console.error(err)
-    })*/
   }
 
   showOptions()
@@ -376,4 +267,16 @@ export class AddOfferComponent implements OnInit
       }
     }
   }
+
+  getActivitiesByCategory(offer: any)
+  {
+    this.activityService.getAllCategoryActivities(offer.offerActivity.category.catId).subscribe({
+      next: (activities) => {
+        this.activities = activities
+        this.selectedActivityOption = new FormControl(offer.offerActivity.actId)
+      },
+      error: (err) => console.error(err)
+    })
+  }
+
 }

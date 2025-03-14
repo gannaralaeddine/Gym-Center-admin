@@ -12,7 +12,8 @@ export class Session
     sessionImage!: string
     sessionTotalPlaces!: number
     sessionReservedPlaces!: number
-    sessionDeadline!: string
+    sessionPrice!: number
+    sessionDate!: string
     sessionMembers: any
     sessionImages!: FileHandleModule[]
 }

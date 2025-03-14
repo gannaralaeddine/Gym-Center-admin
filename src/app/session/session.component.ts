@@ -28,7 +28,7 @@ export class SessionComponent implements OnInit
   sessions: any
   dataSource!: MatTableDataSource<any>
   dataSourceBackUp!: MatTableDataSource<any>
-  displayedColumns = ['Image', 'Titre', 'Activité', 'Coach', 'Places Réservées', 'Gestion']
+  displayedColumns = ['Image', 'Titre', 'Activité', 'Coach', 'Places Réservées', 'Prix', 'Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -65,7 +65,7 @@ export class SessionComponent implements OnInit
   {
       const popup = this.dialogRef.open(AddSessionComponent, {
         width: "40%",
-        height: "100%",
+        height: "90%",
         enterAnimationDuration: "1000ms",
         exitAnimationDuration: "1000ms",
         data: { sessionId: sessionId }
@@ -100,7 +100,7 @@ export class SessionComponent implements OnInit
   {
     let filteredData = []
 
-    for (let i = 0; i < matTableDataSource.data.length; i++) 
+    for (let i = 0; i < matTableDataSource.data.length; i++)
     {
       if (matTableDataSource.data[i].sessionName.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) != -1)
       {

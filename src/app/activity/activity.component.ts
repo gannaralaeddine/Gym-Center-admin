@@ -73,6 +73,7 @@ export class ActivityComponent implements OnInit
   {
     const popup = this.dialogRef.open(AddActivityComponent, {
       width: "40%",
+      height: "70%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
       data: { activityId: activityId }

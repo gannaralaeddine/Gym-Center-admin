@@ -71,7 +71,7 @@
             </form>
           </td>
         </table>
-       
+
         <table mat-table [dataSource]="userTrainingHistoriesTable" class="mat-elevation-z8" style="margin-top: 5%; margin-left: -21%; margin-bottom: 2%;">
 
           <ng-container matColumnDef="date">
@@ -79,17 +79,17 @@
             <td mat-cell *matCellDef="let element"> {{element.checkInTime | date: "dd MMM yyyy" : "fr"}} </td>
           </ng-container>
 
-       
+
           <ng-container matColumnDef="checkin time">
             <th mat-header-cell *matHeaderCellDef class="text-center">Temps Entrée</th>
-            <td mat-cell *matCellDef="let element" class="text-center"> {{element.checkInTime | date: "HH:mm"}} </td>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.checkInTime | date: "HH:mm": "Africa/Tunis"}} </td>
           </ng-container>
 
-       
+
           <ng-container matColumnDef="checkout time">
             <th mat-header-cell *matHeaderCellDef class="text-center">Temps Sortie</th>
-            <td mat-cell *matCellDef="let element" class="text-center"> 
-              <span *ngIf="element.checkOutTime">{{element.checkOutTime | date: "HH:mm"}}</span>
+            <td mat-cell *matCellDef="let element" class="text-center">
+              <span *ngIf="element.checkOutTime">{{element.checkOutTime | date: "HH:mm": "Africa/Tunis"}}</span>
               <span *ngIf="!element.checkOutTime" style="font-size: medium; color: #129212; font-weight: 200;"><b>Encore dans la salle</b></span>
             </td>
           </ng-container>
