@@ -17,6 +17,8 @@ import { AlertDeleteComponent } from '../alert-delete/alert-delete.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UpdatePrivateSessionsNumberComponent } from './update-private-sessions-number/update-private-sessions-number.component';
+import { SubscriptionService } from '../services/subscription.service';
+import { RenewSubscriptionComponent } from './renew-subscription/renew-subscription.component';
 
 
 @Component({
@@ -37,7 +39,6 @@ import { UpdatePrivateSessionsNumberComponent } from './update-private-sessions-
 })
 export class ProfileComponent
 {
-
   deleteTag = "deleteProfileImage"
   user = new User()
   accountType!: string
@@ -48,7 +49,7 @@ export class ProfileComponent
   privateSessionsDisplayedColumns: any
   @ViewChild(MatPaginator) privateSessionsPaginator!: MatPaginator
   subscriptionsDataSource!: MatTableDataSource<any>
-  subscriptionsDisplayedColumns = ['Image','Activité','Prix','Gestion']
+  subscriptionsDisplayedColumns = ['Image', 'Activité', 'Prix', 'Période', 'Gestion']
   @ViewChild(MatPaginator) subscriptionsPaginator!: MatPaginator
 
     constructor(
@@ -57,6 +58,7 @@ export class ProfileComponent
       @Inject(PLATFORM_ID)
       private platformId: Object,
       private utilsService: UtilsService,
+      private subscriptionService: SubscriptionService,
       private sanitizer: DomSanitizer,
       private dialogRef: MatDialog,
       private activityRouter: Router,
@@ -365,4 +367,49 @@ export class ProfileComponent
     const params = { subscriptionId: subscription.subscriptionId }
     this.activityRouter.navigate(["subscription-details"], { queryParams: params  })
   }
+
+   deleteSubscription(id: any) 
+  {
+    this.utilsService.deletePopup("Supprimer Abonnement", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
+    .afterClosed().subscribe(isYesOperation => {
+      if (isYesOperation) {
+        this.subscriptionService.deleteSubscription(id).subscribe({
+          complete: () => {
+            this.utilsService.successDialog("Opération réussite", "Cet abonnement à été supprimé avec succès", true)
+            this.ngOnInit()
+          },
+          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+        })
+      }
+    })
+  }
+
+  isEndDateGreater(endDate: string) 
+  {
+    if (endDate.split('T')[0] > new Date().toISOString().split('T')[0])
+    {
+      return true
+    }
+    
+    return false
+  }
+
+  calculatePeriod(startDate: string, endDate: string)
+  {
+    return (new Date(endDate).getMonth() + 1) - (new Date(startDate).getMonth() + 1)
+  }
+
+    addOrUpdateDialog(id?: number)
+    {
+        let popup = this.dialogRef.open(RenewSubscriptionComponent, {
+          width: "35%",
+          enterAnimationDuration: "1000ms",
+          exitAnimationDuration: "1000ms",
+          data: { subscriptionId: id }
+        })
+        popup.afterClosed().subscribe(() => {
+          this.getUserByEmail()
+        })
+      
+    }
 }
