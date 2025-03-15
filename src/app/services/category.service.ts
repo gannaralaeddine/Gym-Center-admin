@@ -27,6 +27,4 @@ export class CategoryService
   public updateCategory(category: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category", category) }
 
   public deleteCategory(id: number)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
-
-  public getActivitiesOfCategory(id: number)  { return this.http.get<any>(this.utils.API_GYM_CENTER + "/category/retrieve-category-activities/" + id) }
 }

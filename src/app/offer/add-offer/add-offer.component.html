@@ -55,7 +55,7 @@
 
         <div class="form-group" [hidden]="!isCategorySelected && !offerId">
           <label for="activitySelectList" class="text-dark font-weight-bold">Activité Offre</label>
-          <select class="form-control border border-dark pl-2 round" id="activitySelectList" [formControl]="selectedActivityOption" formControlName="offerActivity" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+          <select class="form-control border border-dark pl-2 round" id="activitySelectList" [formControl]="selectedActivityOption" formControlName="offerActivity" (change)="checkValidityForm();getCategory()" (blur)="checkValidityForm()">
             <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
           </select>
           <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerActivity'].invalid && offerFormValue.controls['offerActivity'].touched">Merci de choisir une activité</h5>
