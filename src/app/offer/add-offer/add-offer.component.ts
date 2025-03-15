@@ -31,7 +31,6 @@ export class AddOfferComponent implements OnInit
   // minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
   selectedOptions = new FormControl('');
   allOptionsList!: any
-  isCategorySelected = false
   selectedActivityOption: any
   selectedCategoryOption: any
 
@@ -51,6 +50,11 @@ export class AddOfferComponent implements OnInit
     {
       this.isAddOperation = false;
       await this.getOffer(this.offerId)
+    }
+    else
+    {
+      this.selectedCategoryOption = new FormControl('')
+      this.selectedActivityOption = new FormControl('')
     }
 
     this.offerFormValue = this.offerFormBuilder.group({
@@ -74,39 +78,18 @@ export class AddOfferComponent implements OnInit
         this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
         this.offer = offerObject as Offer
         this.selectedCategoryOption = new FormControl(this.offer.offerActivity.category.catId)
-        this.getActivitiesByCategory(this.offer)
+        this.getActivitiesByCategory(this.offer.offerActivity.category.catId)
       },
+      complete:() => this.selectedActivityOption = new FormControl(this.offer.offerActivity.actId),
       error: (err) => console.error(err)
     })
   }
 
-  getCategory(id?: any)
+  async getCategoryActivities()
   {
-    this.selectedActivityOption = new FormControl(-1)
-    // if (!id)
-    // {
-    //   this.categoryService.getActivitiesOfCategory(this.offerFormValue.value.offerCategory).subscribe({
-    //     next: (activitiesList) => this.activities = activitiesList,
-    //     error: (err) => console.error(err)
-    //   })
-    // }
-    // else
-    // {
-    //   // this.activityService.getActivity(id).subscribe({
-    //   //   next: (activityObject) => {
-    //   //     this.offer.offerActivity = activityObject as Activity
-    //   //   },
-    //   //   error: (err) => console.error(err)
-    //   // })
-    //
-    //   this.categoryService.getActivitiesOfCategory(id).subscribe({
-    //     next: (activitiesList) => {
-    //       this.activities = activitiesList as Activity[]
-    //
-    //     },
-    //     error: (err) => console.error(err)
-    //   })
-    // }
+   await this.getActivitiesByCategory(this.selectedCategoryOption.value)
+
+    this.selectedActivityOption = new FormControl('')
   }
 
   async getActivity(id?: any): Promise<Activity>
@@ -191,18 +174,6 @@ export class AddOfferComponent implements OnInit
       {
         document.getElementById("updateButton")?.removeAttribute("disabled")
       }
-      if (this.selectedActivityOption.value != -1)
-      {
-        console.log("selectedActivityOption enabled")
-        console.log(this.selectedActivityOption.value)
-        document.getElementById("addButton")?.removeAttribute("disabled")
-      }
-      else
-      {
-        console.log("selectedActivityOption disabled")
-        console.log(this.selectedActivityOption.value)
-        document.getElementById("addButton")?.setAttribute("disabled","")
-      }
     }
     else
     {
@@ -234,11 +205,13 @@ export class AddOfferComponent implements OnInit
     })
   }
 
-  addOffer()
+  async addOffer()
   {
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
+    this.offer.offerActivity = await this.getActivity(this.selectedActivityOption.value)
+
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {
         this.closeDialog()
@@ -268,12 +241,11 @@ export class AddOfferComponent implements OnInit
     }
   }
 
-  getActivitiesByCategory(offer: any)
+  getActivitiesByCategory(categoryId: any)
   {
-    this.activityService.getAllCategoryActivities(offer.offerActivity.category.catId).subscribe({
+    this.activityService.getAllCategoryActivities(categoryId).subscribe({
       next: (activities) => {
         this.activities = activities
-        this.selectedActivityOption = new FormControl(offer.offerActivity.actId)
       },
       error: (err) => console.error(err)
     })

@@ -21,12 +21,11 @@ export class CategoryService
   public getCategory(id: number)  { return this.http.get<Category>(this.utils.API_GYM_CENTER + "/category/retrieve-category/" + id) }
 
   public getActivitiesOfCategory(id: number) {return this.http.get(this.utils.API_GYM_CENTER + "/category/retrieve-category-activities/" + id)}
-  
+
   public updateCategoryData(id: number, category: Category) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category/"+id, category) }
 
   public updateCategory(category: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/category/update-category", category) }
 
   public deleteCategory(id: number)  { return this.http.delete(this.utils.API_GYM_CENTER + "/category/delete-category/" + id) }
 
-  public getActivitiesOfCategory(id: number)  { return this.http.get<any>(this.utils.API_GYM_CENTER + "/category/retrieve-category-activities/" + id) }
 }
