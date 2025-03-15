@@ -1,0 +1,35 @@
+<div class="modal-content" style="margin: 10px">
+
+    <div class="modal-header">
+        <h1 class="modal-title pl-1">Renouveler Abonnement</h1>
+    </div>
+
+    <div class="modal-body">
+
+        <div>
+            <form [formGroup]="renewSubscriptionFormValue">
+
+                <div class="form-group">
+                    <label for="periodSelectList" class="text-dark font-weight-bold">Période</label>
+                    <select class="form-control border border-dark pl-2 round" id="periodSelectList" formControlName="renewSubscriptionPeriod" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+                        <option [selected]="true">Merci de choisir une période</option>
+                        <option value="1">1 mois</option>
+                        <option value="3">3 mois</option>
+                        <option value="6">6 mois</option>
+                        <option value="12">1 an</option>
+                    </select>
+                    <!-- <h5 class="text-danger text-bold ml-2" *ngIf="offerFormValue.controls['offerPeriod'].invalid && offerFormValue.controls['offerPeriod'].touched"> Merci de choisir une période valide</h5> -->
+                </div>
+
+                <div class="row">
+                    <div class="col text-center">
+                        <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">Annuler</button>
+                        <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="renewSubscription()">Renouveler</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div> 
+</div> 
+
