@@ -1,6 +1,6 @@
 import { NgIf, NgFor } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UtilsService } from '../../serviceutils/utils.service';
@@ -28,21 +28,31 @@ export class AddOfferComponent implements OnInit
   offerId!: any
   offer = new Offer()
   isAddOperation = true
-  // minDate = new Date(new Date().getTime() + new Date(1209600000).getTime()).toISOString().split('T')[0]
-  selectedOptions = new FormControl('');
+  selectedOptions = new FormControl('')
   allOptionsList!: any
-  selectedActivityOption: any
   selectedCategoryOption: any
+  selectedActivityOption: any
+
 
   constructor(
-    private offerFormBuilder: FormBuilder,
     private activityService: ActivityService,
     private categoryService: CategoryService,
     private offerService: OfferService,
     private optionService: OptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<AddOfferComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {this.offerId = this.data.offerId}
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+
+    this.offerFormValue = new FormGroup({
+      offerTitle: new FormControl('', Validators.required),
+      offerPeriod: new FormControl('', Validators.required),
+      offerPrice: new FormControl('', Validators.required),
+      offerCategory: new FormControl('', Validators.required),
+      offerActivity: new FormControl('', Validators.required)
+    })
+
+    this.offerId = this.data.offerId
+  }
 
   async ngOnInit()
   {
@@ -57,14 +67,6 @@ export class AddOfferComponent implements OnInit
       this.selectedActivityOption = new FormControl('')
     }
 
-    this.offerFormValue = this.offerFormBuilder.group({
-      offerTitle : ['',Validators.required],
-      offerPeriod : ['',Validators.required],
-      offerPrice : ['',Validators.required],
-      offerCategory: ['',Validators.required],
-      offerActivity: ['',Validators.required]
-    })
-
     this.getAllCategories()
     this.getAllOptions()
   }
@@ -73,10 +75,15 @@ export class AddOfferComponent implements OnInit
   {
     this.offerService.getOffer(offerId).subscribe({
       next: (offerObject) => {
-        this.offerFormValue.controls['offerTitle'].setValue(offerObject.offerTitle)
-        this.offerFormValue.controls['offerPeriod'].setValue(offerObject.offerPeriod)
-        this.offerFormValue.controls['offerPrice'].setValue(offerObject.offerPrice)
+        this.offerFormValue.patchValue({
+          offerTitle: offerObject.offerTitle,
+          offerPeriod: offerObject.offerPeriod,
+          offerPrice: offerObject.offerPrice,
+          offerCategory: offerObject.offerActivity.category.catId,
+          offerActivity: offerObject.offerActivity.actId
+        })
         this.offer = offerObject as Offer
+
         this.selectedCategoryOption = new FormControl(this.offer.offerActivity.category.catId)
         this.getActivitiesByCategory(this.offer.offerActivity.category.catId)
       },
@@ -87,22 +94,19 @@ export class AddOfferComponent implements OnInit
 
   async getCategoryActivities()
   {
-   await this.getActivitiesByCategory(this.selectedCategoryOption.value)
-
+    await this.getActivitiesByCategory(this.selectedCategoryOption.value)
     this.selectedActivityOption = new FormControl('')
   }
 
   async getActivity(id?: any): Promise<Activity>
   {
-      return await lastValueFrom(this.activityService.getActivity(id));
+    return await lastValueFrom(this.activityService.getActivity(id));
   }
 
   getAllCategories()
   {
     this.categoryService.getAllCategories().subscribe({
-      next: (categories) => {
-        this.categories = categories
-      },
+      next: (categories) => this.categories = categories,
       error: (err) => console.error(err)
     })
   }
@@ -164,6 +168,7 @@ export class AddOfferComponent implements OnInit
       document.getElementById('activitySelectList')!.className = "form-control border border-dark pl-2 round"
     }
 
+    // offerTitle
     if (this.offerId)
     {
       if (this.offerFormValue.controls['offerTitle'].invalid || this.offerFormValue.controls['offerPrice'].invalid)
@@ -187,6 +192,17 @@ export class AddOfferComponent implements OnInit
       }
     }
 
+    /* selectedActivityOption */
+    if (this.selectedActivityOption.value != '')
+    {
+      document.getElementById("addButton")?.removeAttribute("disabled")
+      document.getElementById("updateButton")?.removeAttribute("disabled")
+    }
+    else
+    {
+      document.getElementById("addButton")?.setAttribute("disabled","")
+      document.getElementById("updateButton")?.setAttribute("disabled","")
+    }
   }
 
   async updateOffer()
@@ -194,7 +210,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    this.offer.offerActivity = await this.getActivity(this.selectedActivityOption.value)
+    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")?.value)
 
     this.offerService.updateOffer(this.offerId, this.offer).subscribe({
       next:() => {
@@ -210,7 +226,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    this.offer.offerActivity = await this.getActivity(this.selectedActivityOption.value)
+    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")?.value)
 
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {

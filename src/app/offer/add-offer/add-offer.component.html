@@ -19,6 +19,7 @@
         <div class="form-group">
           <label for="periodSelectList" class="text-dark font-weight-bold">Période Offre</label>
           <select class="form-control border border-dark pl-2 round" id="periodSelectList" formControlName="offerPeriod" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+            <option disabled [selected]="true">-- Choisir une période SVP--</option>
             <option value="1">1 mois</option>
             <option value="3">3 mois</option>
             <option value="6">6 mois</option>
@@ -56,7 +57,7 @@
 
         <div class="form-group">
           <label for="activitySelectList" class="text-dark font-weight-bold">Activité Offre</label>
-          <select class="form-control border border-dark pl-2 round" id="activitySelectList" [formControl]="selectedActivityOption" formControlName="offerActivity" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+          <select [formControl]="selectedActivityOption" class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="offerActivity" (change)="checkValidityForm()" (blur)="checkValidityForm()">
             <option value="" disabled selected>-- Choisir une activité SVP --</option>
             <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
           </select>
