@@ -49,7 +49,7 @@ export class ProfileComponent
   privateSessionsDisplayedColumns: any
   @ViewChild(MatPaginator) privateSessionsPaginator!: MatPaginator
   subscriptionsDataSource!: MatTableDataSource<any>
-  subscriptionsDisplayedColumns = ['Image', 'Activité', 'Prix', 'Période', 'Gestion']
+  subscriptionsDisplayedColumns = ['Image', 'Activité', 'Prix', 'Date début', 'Date fin', 'Période', 'Gestion']
   @ViewChild(MatPaginator) subscriptionsPaginator!: MatPaginator
 
     constructor(
