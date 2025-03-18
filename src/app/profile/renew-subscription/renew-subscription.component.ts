@@ -46,7 +46,7 @@ export class RenewSubscriptionComponent implements OnInit
           new Date(this.subscription.subscriptionEndDate).getMonth()
           + Number(this.renewSubscriptionFormValue.controls['renewSubscriptionPeriod'].value)
         )
-      ).setDate(new Date(this.subscription.subscriptionEndDate).getDate() - 1)
+      ).setDate(new Date(this.subscription.subscriptionEndDate).getDate())
     ).toISOString().split('Z')[0]
 
     this.subscriptionService.updateSubscription(this.subscription.subscriptionId, this.subscription, (this.subscription as any).member.userId).subscribe({
