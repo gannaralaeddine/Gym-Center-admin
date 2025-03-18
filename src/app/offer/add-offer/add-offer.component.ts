@@ -94,8 +94,8 @@ export class AddOfferComponent implements OnInit
 
   async getCategoryActivities()
   {
-    await this.getActivitiesByCategory(this.selectedCategoryOption.value)
     this.selectedActivityOption = new FormControl('')
+    await this.getActivitiesByCategory(this.selectedCategoryOption.value)
   }
 
   async getActivity(id?: any): Promise<Activity>
