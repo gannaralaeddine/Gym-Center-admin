@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from '../subscription';
 import { SubscriptionService } from '../../services/subscription.service';
 import { UtilsService } from '../../serviceutils/utils.service';
@@ -52,11 +51,10 @@ export class AddSubscriptionComponent implements OnInit
   selectedUser!: User
   privateSessionsNumber!: number
   membersList: any
-  SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
   IsEndDateGreater = true
   isNotEmpty!: boolean
   isCategorySelected = false
-  offers!: Offer[]
+  offers: Offer[] = []
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -95,10 +93,6 @@ export class AddSubscriptionComponent implements OnInit
       error: (err) => console.error(err)
     })
 
-    this.offerService.getAllOffers().subscribe({
-      next: (offers) => this.offers = offers,
-      error: (err) => console.error(err)
-    })
   }
 
   private _filter(value: string): string[]
@@ -172,27 +166,34 @@ export class AddSubscriptionComponent implements OnInit
 
   getActivity(id?: any)
   {
-
+    // update operation
     if (id)
     {
-      this.options = []
-      this.userService.retrieveAllMembers().subscribe({
-        next: (members) => {
-          (members as User[]).forEach((user: User) => {
-            this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
+      this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
+        next: (activity: Activity) => {
+
+          this.subscriptionObject.subscriptionActivity = activity
+
+          this.activityService.getActivityOffers(activity.actId).subscribe({
+            next: (offers) => this.offers = offers,
+            error: (err) => console.error(err)
           })
-          this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
         },
         error: (err) => console.error(err)
       })
-
     }
     else
     {
-      
+      //add operation
       this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
         next: (activity) => {
           this.subscriptionObject.subscriptionActivity = activity as Activity
+
+          this.activityService.getActivityOffers(activity.actId).subscribe({
+            next: (offers) => this.offers = offers,
+            error: (err) => console.error(err)
+          })
+
           this.subscriptionService.retrieveActivitySubscriptions(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
             next: (activitySubscriptions) => {
               this.activitySubscriptions = activitySubscriptions
@@ -220,7 +221,6 @@ export class AddSubscriptionComponent implements OnInit
   addSubscription()
   {
     this.getActivity(this.subscriptionFormValue.value.subscriptionActivity)
-    
     this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
       next:() => {
         this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail,this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
@@ -237,10 +237,10 @@ export class AddSubscriptionComponent implements OnInit
 
   updateSubscription()
   {
-    this.subscriptionObject.subscriptionId = this.data.subscriptionId
-    this.subscriptionObject.subscriptionPrice = this.subscriptionFormValue.value.subscriptionPrice
-    this.subscriptionObject.subscriptionStartDate = new Date(this.subscriptionFormValue.value.subscriptionStartDate).toISOString().split('T')[0]
-    this.subscriptionObject.subscriptionEndDate = new Date(this.subscriptionFormValue.value.subscriptionEndDate).toISOString().split('T')[0]
+    this.getMemberById(this.myControl.value!)
+    this.subscriptionObject.subscriptionMember = this.selectedUser
+    this.getActivity(this.subscriptionFormValue.get("subscriptionActivity")!.value)
+    this.subscriptionObject.subscriptionOffer = this.getOffer(this.subscriptionFormValue.get("subscriptionOffer")?.value)!
 
     this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject, this.userId).subscribe({
       next: () => {
@@ -258,22 +258,32 @@ export class AddSubscriptionComponent implements OnInit
 
   getSubscription(subscriptionId: any)
   {
-    if (isNaN(subscriptionId) || subscriptionId <= 0) {
-      console.error('Invalid subscriptionId provided');
-      return; // Or handle the error appropriately
-    }
+  
     this.subscriptionService.getSubscription(subscriptionId).subscribe({
       next: (subscription) => {
-        this.subscriptionObject.subscriptionActivity = subscription.subscriptionActivity
-        this.subscriptionFormValue.controls['subscriptionPrice'].setValue(subscription.subscriptionPrice)
-        this.subscriptionFormValue.controls['subscriptionStartDate'].setValue(subscription.subscriptionStartDate.split('T')[0])
-        this.subscriptionFormValue.controls['subscriptionEndDate'].setValue(subscription.subscriptionEndDate.split('T')[0])
-        this.subscriptionFormValue.controls['privateSessionsNumber'].setValue(subscription.member.privateSessionsNumber)
-        this.populateActivitySelectList(subscription)
+
+        this.categoryService.getActivitiesOfCategory(subscription.subscriptionActivity.category.catId).subscribe({
+          next: (categoriesList) => this.activities = categoriesList,
+          error: (err) => console.error(err)
+        })
+
+        this.activityService.getActivityOffers(subscription.subscriptionActivity.actId).subscribe({
+            next: (offers) => this.offers = offers,
+            error: (err) => console.error(err)
+        })
+
+        this.subscriptionFormValue.patchValue({
+          subscriptionCategory: subscription.subscriptionActivity.category.catId,
+          subscriptionActivity: subscription.subscriptionActivity.actId,
+          subscriptionOffer: subscription.subscriptionOffer.offerId,
+          privateSessionsNumber: subscription.member.privateSessionsNumber
+        })
+
         this.myControl.setValue(subscription.member.userFirstName + " " + subscription.member.userLastName)
         this.selectedUser = subscription.member
         this.userId = subscription.member.userId
         this.privateSessionsNumber = subscription.member.privateSessionsNumber
+        this.subscriptionObject = subscription
     },
       error: (err) => console.error(err)
     })
@@ -288,57 +298,6 @@ export class AddSubscriptionComponent implements OnInit
         error: (err) => console.error(err)
       })
     }
-  }
-
-  populateActivitySelectList(subscription: any)
-  {
-    let optionTag!: HTMLOptionElement
-    let selectTag!: HTMLSelectElement
-
-    // get the div tag containing select list of categories
-    let formGroupActivitySelectList = document.getElementById("activitySelectList")?.parentElement
-
-    //remove actual select HTML tag
-    document.getElementById("activitySelectList")?.remove()
-
-    // create new select HTML tag for replace the removed one
-    selectTag = document.createElement("select")
-    selectTag.setAttribute("formcontrolname","subscriptionActivity")
-    selectTag.setAttribute("class","form-control border border-dark pl-2 round ng-pristine ng-valid ng-touched")
-    selectTag.setAttribute("id","activitySelectList")
-    selectTag.addEventListener('change',()=>{
-      this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
-    })
-    formGroupActivitySelectList?.appendChild(selectTag)
-
-    //add option HTML tag to select tag that will be selected by default
-    let activitySelectList = document.getElementById("activitySelectList")
-    optionTag = document.createElement("option") //<option _ngcontent-ng-c1135787114="" value="4" ng-reflect-value="4">ala</option>
-    optionTag.setAttribute("value",subscription.subscriptionActivity.actId.toString())
-    //optionTag.setAttribute("selected","")
-    optionTag.textContent = subscription.subscriptionActivity.actName
-    activitySelectList?.appendChild(optionTag)
-
-    //add other options under the first element in the list
-    this.activityService.getAllActivities().subscribe({
-      next:(activity)=>{
-      for (let i = 0; i < activity.length; i++)
-      {
-        if (activity[i].actId != subscription.subscriptionActivity.actId)
-        {
-          // add the other options for categories
-          optionTag = document.createElement("option")
-          optionTag.setAttribute("value",activity[i].actId.toString())
-          optionTag.setAttribute("ng-reflect-value",activity[i].actId.toString())
-          optionTag.textContent = activity[i].actName
-          activitySelectList?.appendChild(optionTag)
-        }
-      }
-    },
-      error: (err)=>console.error(err)
-    })
-
-    this.getActivity(selectTag[selectTag.selectedIndex].getAttribute("value"))
   }
 
   getMemberById(memberId: string)
@@ -399,20 +358,39 @@ export class AddSubscriptionComponent implements OnInit
     }
   }
 
-  getOffer()
+  getOffer(id?: any): Offer | void
   {
-    this.offers.forEach((offer) => {
-      if(offer.offerId == this.subscriptionFormValue.value.subscriptionOffer)
-      {
-        this.subscriptionObject.subscriptionPrice = offer.offerPrice
-        this.subscriptionObject.subscriptionStartDate = new Date().toISOString().split('T')[0]
-        this.subscriptionObject.subscriptionEndDate = new Date(
-          new Date(this.subscriptionObject.subscriptionStartDate).getFullYear(),
-          new Date(this.subscriptionObject.subscriptionStartDate).getMonth() + offer.offerPeriod,
-          new Date(this.subscriptionObject.subscriptionStartDate).getDate()
-        ).toISOString().split('T')[0]
-        return
-      }
-    })
+    let o = new Offer()
+    // update operation
+    if (id)
+    {
+      this.offers.forEach((offer) => {
+        if(offer.offerId == id)
+        {
+          o = offer
+        }
+      })
+
+      return o
+    }
+    // add operation
+    else
+    {
+      this.offers.forEach((offer) => {
+        if(offer.offerId == this.subscriptionFormValue.value.subscriptionOffer)
+        {
+          this.subscriptionObject.subscriptionPrice = offer.offerPrice
+          this.subscriptionObject.subscriptionStartDate = new Date().toISOString().split('T')[0]
+          this.subscriptionObject.subscriptionEndDate = new Date(
+            new Date(this.subscriptionObject.subscriptionStartDate).getFullYear(),
+            new Date(this.subscriptionObject.subscriptionStartDate).getMonth() + offer.offerPeriod,
+            new Date(this.subscriptionObject.subscriptionStartDate).getDate()
+          ).toISOString().split('T')[0]
+          this.subscriptionObject.subscriptionOffer = offer
+          return
+        }
+      })
+    }
+
   }
 }
