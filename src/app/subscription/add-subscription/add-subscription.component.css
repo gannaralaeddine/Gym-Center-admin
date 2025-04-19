@@ -8,3 +8,16 @@ label
 {
     margin-left: 1%;
 }
+
+h4
+{
+    font-weight: 400;
+    font-size: small;
+}
+
+strong
+{
+    font-weight: 400;
+    font-size: medium;
+    font-style: oblique;
+}

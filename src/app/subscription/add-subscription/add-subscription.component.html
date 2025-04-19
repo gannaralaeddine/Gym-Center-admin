@@ -43,7 +43,12 @@
                     <option value="" disabled selected>-- Choisir une offre SVP --</option>
                     <option *ngFor="let offer of offers" [value]="offer.offerId">{{offer.offerTitle}}</option>
                   </select>
-                  <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionActivity'].invalid && subscriptionFormValue.controls['subscriptionActivity'].touched">Merci de choisir une activité</h5>
+                  <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionOffer'].invalid && subscriptionFormValue.controls['subscriptionOffer'].touched">Merci de choisir une offre</h5>
+                  <h4 class="text-danger text-bold ml-1" *ngIf="this.subscriptionPeriod">
+                    La période de cette offre est:<strong>{{this.subscriptionPeriod}}</strong>&nbsp;mois<br>
+                    L'abonnement est de<strong>{{this.subscriptionObject.subscriptionStartDate | date: "dd-MM-yyyy"}}</strong>&nbsp;jusqu'à<strong>{{this.subscriptionObject.subscriptionEndDate | date: "dd-MM-yyyy"}}</strong>
+                  </h4>
+                  
                 </div>
 
                   <div class="form-group"> <!-- [hidden]="subscriptionFormValue.controls['subscriptionActivity'].invalid &&  isAddOperation" -->

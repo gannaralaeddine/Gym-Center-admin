@@ -1,4 +1,4 @@
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { NgIf, NgFor, AsyncPipe, DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
@@ -30,7 +30,8 @@ import { OfferService } from '../../services/offer.service.';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe
+    AsyncPipe,
+    DatePipe
   ],
   templateUrl: './add-subscription.component.html',
   styleUrl: './add-subscription.component.css'
@@ -55,12 +56,12 @@ export class AddSubscriptionComponent implements OnInit
   isNotEmpty!: boolean
   isCategorySelected = false
   offers: Offer[] = []
+  subscriptionPeriod!: number
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
     private categoryService: CategoryService,
     private userService: UserService,
-    private offerService: OfferService,
     private utilsService: UtilsService,
     private subscriptionFormBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddSubscriptionComponent>,
@@ -71,8 +72,6 @@ export class AddSubscriptionComponent implements OnInit
       this.isAddOperation = false;
       this.getSubscription(this.data.subscriptionId)
     }
-
-   
 
     this.getAllCategories()
   }
@@ -237,10 +236,15 @@ export class AddSubscriptionComponent implements OnInit
 
   updateSubscription()
   {
+    let offer = new Offer()
+    
+
     this.getMemberById(this.myControl.value!)
     this.subscriptionObject.subscriptionMember = this.selectedUser
     this.getActivity(this.subscriptionFormValue.get("subscriptionActivity")!.value)
-    this.subscriptionObject.subscriptionOffer = this.getOffer(this.subscriptionFormValue.get("subscriptionOffer")?.value)!
+    offer = this.getOffer(this.subscriptionFormValue.get("subscriptionOffer")?.value)!
+    //this.subscriptionObject.subscriptionOffer = this.getOffer(this.subscriptionFormValue.get("subscriptionOffer")?.value)!
+
 
     this.subscriptionService.updateSubscription(this.data.subscriptionId, this.subscriptionObject, this.userId).subscribe({
       next: () => {
@@ -374,7 +378,7 @@ export class AddSubscriptionComponent implements OnInit
       return o
     }
     // add operation
-    else
+    else if (this.isAddOperation)
     {
       this.offers.forEach((offer) => {
         if(offer.offerId == this.subscriptionFormValue.value.subscriptionOffer)
@@ -387,6 +391,7 @@ export class AddSubscriptionComponent implements OnInit
             new Date(this.subscriptionObject.subscriptionStartDate).getDate()
           ).toISOString().split('T')[0]
           this.subscriptionObject.subscriptionOffer = offer
+          this.subscriptionPeriod = offer.offerPeriod
           return
         }
       })
