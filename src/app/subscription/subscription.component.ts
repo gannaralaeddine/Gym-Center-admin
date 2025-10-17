@@ -19,14 +19,14 @@ import { AddSubscriptionComponent } from './add-subscription/add-subscription.co
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.css'
 })
-export class SubscriptionComponent implements OnInit 
+export class SubscriptionComponent implements OnInit
 {
   activities: any
   dataSource!: MatTableDataSource<any>;
   displayedColumns = ['Image','Activité','Prix','Gestion']
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
-  
+
   constructor(private subscriptionService: SubscriptionService,
     private utilsService: UtilsService,
     private dialogRef: MatDialog,
@@ -66,11 +66,12 @@ export class SubscriptionComponent implements OnInit
       return "../assets/img/icons/ic_activity.png"
     }
   }
-  
+
   addOrUpdateDialog(subscriptionId: any)
   {
     const popup = this.dialogRef.open(AddSubscriptionComponent, {
       width: "40%",
+      height: "80%",
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "1000ms",
       data: { subscriptionId: subscriptionId }
@@ -85,7 +86,7 @@ export class SubscriptionComponent implements OnInit
     this.router.navigate(["subscription-details"], { queryParams: params  })
   }
 
-  deleteSubscription(id: any) 
+  deleteSubscription(id: any)
   {
     this.utilsService.deletePopup("Supprimer Abonnement", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
     .afterClosed().subscribe(isYesOperation => {

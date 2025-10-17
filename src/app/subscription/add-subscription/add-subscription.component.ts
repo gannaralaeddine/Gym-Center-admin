@@ -1,9 +1,8 @@
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import {NgIf, NgFor, AsyncPipe, NgClass} from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from '../subscription';
 import { SubscriptionService } from '../../services/subscription.service';
 import { UtilsService } from '../../serviceutils/utils.service';
@@ -17,6 +16,7 @@ import {User} from "../../user/user";
 import { CategoryService } from '../../services/category.service';
 import { Offer } from '../../offer/offer';
 import { OfferService } from '../../services/offer.service.';
+import {LoadingSpinnerComponent} from "../../loading-spinner/loading-spinner.component";
 
 
 @Component({
@@ -31,7 +31,9 @@ import { OfferService } from '../../services/offer.service.';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe
+    AsyncPipe,
+    NgClass,
+    LoadingSpinnerComponent
   ],
   templateUrl: './add-subscription.component.html',
   styleUrl: './add-subscription.component.css'
@@ -52,11 +54,11 @@ export class AddSubscriptionComponent implements OnInit
   selectedUser!: User
   privateSessionsNumber!: number
   membersList: any
-  SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
   IsEndDateGreater = true
   isNotEmpty!: boolean
   isCategorySelected = false
   offers!: Offer[]
+  isLoading = false
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -74,12 +76,10 @@ export class AddSubscriptionComponent implements OnInit
       this.getSubscription(this.data.subscriptionId)
     }
 
-   
-
     this.getAllCategories()
   }
 
- 
+
   ngOnInit()
 
   { this.subscriptionFormValue = this.subscriptionFormBuilder.group({
@@ -145,7 +145,7 @@ export class AddSubscriptionComponent implements OnInit
     else
     {
       if (
-        
+
         this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.subscriptionFormValue.controls['subscriptionCategory'].valid
       )
       {
@@ -189,7 +189,7 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
-      
+
       this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
         next: (activity) => {
           this.subscriptionObject.subscriptionActivity = activity as Activity
@@ -209,7 +209,7 @@ export class AddSubscriptionComponent implements OnInit
     }
   }
 
-  getAllCategories() 
+  getAllCategories()
   {
     this.categoryService.getAllCategories().subscribe({
       next: (categories) => this.categories = categories,
@@ -220,12 +220,17 @@ export class AddSubscriptionComponent implements OnInit
   addSubscription()
   {
     this.getActivity(this.subscriptionFormValue.value.subscriptionActivity)
-    
+    this.isLoading = true
+
     this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
       next:() => {
         this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail,this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
-          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
+          error: (err) => {
+            this.isLoading = false
+            this.utilsService.successDialog("Opération échouée", err.message, false)
+          },
           complete: () => {
+            this.isLoading = false
             this.dialogRef.close()
             this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
           }
@@ -395,7 +400,7 @@ export class AddSubscriptionComponent implements OnInit
     }
     else
     {
-      this.isNotEmpty = true 
+      this.isNotEmpty = true
     }
   }
 

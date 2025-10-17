@@ -33,7 +33,6 @@ export class AddOfferComponent implements OnInit
   selectedCategoryOption: any
   selectedActivityOption: any
 
-
   constructor(
     private activityService: ActivityService,
     private categoryService: CategoryService,

@@ -1,5 +1,7 @@
 
-<div class="modal-content" style="margin: 10px">
+<div class="modal-content" style="margin: 10px" [ngClass]="isLoading ? 'enableBlur' : 'disableBlur'">
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <div class="modal-header">
       <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Abonnement</h1>
@@ -8,7 +10,8 @@
 
     <div class="modal-body">
 
-      <div>
+      <div >
+
         <form [formGroup]="subscriptionFormValue">
 
               <div class="form-group">

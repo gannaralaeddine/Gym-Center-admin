@@ -9,7 +9,6 @@ import {CoachModule} from "../coach.module";
 import {MemberModule} from "../member.module";
 import {AuthService} from "../../auth/auth.service";
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +32,6 @@ export class RegisterComponent
     roles: any
     selectList!: HTMLSelectElement
     selectedOptionValue!: string
-    dialogRef!: MatDialogRef<LoadingSpinnerComponent>
     admin = new User()
     member = new MemberModule()
     coach = new CoachModule()
@@ -63,8 +61,6 @@ export class RegisterComponent
         this.selectedOptionValue = this.selectList.options[this.selectList.selectedIndex].value
         this.isLoading = true
 
-      console.log("selected item: " + this.selectedOptionValue)
-
         switch (this.selectedOptionValue)
         {
           case "1": this.registerMember()
@@ -89,7 +85,6 @@ export class RegisterComponent
         next:(statusCode)=> {
           if (statusCode == 200)
           {
-            // this.dialogRef.close()
             this.isLoading = false
             this.utilsService.successDialog("Opération réussite", "Compte MEMBRE a été créé avec succès", true)
           }

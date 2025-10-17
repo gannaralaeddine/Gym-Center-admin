@@ -38,6 +38,130 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   accent-color: #e91e63;
 }
 
+/* Dynamic theme variables and core hooks */
+:root {
+  --app-primary: #e91e63;
+  --app-primary-strong: #d81b60;
+}
+
+/* Hook common accents to variables so ThemeService can recolor */
+.bg-gradient-primary,
+.btn.btn-primary,
+.badge.bg-gradient-primary {
+  background-image: linear-gradient(195deg, var(--app-primary) 0%, var(--app-primary-strong) 100%) !important;
+  background-color: var(--app-primary) !important;
+  color: #fff !important;
+}
+
+.text-primary,
+.border-primary,
+.btn-outline-primary {
+  color: var(--app-primary) !important;
+  border-color: var(--app-primary) !important;
+}
+
+.form-control:focus,
+.is-focused .form-control {
+  border-color: var(--app-primary) !important;
+  box-shadow: inset 0 -1px 0 0 var(--app-primary) !important;
+}
+
+/* Sidebar typography size adjustments */
+.sidenav .nav-link .nav-link-text,
+.sidenav .navbar-brand span,
+.sidenav h6 {
+  font-size: 0.9rem !important;
+}
+.sidenav .nav-link {
+  padding: 0.5rem 0.75rem !important;
+}
+
+/* Settings panel typography (make headings/descriptions larger) */
+.fixed-plugin .card-header h5 {
+  font-size: 1.25rem !important;
+}
+.fixed-plugin .card-header p {
+  font-size: 1rem !important;
+}
+.fixed-plugin .card-body h6 {
+  font-size: 1.05rem !important;
+}
+.fixed-plugin .card-body p,
+.fixed-plugin .text-sm {
+  font-size: 0.975rem !important;
+}
+
+/* Checkbox and radio checked state */
+.form-check-input:checked[type="checkbox"],
+.form-check-input:checked[type="radio"] {
+  background-image: linear-gradient(195deg, var(--app-primary) 0%, var(--app-primary-strong) 100%) !important;
+}
+
+/* Material Dashboard input underline (dynamic/static) */
+.input-group.input-group-dynamic.is-focused .form-control,
+.input-group.input-group-dynamic.is-focused .form-control:focus,
+.input-group.input-group-static.is-focused .form-control,
+.input-group.input-group-static.is-focused .form-control:focus {
+  background-image: linear-gradient(0deg, var(--app-primary) 2px, rgba(156, 39, 176, 0) 0),
+    linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0) !important;
+}
+
+/* Also apply theme color when field is marked valid (library defaults to green) */
+.input-group.input-group-dynamic.is-valid .form-control,
+.input-group.input-group-dynamic.is-valid .form-control:focus,
+.input-group.input-group-static.is-valid .form-control,
+.input-group.input-group-static.is-valid .form-control:focus {
+  background-image: linear-gradient(0deg, var(--app-primary) 2px, rgba(156, 39, 176, 0) 0),
+    linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0) !important;
+}
+
+/* Outline variant focus colors */
+.input-group.input-group-outline.is-focused .form-label + .form-control,
+.input-group.input-group-outline.is-filled .form-label + .form-control {
+  border-color: var(--app-primary) !important;
+  box-shadow: inset 1px 0 var(--app-primary), inset -1px 0 var(--app-primary), inset 0 -1px var(--app-primary) !important;
+}
+
+.input-group.input-group-outline.is-focused .form-label,
+.input-group.input-group-outline.is-filled .form-label {
+  color: var(--app-primary) !important;
+}
+
+.input-group.input-group-outline.is-focused .form-label:before,
+.input-group.input-group-outline.is-focused .form-label:after,
+.input-group.input-group-outline.is-filled .form-label:before,
+.input-group.input-group-outline.is-filled .form-label:after {
+  border-top-color: var(--app-primary) !important;
+  box-shadow: inset 0 1px var(--app-primary) !important;
+}
+
+/* Outline variant when valid */
+.input-group.input-group-outline.is-valid .form-label + .form-control,
+.input-group.input-group-outline.is-valid.is-focused .form-label + .form-control {
+  border-color: var(--app-primary) !important;
+  box-shadow: inset 1px 0 var(--app-primary), inset -1px 0 var(--app-primary), inset 0 -1px var(--app-primary) !important;
+}
+.input-group.input-group-outline.is-valid .form-label,
+.input-group.input-group-outline.is-valid.is-focused .form-label {
+  color: var(--app-primary) !important;
+}
+.input-group.input-group-outline.is-valid.is-focused .form-label:before,
+.input-group.input-group-outline.is-valid.is-focused .form-label:after {
+  border-top-color: var(--app-primary) !important;
+  box-shadow: inset 0 1px var(--app-primary) !important;
+}
+
+/* Valid state for checks uses theme color */
+.was-validated .form-check-input:valid:checked,
+.form-check-input.is-valid:checked {
+  background-color: var(--app-primary) !important;
+  background-image: linear-gradient(195deg, var(--app-primary) 0%, var(--app-primary-strong) 100%) !important;
+}
+.was-validated .form-check-input:valid~.form-check-label,
+.form-check-input.is-valid~.form-check-label {
+  color: var(--app-primary) !important;
+}
+
 .mat-mdc-form-field
 {
     font-size: 14px;
