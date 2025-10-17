@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {UtilsService} from "../serviceutils/utils.service";
+import { Offer } from '../offer/offer';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class ActivityService
   public addImagesToActivity(activity: FormData) { return this.http.put(this.utils.API_GYM_CENTER + "/activity/add-images-to-activity", activity ) }
 
   public getAllActivities() { return this.http.get<any>(this.utils.API_GYM_CENTER + "/activity/retrieve-all-activities") }
+
+  public getActivityOffers(activityId: any) { return this.http.get<Offer[]>(this.utils.API_GYM_CENTER + `/activity/retrieve-activity-offers/${activityId}`) }
 
   public getActivity(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/activity/retrieve-activity/" + id) }
 

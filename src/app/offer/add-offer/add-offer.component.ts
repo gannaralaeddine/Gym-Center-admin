@@ -225,7 +225,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")?.value)
+    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")!.value)
 
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {

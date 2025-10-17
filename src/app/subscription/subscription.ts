@@ -1,4 +1,5 @@
 import { Activity } from "../activity/activity"
+import { Offer } from "../offer/offer"
 import { User } from "../user/user"
 
 export class Subscription
@@ -9,4 +10,5 @@ export class Subscription
     subscriptionEndDate!: string
     subscriptionActivity!: Activity
     subscriptionMember!: User
+    subscriptionOffer!: Offer
 }
