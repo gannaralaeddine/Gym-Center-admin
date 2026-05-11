@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import  {UserService } from "../services/user.service";
 import { AddCategoryComponent } from "../category/add-category/add-category.component";
 import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
@@ -52,8 +53,11 @@ export class UserComponent
       private userService: UserService,
       private utilsService: UtilsService,
       private router: Router,
-      private dialogRef: MatDialog) {
-        this.getAllUsersFromApi()
+      private dialogRef: MatDialog,
+      @Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(this.platformId)) {
+            this.getAllUsersFromApi()
+        }
     }
 
     getAllUsersFromApi()
@@ -65,7 +69,6 @@ export class UserComponent
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
           this.dataSourceBackUp = this.dataSource
-          console.log(this.allUsers)
         },
         error: (err) => console.error(err)
       })
@@ -254,7 +257,6 @@ export class UserComponent
       exitAnimationDuration: "1000ms"
     })
     popup.afterClosed().subscribe(() =>{
-      console.log("dialog closed !!")
       this.getAllUsersFromApi()
     })
   }

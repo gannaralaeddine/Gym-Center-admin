@@ -19,9 +19,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     importProvidersFrom(HttpClientModule, MatGridListModule),
     provideRouter(routes),
     provideAnimations(),
-      // AuthGuard,
-      // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-      // AuthService
+      { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
 ]
   })
   .catch((err) => console.error(err))

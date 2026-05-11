@@ -11,66 +11,54 @@ import { AuthService } from "./auth/auth.service";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FooterComponent, HeaderComponent, SettingsComponent, SidebarComponent, RouterLink, NgOptimizedImage, HttpClientModule],
+  imports: [CommonModule, RouterOutlet, FooterComponent, HeaderComponent, SettingsComponent, SidebarComponent, RouterLink, NgOptimizedImage],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent
-{
+export class AppComponent {
 
   title = 'Gym-Center-admin';
   isClicked!: boolean | undefined
 
-  public constructor(private router: Router, private actRouter: ActivatedRoute, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object)
-  {
-      if (isPlatformBrowser(this.platformId))
-      {
-        authService.isRoleMatches("")
+  public constructor(private router: Router, private actRouter: ActivatedRoute, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      authService.isRoleMatches("")
 
-        if (this.isLoggedIn())
-        {
-          this.router.navigate(["users"]).then()
-        }
-        else
-        {
-          this.router.navigate([""]).then()
-        }
+      if (this.isLoggedIn()) {
+        this.router.navigate(["users"]).then()
       }
+      else {
+        this.router.navigate([""]).then()
+      }
+    }
   }
 
-  isLoggedIn(): boolean
-  {
-    if (isPlatformBrowser(this.platformId))
-    {
+  isLoggedIn(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
       return this.authService.isLoggedIn()
     }
     return false
   }
 
-  logout()
-  {
+  logout() {
     this.isClicked = false
     this.openOrCloseSideBarMenu()
     this.authService.clearLocalStorage()
     this.router.navigate([""]).then()
   }
 
-  openOrCloseSideBarMenu()
-  {
-    if (this.isClicked)
-    {
+  openOrCloseSideBarMenu() {
+    if (this.isClicked) {
       document.getElementById("mySidenav")!.style.width = "230px"
       document.getElementById("main")!.style.marginLeft = "230px"
     }
-    else
-    {
+    else {
       document.getElementById("mySidenav")!.style.width = "0"
       document.getElementById("main")!.style.marginLeft = "0"
     }
   }
 
-  sideBarButtonClicked(event: boolean)
-  {
+  sideBarButtonClicked(event: boolean) {
     this.isClicked = event
     this.openOrCloseSideBarMenu()
   }

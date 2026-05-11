@@ -1,8 +1,8 @@
 <div id="mySidenav" class="sidenav" *ngIf="isLoggedIn()">
   <div class="sidenav-header d-flex align-items-center justify-content-center">
     <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-       aria-hidden="true" id="iconSidenav"></i>
-    <a class="navbar-brand m-0" >
+      aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0">
 
       <img src="assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo" height="50" width="50">
       <span class="ms-1 font-weight-bold text-white">Bienvenue Admin</span>
@@ -60,7 +60,11 @@
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="offer">
         <div>
-          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="white" d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg></i>
+          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24"
+              width="24">
+              <path fill="white"
+                d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z" />
+            </svg></i>
           <span class="nav-link-text ml-2 menu-text">Gestion des offres</span>
         </div>
       </a>
@@ -69,7 +73,11 @@
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="option">
         <div>
-          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" width="21" viewBox="0 0 448 512"><path fill="white" d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"/></svg></i>
+          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" width="21"
+              viewBox="0 0 448 512">
+              <path fill="white"
+                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z" />
+            </svg></i>
           <span class="nav-link-text ml-2 menu-text">Gestion des options</span>
         </div>
       </a>
@@ -78,7 +86,11 @@
     <li class="nav-item">
       <a class="nav-link text-white" routerLink="training-history">
         <div>
-          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" width="21" viewBox="0 -960 960 960"  fill="white"><path d="M480-80q-155 0-269-103T82-440h81q15 121 105.5 200.5T480-160q134 0 227-93t93-227q0-134-93-227t-227-93q-86 0-159.5 42.5T204-640h116v80H88q29-140 139-230t253-90q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm112-232L440-464v-216h80v184l128 128-56 56Z"/></svg></i>
+          <i class="material-icons opacity-10"><svg xmlns="http://www.w3.org/2000/svg" height="24" width="21"
+              viewBox="0 -960 960 960" fill="white">
+              <path
+                d="M480-80q-155 0-269-103T82-440h81q15 121 105.5 200.5T480-160q134 0 227-93t93-227q0-134-93-227t-227-93q-86 0-159.5 42.5T204-640h116v80H88q29-140 139-230t253-90q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm112-232L440-464v-216h80v184l128 128-56 56Z" />
+            </svg></i>
           <span class="nav-link-text ml-2 menu-text">Historique d'entraînement</span>
         </div>
       </a>
@@ -118,7 +130,7 @@
   </ul>
 </div>
 
-<main id ="main" class="main-content border-radius-lg position-relative max-height-vh-100 h-100 index">
+<main id="main" class="main-content border-radius-lg position-relative max-height-vh-100 h-100 index">
   <!-- Navbar -->
   <app-header *ngIf="isLoggedIn()" (buttonClicked)="sideBarButtonClicked($event)"></app-header>
   <!-- End Navbar -->
@@ -134,4 +146,3 @@
 </main>
 
 <app-settings *ngIf="isLoggedIn()"></app-settings>
-
