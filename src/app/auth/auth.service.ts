@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from "../serviceutils/utils.service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 
 
 @Injectable({
@@ -9,9 +9,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 export class AuthService
 {
 
-    requestHeader = new HttpHeaders(
-      { "No-Auth": "True" }
-    )
+
 
     constructor( private utils: UtilsService, private http: HttpClient) { }
 

@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../services/category.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { AddCategoryComponent } from "./add-category/add-category.component";
 import { Category } from './category';
 import { MatDialog } from '@angular/material/dialog';
-import {Router, RouterLink} from "@angular/router";
+import { Router } from "@angular/router";
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {UtilsService} from "../serviceutils/utils.service";
-import { Overlay, ScrollStrategyOptions } from '@angular/cdk/overlay';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { UtilsService } from "../serviceutils/utils.service";
+import { Overlay } from '@angular/cdk/overlay';
 
 
 @Component({
@@ -20,7 +20,7 @@ import { Overlay, ScrollStrategyOptions } from '@angular/cdk/overlay';
     standalone: true,
     templateUrl: './category.component.html',
     styleUrl: './category.component.css',
-  imports: [NgFor, AddCategoryComponent, NgIf, RouterLink, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule]
+  imports: [NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule]
 })
 export class CategoryComponent implements OnInit
 {

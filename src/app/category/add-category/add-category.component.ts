@@ -114,7 +114,13 @@ export class AddCategoryComponent implements OnInit
           this.utilsService.successDialog("Opération réussite", "Catégorie ajoutée avec succès", true)
 
         },
-        error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+        error: (err)=> {
+          if (err.status == 401)
+          {
+            this.utilsService.successDialog("Opération échouée", "Vous n'avez pas les droits d'accées pour créer une nouvelle catégorie !", false)
+            console.log(err.message)
+          }
+        }
       })
 
 

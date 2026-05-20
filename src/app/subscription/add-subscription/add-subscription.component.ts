@@ -1,4 +1,4 @@
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import {NgIf, NgFor, AsyncPipe, NgClass, DatePipe} from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
@@ -17,6 +17,7 @@ import {User} from "../../user/user";
 import { CategoryService } from '../../services/category.service';
 import { Offer } from '../../offer/offer';
 import { OfferService } from '../../services/offer.service.';
+import {LoadingSpinnerComponent} from "../../loading-spinner/loading-spinner.component";
 
 
 @Component({
@@ -31,13 +32,17 @@ import { OfferService } from '../../services/offer.service.';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe
+    AsyncPipe,
+    LoadingSpinnerComponent,
+    NgClass,
+    DatePipe
   ],
   templateUrl: './add-subscription.component.html',
   styleUrl: './add-subscription.component.css'
 })
 export class AddSubscriptionComponent implements OnInit
 {
+  isLoading = false
   subscriptionFormValue !: FormGroup
   isAddOperation = true
   activities: any
@@ -57,6 +62,7 @@ export class AddSubscriptionComponent implements OnInit
   isNotEmpty!: boolean
   isCategorySelected = false
   offers!: Offer[]
+  subscriptionPeriod!: number
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -274,7 +280,9 @@ export class AddSubscriptionComponent implements OnInit
         this.selectedUser = subscription.member
         this.userId = subscription.member.userId
         this.privateSessionsNumber = subscription.member.privateSessionsNumber
-    },
+        this.subscriptionPeriod = this.subscriptionObject.subscriptionOffer.offerPeriod
+
+      },
       error: (err) => console.error(err)
     })
   }

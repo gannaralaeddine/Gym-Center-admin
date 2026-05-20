@@ -29,6 +29,8 @@ export class LoginComponent
   {
       this.authService.login(loginForm.value).subscribe({
         next: (response: any)  => {
+          this.authService.setTokenLS(response.token)
+          localStorage.setItem('token', response.token)
 
           this.userService.retrieveUserByEmail(response.email).subscribe(
             {
@@ -45,7 +47,6 @@ export class LoginComponent
                 {
                   console.log("You are connected as admin !!!")
                   this.authService.setRolesLS(response.authorities)
-                  this.authService.setTokenLS(response.token)
                   this.authService.setEmailLS(response.email)
 
                   this.router.navigate(["app-component"])

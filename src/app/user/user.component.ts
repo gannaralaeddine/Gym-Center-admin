@@ -65,7 +65,6 @@ export class UserComponent
           this.dataSource.sort = this.sort
           this.dataSource.paginator = this.paginator
           this.dataSourceBackUp = this.dataSource
-          console.log(this.allUsers)
         },
         error: (err) => console.error(err)
       })

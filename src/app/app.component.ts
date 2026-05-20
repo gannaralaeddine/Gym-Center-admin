@@ -1,17 +1,15 @@
-import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
-import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
 import { SettingsComponent } from "./settings/settings.component";
-import { SidebarComponent } from "./sidebar/sidebar.component";
-import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from "./auth/auth.service";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FooterComponent, HeaderComponent, SettingsComponent, SidebarComponent, RouterLink, NgOptimizedImage, HttpClientModule],
+  imports: [CommonModule, RouterOutlet, FooterComponent, HeaderComponent, SettingsComponent, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -21,7 +19,7 @@ export class AppComponent
   title = 'Gym-Center-admin';
   isClicked!: boolean | undefined
 
-  public constructor(private router: Router, private actRouter: ActivatedRoute, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object)
+  public constructor(private router: Router, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object)
   {
       if (isPlatformBrowser(this.platformId))
       {
