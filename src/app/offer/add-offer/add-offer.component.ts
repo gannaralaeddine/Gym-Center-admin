@@ -30,9 +30,6 @@ export class AddOfferComponent implements OnInit
   isAddOperation = true
   selectedOptions = new FormControl('')
   allOptionsList!: any
-  selectedCategoryOption: any
-  selectedActivityOption: any
-
   constructor(
     private activityService: ActivityService,
     private categoryService: CategoryService,
@@ -60,12 +57,6 @@ export class AddOfferComponent implements OnInit
       this.isAddOperation = false;
       await this.getOffer(this.offerId)
     }
-    else
-    {
-      this.selectedCategoryOption = new FormControl('')
-      this.selectedActivityOption = new FormControl('')
-    }
-
     this.getAllCategories()
     this.getAllOptions()
   }
@@ -82,24 +73,33 @@ export class AddOfferComponent implements OnInit
           offerActivity: offerObject.offerActivity.actId
         })
         this.offer = offerObject as Offer
-
-        this.selectedCategoryOption = new FormControl(this.offer.offerActivity.category.catId)
         this.getActivitiesByCategory(this.offer.offerActivity.category.catId)
       },
-      complete:() => this.selectedActivityOption = new FormControl(this.offer.offerActivity.actId),
       error: (err) => console.error(err)
     })
   }
 
-  async getCategoryActivities()
+  getCategoryActivities()
   {
-    this.selectedActivityOption = new FormControl('')
-    await this.getActivitiesByCategory(this.selectedCategoryOption.value)
+    this.offerFormValue.patchValue({ offerActivity: '' })
+    const categoryId = this.offerFormValue.get('offerCategory')?.value
+    if (categoryId) {
+      this.getActivitiesByCategory(categoryId)
+    }
+  }
+
+  private resolveActivityId(id?: any): number
+  {
+    const activityId = Number(id ?? this.offerFormValue.get('offerActivity')?.value)
+    if (isNaN(activityId) || activityId <= 0) {
+      throw new Error('Invalid activity id')
+    }
+    return activityId
   }
 
   async getActivity(id?: any): Promise<Activity>
   {
-    return await lastValueFrom(this.activityService.getActivity(id));
+    return await lastValueFrom(this.activityService.getActivity(this.resolveActivityId(id)));
   }
 
   getAllCategories()
@@ -191,17 +191,6 @@ export class AddOfferComponent implements OnInit
       }
     }
 
-    /* selectedActivityOption */
-    if (this.selectedActivityOption.value != '')
-    {
-      document.getElementById("addButton")?.removeAttribute("disabled")
-      document.getElementById("updateButton")?.removeAttribute("disabled")
-    }
-    else
-    {
-      document.getElementById("addButton")?.setAttribute("disabled","")
-      document.getElementById("updateButton")?.setAttribute("disabled","")
-    }
   }
 
   async updateOffer()
@@ -209,7 +198,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")?.value)
+    this.offer.offerActivity = await this.getActivity()
 
     this.offerService.updateOffer(this.offerId, this.offer).subscribe({
       next:() => {
@@ -225,7 +214,7 @@ export class AddOfferComponent implements OnInit
     this.offer.offerTitle = this.offerFormValue.controls['offerTitle'].value
     this.offer.offerPrice = this.offerFormValue.controls['offerPrice'].value
     this.offer.offerPeriod = this.offerFormValue.controls['offerPeriod'].value
-    this.offer.offerActivity = await this.getActivity(this.offerFormValue.get("offerActivity")!.value)
+    this.offer.offerActivity = await this.getActivity()
 
     this.offerService.addOffer(this.offer).subscribe({
       next:() => {

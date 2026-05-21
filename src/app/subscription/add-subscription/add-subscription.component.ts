@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from '../subscription';
 import { SubscriptionService } from '../../services/subscription.service';
 import { UtilsService } from '../../serviceutils/utils.service';
@@ -178,41 +177,28 @@ export class AddSubscriptionComponent implements OnInit
 
   getActivity(id?: any)
   {
-
-    if (id)
-    {
-      this.options = []
-      this.userService.retrieveAllMembers().subscribe({
-        next: (members) => {
-          (members as User[]).forEach((user: User) => {
-            this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
-          })
-          this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
-        },
-        error: (err) => console.error(err)
-      })
-
+    const activityId = Number(id ?? this.subscriptionFormValue.value.subscriptionActivity)
+    if (isNaN(activityId) || activityId <= 0) {
+      return
     }
-    else
-    {
 
-      this.activityService.getActivity(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
-        next: (activity) => {
-          this.subscriptionObject.subscriptionActivity = activity as Activity
-          this.subscriptionService.retrieveActivitySubscriptions(this.subscriptionFormValue.value.subscriptionActivity).subscribe({
-            next: (activitySubscriptions) => {
-              this.activitySubscriptions = activitySubscriptions
-              this.filterUnsubscribedMembersInActivity(this.membersList).forEach((user: User) => {
-                this.options.push(user.userId + "-" +user.userFirstName + "-" + user.userLastName)
-              })
-              this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''),map(value => this._filter(value || '')))
-            },
-            error: (err) => console.error(err)
-          })
-        },
-        error: (err) => console.log(err)
-      })
-    }
+    this.options = []
+    this.activityService.getActivity(activityId).subscribe({
+      next: (activity) => {
+        this.subscriptionObject.subscriptionActivity = activity as Activity
+        this.subscriptionService.retrieveActivitySubscriptions(activityId).subscribe({
+          next: (activitySubscriptions) => {
+            this.activitySubscriptions = activitySubscriptions
+            this.filterUnsubscribedMembersInActivity(this.membersList).forEach((user: User) => {
+              this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
+            })
+            this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''), map(value => this._filter(value || '')))
+          },
+          error: (err) => console.error(err)
+        })
+      },
+      error: (err) => console.error(err)
+    })
   }
 
   getAllCategories()
@@ -225,19 +211,28 @@ export class AddSubscriptionComponent implements OnInit
 
   addSubscription()
   {
-    this.getActivity(this.subscriptionFormValue.value.subscriptionActivity)
+    const activityId = Number(this.subscriptionFormValue.value.subscriptionActivity)
+    if (isNaN(activityId) || activityId <= 0) {
+      return
+    }
 
-    this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
-      next:() => {
-        this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail,this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
-          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
-          complete: () => {
-            this.dialogRef.close()
-            this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
-          }
+    this.activityService.getActivity(activityId).subscribe({
+      next: (activity) => {
+        this.subscriptionObject.subscriptionActivity = activity as Activity
+        this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
+          next: () => {
+            this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail, this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
+              error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
+              complete: () => {
+                this.dialogRef.close()
+                this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
+              }
+            })
+          },
+          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
         })
       },
-      error: (err)=> this.utilsService.successDialog("Opération échouée", err.message, false)
+      error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 

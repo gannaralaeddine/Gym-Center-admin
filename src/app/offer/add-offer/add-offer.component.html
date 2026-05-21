@@ -48,7 +48,7 @@
 
         <div class="form-group" id="category">
           <label for="categorySelectList" class="text-dark font-weight-bold">Catégorie Offre</label>
-          <select [formControl]="selectedCategoryOption" class="form-control border border-dark pl-2 round" id="categorySelectList" formControlName="offerCategory" (change)="getCategoryActivities();checkValidityForm()" (blur)="checkValidityForm()">
+          <select class="form-control border border-dark pl-2 round" id="categorySelectList" formControlName="offerCategory" (change)="getCategoryActivities();checkValidityForm()" (blur)="checkValidityForm()">
             <option value="" disabled selected>-- Choisir une catégorie SVP --</option>
             <option *ngFor="let category of categories" [value]="category.catId">{{category.catName}}</option>
           </select>
@@ -57,7 +57,7 @@
 
         <div class="form-group">
           <label for="activitySelectList" class="text-dark font-weight-bold">Activité Offre</label>
-          <select [formControl]="selectedActivityOption" class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="offerActivity" (change)="checkValidityForm()" (blur)="checkValidityForm()">
+          <select class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="offerActivity" (change)="checkValidityForm()" (blur)="checkValidityForm()">
             <option value="" disabled selected>-- Choisir une activité SVP --</option>
             <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
           </select>
