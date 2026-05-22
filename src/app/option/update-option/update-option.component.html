@@ -12,7 +12,7 @@
 
                <div class="form-group">
                  <label for="optionTitleInput" class="text-dark font-weight-bold">Titre Option</label>
-                 <input type="text" pattern="^[A-Za-z1-9éèçïîô ]*[A-Za-z1-9éèçïîô][A-Za-z1-9éèçïîô ]*$" class="form-control border border-secondary pl-2 round"  id="optionTitleInput" placeholder="saisir nom option" formControlName="optionTitle" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
+                 <input type="text" pattern="^[A-Za-z0-9\u00C0-\u017F ]*[A-Za-z0-9\u00C0-\u017F][A-Za-z0-9\u00C0-\u017F ]*$" class="form-control border border-secondary pl-2 round"  id="optionTitleInput" placeholder="saisir nom option" formControlName="optionTitle" (blur)="checkValidityForm()" (keyup)="checkValidityForm()">
                  <h5 class="text-danger text-bold ml-2" *ngIf="optionFormValue.controls['optionTitle'].invalid && optionFormValue.controls['optionTitle'].touched">Merci de saisir un nom valide</h5>
                </div>
 

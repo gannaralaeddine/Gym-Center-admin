@@ -18,6 +18,10 @@ import { UtilsService } from '../../serviceutils/utils.service';
 })
 export class UpdateOptionComponent implements OnInit
 {
+  /** Letters (incl. French accents), digits, spaces; at least one letter/digit. */
+  private static readonly OPTION_NAME_PATTERN =
+    /^[A-Za-z0-9\u00C0-\u017F ]*[A-Za-z0-9\u00C0-\u017F][A-Za-z0-9\u00C0-\u017F ]*$/
+
   optionFormValue!: FormGroup
   option = new Option()
 
@@ -30,15 +34,15 @@ export class UpdateOptionComponent implements OnInit
   ngOnInit()
   {
     this.optionFormValue = this.optionFormBuilder.group({
-      optionTitle : ['',Validators.required]
+      optionTitle: ['', [Validators.required, Validators.pattern(UpdateOptionComponent.OPTION_NAME_PATTERN)]]
     })
 
-    this.optionService.getOption(this.data.optionId).subscribe({
-      next: (option: Option) => this.optionFormValue.controls['optionTitle'].setValue(option.optionName),
-      error: (err) => console.error(err)
-    })
-
-    console.log(this.data.options)
+    if (this.data.optionId) {
+      this.optionService.getOption(this.data.optionId).subscribe({
+        next: (option: Option) => this.optionFormValue.controls['optionTitle'].setValue(option.optionName),
+        error: (err) => console.error(err)
+      })
+    }
   }
   closeDialog()
   {
