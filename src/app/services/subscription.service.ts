@@ -10,6 +10,10 @@ export class SubscriptionService
 {
   constructor(private http: HttpClient, private utils: UtilsService) { }
 
+  public createSubscription(memberId: number, offerId: number) { return this.http.post(this.utils.API_GYM_CENTER + "/subscription/create/" + memberId + "/" + offerId, {} ) }
+
+  public getAvailableMembers(offerId: number) { return this.http.get<any[]>(this.utils.API_GYM_CENTER + "/subscription/available-members/" + offerId ) }
+
   public addSubscription(subscription: Subscription, memberId: string) { return this.http.post(this.utils.API_GYM_CENTER + "/subscription/create-subscription/" + memberId, subscription) }
 
   public getAllSubscriptions() { return this.http.get<any>(this.utils.API_GYM_CENTER + "/subscription/retrieve-all-subscriptions") }

@@ -1,4 +1,4 @@
-import {NgIf, NgFor, AsyncPipe, NgClass, DatePipe} from '@angular/common';
+import {NgIf, NgFor, AsyncPipe, DatePipe} from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityService } from '../../services/activity.service';
@@ -17,6 +17,7 @@ import { CategoryService } from '../../services/category.service';
 import { Offer } from '../../offer/offer';
 import { OfferService } from '../../services/offer.service.';
 import {LoadingSpinnerComponent} from "../../loading-spinner/loading-spinner.component";
+import {Member} from "../../user/Member";
 
 
 @Component({
@@ -33,7 +34,6 @@ import {LoadingSpinnerComponent} from "../../loading-spinner/loading-spinner.com
     ReactiveFormsModule,
     AsyncPipe,
     LoadingSpinnerComponent,
-    NgClass,
     DatePipe
   ],
   templateUrl: './add-subscription.component.html',
@@ -46,7 +46,7 @@ export class AddSubscriptionComponent implements OnInit
   isAddOperation = true
   activities: any
   categories: any
-  activitySubscriptions!: Subscription[]
+  offerMembers: Member[] = []
   subscriptionObject = new Subscription()
   subscriptionActivity!: Activity
   myControl = new FormControl('')
@@ -56,12 +56,11 @@ export class AddSubscriptionComponent implements OnInit
   selectedUser!: User
   privateSessionsNumber!: number
   membersList: any
-  SubscriptionEndDate = new Date(new Date().getTime() + 86400000)
-  IsEndDateGreater = true
   isNotEmpty!: boolean
-  isCategorySelected = false
   offers!: Offer[]
   subscriptionPeriod!: number
+  availableMembers: any[] = [];
+
 
   constructor(private activityService: ActivityService,
     private subscriptionService: SubscriptionService,
@@ -78,8 +77,6 @@ export class AddSubscriptionComponent implements OnInit
       this.isAddOperation = false;
       this.getSubscription(this.data.subscriptionId)
     }
-
-
 
     this.getAllCategories()
   }
@@ -114,6 +111,7 @@ export class AddSubscriptionComponent implements OnInit
 
   checkValidityForm()
   {
+    //Add Case
     if ((this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && this.subscriptionFormValue.controls['privateSessionsNumber'].invalid && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) ||
     (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched) ||
     (this.subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && this.subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && this.subscriptionFormValue.controls['privateSessionsNumber'].touched))
@@ -126,18 +124,9 @@ export class AddSubscriptionComponent implements OnInit
     }
 
 
-    if (this.subscriptionFormValue.controls['subscriptionActivity'].invalid && this.subscriptionFormValue.controls['subscriptionActivity'].touched)
-    {
-      document.getElementById('activitySelectList')!.className = "form-control border border-danger pl-2 round"
-    }
-    else
-    {
-      document.getElementById('activitySelectList')!.className = "form-control border border-dark pl-2 round"
-    }
-
+    // Update Case
     if (this.data.subscriptionId)
     {
-
       if (this.subscriptionFormValue.controls['privateSessionsNumber'].invalid || !this.userId)
       {
         document.getElementById("updateButton")?.setAttribute("disabled","")
@@ -147,27 +136,6 @@ export class AddSubscriptionComponent implements OnInit
         document.getElementById("updateButton")?.removeAttribute("disabled")
       }
     }
-    else
-    {
-      if (
-
-        this.subscriptionFormValue.controls['subscriptionActivity'].valid && this.subscriptionFormValue.controls['privateSessionsNumber'].valid && this.subscriptionFormValue.controls['subscriptionCategory'].valid
-      )
-      {
-        if (this.IsEndDateGreater)
-        {
-          document.getElementById("addButton")?.removeAttribute("disabled")
-        }
-        else
-        {
-          document.getElementById("addButton")?.setAttribute("disabled","")
-        }
-      }
-      else
-      {
-        document.getElementById("addButton")?.setAttribute("disabled","")
-      }
-    }
   }
 
   closeDialog()
@@ -175,20 +143,25 @@ export class AddSubscriptionComponent implements OnInit
     this.dialogRef.close()
   }
 
+  /**
+   * subscriptionOffer
+   *
+   * @param id
+   */
   getActivity(id?: any)
   {
-    const activityId = Number(id ?? this.subscriptionFormValue.value.subscriptionActivity)
-    if (isNaN(activityId) || activityId <= 0) {
+    const offerId = Number(id ?? this.subscriptionFormValue.value.subscriptionOffer)
+    if (isNaN(offerId) || offerId <= 0) {
       return
     }
 
     this.options = []
-    this.activityService.getActivity(activityId).subscribe({
-      next: (activity) => {
-        this.subscriptionObject.subscriptionActivity = activity as Activity
-        this.subscriptionService.retrieveActivitySubscriptions(activityId).subscribe({
-          next: (activitySubscriptions) => {
-            this.activitySubscriptions = activitySubscriptions
+    this.offerService.getOffer(offerId).subscribe({
+      next: (offer) => {
+        this.subscriptionObject.subscriptionOffer = offer as Offer
+        this.offerService.getOfferMembers(offer).subscribe({
+          next: (offerMembers) => {
+            this.offerMembers = offerMembers
             this.filterUnsubscribedMembersInActivity(this.membersList).forEach((user: User) => {
               this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
             })
@@ -206,33 +179,6 @@ export class AddSubscriptionComponent implements OnInit
     this.categoryService.getAllCategories().subscribe({
       next: (categories) => this.categories = categories,
       error: (err) => console.error(err)
-    })
-  }
-
-  addSubscription()
-  {
-    const activityId = Number(this.subscriptionFormValue.value.subscriptionActivity)
-    if (isNaN(activityId) || activityId <= 0) {
-      return
-    }
-
-    this.activityService.getActivity(activityId).subscribe({
-      next: (activity) => {
-        this.subscriptionObject.subscriptionActivity = activity as Activity
-        this.subscriptionService.addSubscription(this.subscriptionObject, this.userId).subscribe({
-          next: () => {
-            this.userService.updatePrivateSessionsNumber(this.selectedUser.userEmail, this.subscriptionFormValue.value.privateSessionsNumber).subscribe({
-              error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false),
-              complete: () => {
-                this.dialogRef.close()
-                this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
-              }
-            })
-          },
-          error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
-        })
-      },
-      error: (err) => this.utilsService.successDialog("Opération échouée", err.message, false)
     })
   }
 
@@ -280,17 +226,6 @@ export class AddSubscriptionComponent implements OnInit
       },
       error: (err) => console.error(err)
     })
-  }
-
-  getCategory(id?: any)
-  {
-    if (!id)
-    {
-      this.categoryService.getActivitiesOfCategory(this.subscriptionFormValue.value.subscriptionCategory).subscribe({
-        next: (categoriesList) => this.activities = categoriesList,
-        error: (err) => console.error(err)
-      })
-    }
   }
 
   populateActivitySelectList(subscription: any)
@@ -367,8 +302,8 @@ export class AddSubscriptionComponent implements OnInit
     {
       isUnsubscribed = true
 
-      this.activitySubscriptions.forEach((subscription: any) => {
-        if (members[i].userId == subscription.member.userId)
+      this.offerMembers.forEach((offerMember: any) => {
+        if (members[i].userId == offerMember.userId)
         {
           isUnsubscribed = false
         }
@@ -383,8 +318,6 @@ export class AddSubscriptionComponent implements OnInit
     this.options = []
 
     return unsubscribedMembersList
-
-
 
   }
 
@@ -402,20 +335,52 @@ export class AddSubscriptionComponent implements OnInit
     }
   }
 
-  getOffer()
-  {
-    this.offers.forEach((offer) => {
-      if(offer.offerId == this.subscriptionFormValue.value.subscriptionOffer)
+
+  onOfferChange(): void {
+    this.subscriptionService.getAvailableMembers(this.subscriptionFormValue.value.subscriptionOffer).subscribe({
+
+        next: (members: any[]) => {
+          this.availableMembers = members;
+          this.filterUnsubscribedMembersInActivity(this.availableMembers).forEach((user: User) => {
+            this.options.push(user.userId + "-" + user.userFirstName + "-" + user.userLastName)
+          })
+          this.filteredOptions = this.myControl.valueChanges.pipe(startWith(''), map(value => this._filter(value || '')))
+
+        },
+
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
+  }
+
+
+  createSubscription(): void {
+    this.isLoading = true;
+
+    this.subscriptionService.createSubscription( Number(this.userId), this.subscriptionFormValue.value.subscriptionOffer ).subscribe(
       {
-        this.subscriptionObject.subscriptionPrice = offer.offerPrice
-        this.subscriptionObject.subscriptionStartDate = new Date().toISOString().split('T')[0]
-        this.subscriptionObject.subscriptionEndDate = new Date(
-          new Date(this.subscriptionObject.subscriptionStartDate).getFullYear(),
-          new Date(this.subscriptionObject.subscriptionStartDate).getMonth() + offer.offerPeriod,
-          new Date(this.subscriptionObject.subscriptionStartDate).getDate()
-        ).toISOString().split('T')[0]
-        return
-      }
-    })
+
+        next: (response) => {
+
+          console.log(response);
+
+
+          console.log('Subscription created successfully');
+
+          // refresh members list
+          this.onOfferChange();
+        },
+
+        error: (err) => {
+
+          console.log(err);
+        },
+        complete: () => {
+          this.isLoading = false;
+          this.dialogRef.close()
+          this.utilsService.successDialog("Opération réussite", "Abonnement ajouté avec succès", true)
+        }
+      });
   }
 }

@@ -1,3 +1,7 @@
+<div class="subscription-loading-backdrop" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
 <div class="container-fluid px-2 px-md-4">
 
   <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
@@ -285,7 +289,7 @@
                 <th mat-header-cell *matHeaderCellDef  class="text-center">Gestion</th>
                 <td mat-cell *matCellDef="let subscription" class="text-center">
                   <button class="btn btn-link px-3 mb-0" href="javascript:" (click)="goToSubscriptionDetails(subscription)"><i class="material-icons text-sm me-2">assignment</i>Détails</button>
-                  <button class="btn btn-link text-danger px-3 mb-0" style="margin-left: -2%;" (click)="deleteSubscription(subscription.subscriptionId)"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
+                  <button class="btn btn-link text-danger px-3 mb-0" style="margin-left: -2%;" (click)="deleteSub(subscription.subscriptionId)"><i class="material-icons text-sm me-2">delete</i>Supprimer</button>
                   <button class="btn btn-link text-success px-3 mb-0" style="margin-left: -2%;" (click)="addOrUpdateDialog(subscription.subscriptionId)"><i class="material-icons text-md me-2">autorenew</i>Renouveler</button>
                 </td>
               </ng-container>

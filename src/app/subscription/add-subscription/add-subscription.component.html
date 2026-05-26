@@ -1,7 +1,8 @@
+<div class="subscription-loading-backdrop" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
 
-<div class="modal-content" style="margin: 10px" [ngClass]="isLoading ? 'enableBlur' : 'disableBlur'" >
-
-  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<div class="modal-content subscription-dialog" style="margin: 10px">
 
     <div class="modal-header">
       <h1 class="modal-title pl-1" *ngIf="isAddOperation" >Ajouter Abonnement</h1>
@@ -14,23 +15,20 @@
 
         <form [formGroup]="subscriptionFormValue">
 
-              <div class="form-group">
-                <label for="categorySelectList" class="text-dark font-weight-bold">Catégorie</label>
-                <select class="form-control border border-dark pl-2 round" id="categorySelectList" formControlName="subscriptionCategory" (change)="getCategory();checkValidityForm();isCategorySelected = true" (blur)="checkValidityForm()">
-                  <option value="" disabled selected>-- Choisir une catégorie SVP --</option>
-                  <option *ngFor="let category of categories" [value]="category.catId">{{category.catName}}</option>
-                </select>
-                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionCategory'].invalid && subscriptionFormValue.controls['subscriptionCategory'].touched">Merci de choisir une catégorie</h5>
-              </div>
+          <div class="form-group">
+            <label for="offerSelectList" class="text-dark font-weight-bold">Offre</label>
+            <select class="form-control border border-dark pl-2 round" id="offerSelectList" formControlName="subscriptionOffer" (change)="onOfferChange();checkValidityForm()" (blur)="checkValidityForm()">
+              <option value="" disabled selected>-- Choisir une offre SVP --</option>
+              <option *ngFor="let offer of offers" [value]="offer.offerId">{{offer.offerTitle}} - {{offer.offerPrice}} TND - {{offer.offerPeriod}}Mois</option>
+            </select>
+            <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionOffer'].invalid && subscriptionFormValue.controls['subscriptionOffer'].touched">Merci de choisir une offre</h5>
+            <h4 class="text-danger text-bold ml-1" *ngIf="this.subscriptionPeriod || !isAddOperation">
+              La période de cette offre est:<strong>{{this.subscriptionPeriod}}</strong>&nbsp;mois<br>
+              <span *ngIf="this.subscriptionPeriod && isAddOperation">L'abonnement est de<strong>{{this.subscriptionObject.subscriptionStartDate | date: "dd-MM-yyyy"}}</strong>&nbsp;jusqu'à<strong>{{this.subscriptionObject.subscriptionEndDate | date: "dd-MM-yyyy"}}</strong></span>
+            </h4>
+          </div>
 
-              <div class="form-group">
-                <label for="activitySelectList" class="text-dark font-weight-bold">Activité</label>
-                <select class="form-control border border-dark pl-2 round" id="activitySelectList" formControlName="subscriptionActivity" (change)="getActivity();checkValidityForm()" (blur)="checkValidityForm()">
-                  <option value="" disabled selected>-- Choisir une activité SVP --</option>
-                  <option *ngFor="let activity of activities" [value]="activity.actId">{{activity.actName}}</option>
-                </select>
-                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionActivity'].invalid && subscriptionFormValue.controls['subscriptionActivity'].touched">Merci de choisir une activité</h5>
-              </div>
+
 
               <mat-form-field class="example-full-width" [color]="'accent'">
                 <mat-label>Membre</mat-label>
@@ -40,37 +38,25 @@
                 </mat-autocomplete>
               </mat-form-field>
 
-                <div class="form-group">
-                  <label for="offerSelectList" class="text-dark font-weight-bold">Offre</label>
-                  <select class="form-control border border-dark pl-2 round" id="offerSelectList" formControlName="subscriptionOffer" (change)="getOffer();checkValidityForm()" (blur)="checkValidityForm()">
-                    <option value="" disabled selected>-- Choisir une offre SVP --</option>
-                    <option *ngFor="let offer of offers" [value]="offer.offerId">{{offer.offerTitle}}</option>
-                  </select>
-                  <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['subscriptionOffer'].invalid && subscriptionFormValue.controls['subscriptionOffer'].touched">Merci de choisir une offre</h5>
-                  <h4 class="text-danger text-bold ml-1" *ngIf="this.subscriptionPeriod || !isAddOperation">
-                    La période de cette offre est:<strong>{{this.subscriptionPeriod}}</strong>&nbsp;mois<br>
-                    <span *ngIf="this.subscriptionPeriod && isAddOperation">L'abonnement est de<strong>{{this.subscriptionObject.subscriptionStartDate | date: "dd-MM-yyyy"}}</strong>&nbsp;jusqu'à<strong>{{this.subscriptionObject.subscriptionEndDate | date: "dd-MM-yyyy"}}</strong></span>
-                  </h4>
-                </div>
 
-                <div class="form-group" *ngIf="!isAddOperation">
-                  <label for="subscriptionEndDate" class="text-dark font-weight-bold">Date fin</label>
-                  <input type="date" class="form-control border border-secondary pl-2 round" id="subscriptionEndDate" formControlName="subscriptionEndDate">
-                </div>
+              <div class="form-group" *ngIf="!isAddOperation">
+                <label for="subscriptionEndDate" class="text-dark font-weight-bold">Date fin</label>
+                <input type="date" class="form-control border border-secondary pl-2 round" id="subscriptionEndDate" formControlName="subscriptionEndDate">
+              </div>
 
-                  <div class="form-group">
-                    <label for="privateSessionsNumber" class="text-dark font-weight-bold">Nombre des séances privées</label>
-                    <input type="text" pattern="^[0-9]*$" class="form-control border border-secondary pl-2 round" id="privateSessionsNumber" placeholder="saisir nombre des séances" formControlName="privateSessionsNumber" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" [defaultValue]="1">
-                    <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && subscriptionFormValue.controls['privateSessionsNumber'].invalid && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir des entiers</h5>
-                    <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir un entier supérieur à 0</h5>
-                    <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir un entier valide</h5>
-                  </div>
+              <div class="form-group">
+                <label for="privateSessionsNumber" class="text-dark font-weight-bold">Nombre des séances privées</label>
+                <input type="text" pattern="^[0-9]*$" class="form-control border border-secondary pl-2 round" id="privateSessionsNumber" placeholder="saisir nombre des séances" formControlName="privateSessionsNumber" (blur)="checkValidityForm()" (keyup)="checkValidityForm()" [defaultValue]="1">
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 0 && subscriptionFormValue.controls['privateSessionsNumber'].invalid && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir des entiers</h5>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length === 1 && subscriptionFormValue.controls['privateSessionsNumber'].value === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir un entier supérieur à 0</h5>
+                <h5 class="text-danger text-bold ml-2" *ngIf="subscriptionFormValue.controls['privateSessionsNumber'].value.length > 1 && subscriptionFormValue.controls['privateSessionsNumber'].getRawValue()[0] === '0' && subscriptionFormValue.controls['privateSessionsNumber'].touched"> Merci de saisir un entier valide</h5>
+              </div>
 
               <div class="row">
                 <div class="col text-center">
-                  <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()">annuler</button>
-                  <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="addSubscription()" *ngIf="isAddOperation" disabled>Ajouter</button>
-                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateSubscription()" *ngIf="!isAddOperation">Éditer</button>
+                  <button type="button" class="btn btn-dark mr-3" (click)="closeDialog()" [disabled]="isLoading">annuler</button>
+                  <button type="button" id="addButton" class="btn btn-primary mr-3" (click)="createSubscription()" *ngIf="isAddOperation" [disabled]="isLoading" disabled>Ajouter</button>
+                  <button type="button" id="updateButton" class="btn btn-primary mr-3" (click)="updateSubscription()" *ngIf="!isAddOperation" [disabled]="isLoading">Éditer</button>
                 </div>
               </div>
         </form>

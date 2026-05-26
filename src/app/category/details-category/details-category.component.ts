@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../../services/category.service";
-import {NgFor, NgOptimizedImage} from "@angular/common";
+import {NgFor} from "@angular/common";
 import {FileHandle} from "fs/promises";
 import {UtilsService} from "../../serviceutils/utils.service";
 import { AddCategoryComponent } from '../add-category/add-category.component';
@@ -13,10 +13,7 @@ import { Activity } from '../../activity/activity';
 @Component({
   selector: 'app-details-category',
   standalone: true,
-  imports: [
-    NgOptimizedImage,
-    NgFor
-  ],
+  imports: [ NgFor ],
   templateUrl: './details-category.component.html',
   styleUrl: './details-category.component.css'
 })
@@ -125,6 +122,6 @@ export class DetailsCategoryComponent implements OnInit
   goToActivityDetails(activity: Activity)
   {
     const params = { actId: activity.actId }
-    this.routerActivity.navigate(["activity-details"], { queryParams: params  })
+    void this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 }

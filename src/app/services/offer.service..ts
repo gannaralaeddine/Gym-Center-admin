@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {UtilsService} from "../serviceutils/utils.service";
+import {Offer} from "../offer/offer";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class OfferService
 
   public getAllOffers() { return this.http.get<any>(this.utils.API_GYM_CENTER + "/offer/retrieve-all-offers") }
 
-  public getOffer(id: any) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/offer/retrieve-offer/" + id) }
+  public getOfferMembers(offer: Offer) { return this.http.get<any>(this.utils.API_GYM_CENTER + "/offer/retrieve-offer-members") }
+
+  public getOffer(id: any) { return this.http.get<Offer>(this.utils.API_GYM_CENTER + "/offer/retrieve-offer/" + id) }
 
   public deleteOffer(id: any) { return this.http.delete(this.utils.API_GYM_CENTER + "/offer/delete-offer/" + id) }
 

@@ -144,13 +144,13 @@ export class DetailsSessionComponent implements OnInit
   goToActivityDetails()
   {
     const params = { actId: this.sessionActivity.actId}
-    this.routerActivity.navigate(["activity-details"], { queryParams: params  })
+    void this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 
   goToCoachProfile()
   {
     const params = { userEmail: this.sessionCoach.userEmail}
-    this.routerActivity.navigate(["profile"], { queryParams: params  })
+    void this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
 
   displayImages(images: any, isOneImage: boolean)
@@ -173,7 +173,7 @@ export class DetailsSessionComponent implements OnInit
   goToUserProfileDetails(email:any)
   {
     const params = { userEmail: email }
-    this.routerActivity.navigate(["profile"], { queryParams: params  })
+    void this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
 
   removeMemberFromSession(memberEmail: string, sessionId: number)

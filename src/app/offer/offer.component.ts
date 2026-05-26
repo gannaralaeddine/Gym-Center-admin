@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
 @Component({
   selector: 'app-offer',
   standalone: true,
-  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule],
+  imports: [ NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule],
   templateUrl: './offer.component.html',
   styleUrl: './offer.component.css'
 })
@@ -78,7 +78,7 @@ export class OfferComponent
   goToOfferDetails(offer: any)
   {
     const params = { offerId: offer.offerId }
-    this.router.navigate(["offer-details"], { queryParams: params  })
+    void this.router.navigate(["offer-details"], { queryParams: params  })
   }
 
   getActivityImage(imageName: string): string

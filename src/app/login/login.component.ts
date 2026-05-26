@@ -49,7 +49,7 @@ export class LoginComponent
                   this.authService.setRolesLS(response.authorities)
                   this.authService.setEmailLS(response.email)
 
-                  this.router.navigate(["app-component"])
+                  void this.router.navigate(["app-component"])
                 }
                 else
                 {

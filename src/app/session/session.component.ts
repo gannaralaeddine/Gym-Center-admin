@@ -58,7 +58,7 @@ export class SessionComponent implements OnInit
   {
     const params = { sessionId: session.sessionId }
 
-    this.router.navigate(["session-details"], { queryParams: params  })
+    void this.router.navigate(["session-details"], { queryParams: params  })
   }
 
   addOrUpdateDialog(sessionId?: number)

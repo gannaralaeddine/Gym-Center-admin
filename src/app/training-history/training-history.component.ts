@@ -60,7 +60,7 @@ export class TrainingHistoryComponent
   expandedElement?: HistoryObject | null
   @ViewChild(MatPaginator) paginator!: MatPaginator
   dateFilterFormValue !: FormGroup
-  
+
   constructor(
     private trainingHistoryService: TrainingHistoryService,
     private utilsService: UtilsService,
@@ -113,7 +113,7 @@ export class TrainingHistoryComponent
     return filteredData
   }
 
-  
+
   filterByDate()
   {
     let filteredData = []
@@ -121,7 +121,7 @@ export class TrainingHistoryComponent
     for (let i = 0; i < this.userTrainingHistoriesTableBackUp.length; i++)
     {
       let date = new Date(this.userTrainingHistoriesTableBackUp[i].checkInTime).toISOString().split('T')[0]
-      
+
       if (date.indexOf(this.dateFilterFormValue.value.dateFilterValue) != -1)
       {
         filteredData.push(this.userTrainingHistoriesTableBackUp[i])
@@ -146,7 +146,7 @@ export class TrainingHistoryComponent
   goToUserProfile(email:any)
   {
     const params = { userEmail: email }
-    this.router.navigate(["profile"], {queryParams: params}).then()
+    void this.router.navigate(["profile"], {queryParams: params})
   }
 
   showUserTrainingHistories(userId: any)

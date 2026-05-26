@@ -1,6 +1,7 @@
 import { Activity } from "../activity/activity"
 import { Offer } from "../offer/offer"
 import { User } from "../user/user"
+import {Member} from "../user/Member";
 
 export class Subscription
 {
@@ -9,6 +10,6 @@ export class Subscription
     subscriptionStartDate!: string
     subscriptionEndDate!: string
     subscriptionActivity!: Activity
-    subscriptionMember!: User
+    member!: Member
     subscriptionOffer!: Offer
 }

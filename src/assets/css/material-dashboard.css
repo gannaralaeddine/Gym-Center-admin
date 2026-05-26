@@ -33,7 +33,7 @@
   --bs-white: #fff;
   --bs-dark-blue: #1A237E;
   --bs-primary-rgb: 233, 30, 99;
-  --bs-secondary-rgb: , 128, 154;
+  --bs-secondary-rgb: 233 , 128, 154;
   --bs-success-rgb: 76, 175, 80;
   --bs-info-rgb: 26, 115, 232;
   --bs-warning-rgb: 251, 140, 0;
@@ -42,9 +42,8 @@
   --bs-dark-rgb: 52, 71, 103;
   --bs-white-rgb: 255, 255, 255;
   --bs-dark-blue-rgb: 26, 35, 126;
-  --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
-  --bs-body-color-rgb: , 128, 154;
+  --bs-body-color-rgb: 233, 128, 154;
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

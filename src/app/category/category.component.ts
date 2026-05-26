@@ -109,7 +109,7 @@ export class CategoryComponent implements OnInit
   {
     const params = { catId: category.catId }
 
-    this.router.navigate(["category-details"], { queryParams: params  }).then()
+    void this.router.navigate(["category-details"], { queryParams: params  })
   }
 
   applyFilter(event: Event)

@@ -1,21 +1,22 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { SubscriptionService } from '../services/subscription.service';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { UtilsService } from '../serviceutils/utils.service';
-import { AddSubscriptionComponent } from './add-subscription/add-subscription.component';
+import {NgIf} from '@angular/common';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {SubscriptionService} from '../services/subscription.service';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {UtilsService} from '../serviceutils/utils.service';
+import {AddSubscriptionComponent} from './add-subscription/add-subscription.component';
+import {LoadingSpinnerComponent} from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-subscription',
   standalone: true,
-  imports: [NgFor, NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule],
+  imports: [NgIf, MatFormFieldModule, MatInputModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule, LoadingSpinnerComponent],
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.css'
 })
@@ -24,6 +25,8 @@ export class SubscriptionComponent implements OnInit
   activities: any
   dataSource!: MatTableDataSource<any>;
   displayedColumns = ['Image','Activité','Prix','Gestion']
+  isLoading = false
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
@@ -80,10 +83,11 @@ export class SubscriptionComponent implements OnInit
       this.getAllSubscriptions()
     })
   }
+
   goToSubscriptionDetails(subscription: any)
   {
     const params = { subscriptionId: subscription.subscriptionId }
-    this.router.navigate(["subscription-details"], { queryParams: params  })
+    void this.router.navigate(["subscription-details"], { queryParams: params  })
   }
 
   deleteSubscription(id: any)
@@ -91,12 +95,17 @@ export class SubscriptionComponent implements OnInit
     this.utilsService.deletePopup("Supprimer Abonnement", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
     .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
+        this.isLoading = true;
         this.subscriptionService.deleteSubscription(id).subscribe({
           complete: () => {
+            this.isLoading = false;
             this.utilsService.successDialog("Opération réussite", "Cet abonnement à été supprimé avec succès", true)
             this.ngOnInit()
           },
-          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+          error:(err) => {
+            this.isLoading = false;
+            this.utilsService.successDialog("Opération échouée", err.message, false);
+          }
         })
       }
     })

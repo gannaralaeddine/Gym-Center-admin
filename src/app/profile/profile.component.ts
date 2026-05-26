@@ -6,7 +6,7 @@ import {User} from "../user/user";
 import {FileHandleModule} from "../file-handle/file-handle.module";
 import {UtilsService} from "../serviceutils/utils.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {CardFlipComponent} from "../card-flip/card-flip.component";
@@ -19,32 +19,33 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UpdatePrivateSessionsNumberComponent } from './update-private-sessions-number/update-private-sessions-number.component';
 import { SubscriptionService } from '../services/subscription.service';
 import { RenewSubscriptionComponent } from './renew-subscription/renew-subscription.component';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    RouterLink,
     CardFlipComponent,
     MatGridListModule,
     NgFor,
     NgIf,
     DatePipe,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent
 {
+  isLoading = false;
   deleteTag = "deleteProfileImage"
   user = new User()
   accountType!: string
   userImages: any
   coachSpecialities: any
-  privateSessions: any
   privateSessionsDataSource!: MatTableDataSource<any>
   privateSessionsDisplayedColumns: any
   @ViewChild(MatPaginator) privateSessionsPaginator!: MatPaginator
@@ -297,7 +298,7 @@ export class ProfileComponent
 
     goToActivityDetails(activity: any)
     {
-      this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
+      void this.activityRouter.navigate(["activity-details"], { queryParams: { actId: activity.actId }  })
     }
 
     goToUserDetails(privateSession: any)
@@ -305,11 +306,11 @@ export class ProfileComponent
       switch (this.accountType)
       {
         case "COACH":
-          this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionMember.userEmail}  })
+          void this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionMember.userEmail}  })
           break
 
           case "MEMBER":
-            this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionCoach.userEmail}  })
+            void this.activityRouter.navigate(["profile"], { queryParams: { userEmail: privateSession.privateSessionCoach.userEmail}  })
             break
       }
     }
@@ -365,33 +366,28 @@ export class ProfileComponent
     goToSubscriptionDetails(subscription: any)
   {
     const params = { subscriptionId: subscription.subscriptionId }
-    this.activityRouter.navigate(["subscription-details"], { queryParams: params  })
+    void this.activityRouter.navigate(["subscription-details"], { queryParams: params  })
   }
 
-   deleteSubscription(id: any) 
+   deleteSub(id: any)
   {
     this.utilsService.deletePopup("Supprimer Abonnement", "Êtes-vous sûr de vouloir continuer ?", "deleteOperation")
     .afterClosed().subscribe(isYesOperation => {
       if (isYesOperation) {
+        this.isLoading = true;
         this.subscriptionService.deleteSubscription(id).subscribe({
           complete: () => {
+            this.isLoading = false;
             this.utilsService.successDialog("Opération réussite", "Cet abonnement à été supprimé avec succès", true)
             this.ngOnInit()
           },
-          error:(err) => this.utilsService.successDialog("Opération échouée", err.message, false)
+          error:(err) => {
+            this.isLoading = false;
+            this.utilsService.successDialog("Opération échouée", err.message, false);
+          }
         })
       }
     })
-  }
-
-  isEndDateGreater(endDate: string) 
-  {
-    if (endDate.split('T')[0] > new Date().toISOString().split('T')[0])
-    {
-      return true
-    }
-    
-    return false
   }
 
 
@@ -406,6 +402,6 @@ export class ProfileComponent
         popup.afterClosed().subscribe(() => {
           this.getUserByEmail()
         })
-      
+
     }
 }

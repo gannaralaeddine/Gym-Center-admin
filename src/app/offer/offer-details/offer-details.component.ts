@@ -112,6 +112,6 @@ export class OfferDetailsComponent implements OnInit
 
   goToCategoryDetails()
   {
-    this.routerActivity.navigate(["activity-details"], { queryParams: { actId: this.offer.offerActivity.actId }  })
+    void this.routerActivity.navigate(["activity-details"], { queryParams: { actId: this.offer.offerActivity.actId }  })
   }
 }

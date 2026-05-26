@@ -3,7 +3,7 @@ import { SubscriptionService } from '../../services/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from '../subscription';
 import { UtilsService } from '../../serviceutils/utils.service';
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -17,15 +17,14 @@ import { AddSubscriptionComponent } from '../add-subscription/add-subscription.c
   selector: 'app-subscription-details',
   standalone: true,
   imports: [
-    NgFor,
-    NgIf,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
-    DatePipe
+    DatePipe,
+    NgIf
   ],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.css'
@@ -49,23 +48,24 @@ export class SubscriptionDetailsComponent implements OnInit
   }
   ngOnInit()
   {
-    this.getSubscription()
+    await this.getSubscription()
   }
 
-  getSubscription()
+  async getSubscription()
   {
     if (isNaN(this.subscriptionId) || this.subscriptionId <= 0) {
       console.error('Invalid subscriptionId provided');
       return; // Or handle the error appropriately
     }
-    this.subscriptionService.getSubscription(this.subscriptionId).subscribe({
+    await this.subscriptionService.getSubscription(this.subscriptionId).subscribe({
       next: (subscriptionObject) => {
         this.subscription.subscriptionPrice = subscriptionObject.subscriptionPrice
         this.subscription.subscriptionStartDate = subscriptionObject.subscriptionStartDate.split('T')[0]
         this.subscription.subscriptionEndDate = subscriptionObject.subscriptionEndDate.split('T')[0]
         this.subscription.subscriptionActivity = subscriptionObject.subscriptionActivity
-        this.subscription.subscriptionMember = subscriptionObject.member
-        this.activityImage = this.utilsService.getImage(subscriptionObject.subscriptionActivity.actImage)
+        this.subscription.member = subscriptionObject.member
+        this.activityImage = this.utilsService.getImage(subscriptionObject.subscriptionActivity?.actImage)
+        console.log(subscriptionObject.member.userPicture)
       },
       error: (err) => console.error(err)
     })
@@ -86,13 +86,13 @@ export class SubscriptionDetailsComponent implements OnInit
   goToActivityDetails()
   {
     const params = { actId: this.subscription.subscriptionActivity.actId }
-    this.routerActivity.navigate(["activity-details"], { queryParams: params  })
+    void this.routerActivity.navigate(["activity-details"], { queryParams: params  })
   }
 
   goToUserProfileDetails(email:any)
   {
     const params = { userEmail: email }
-    this.routerActivity.navigate(["profile"], { queryParams: params  })
+    void this.routerActivity.navigate(["profile"], { queryParams: params  })
   }
 
   updateDialog(subscriptionId: number)

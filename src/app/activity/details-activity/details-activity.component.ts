@@ -137,13 +137,13 @@ export class DetailsActivityComponent implements OnInit
   goToCoachProfile(user: User)
   {
     const params = { userEmail: user.userEmail }
-    this.routerCoach.navigate(["profile"], { queryParams: params  })
+    void this.routerCoach.navigate(["profile"], { queryParams: params  })
   }
 
   goToCategoryDetails(category: Category)
   {
     const params = { catId: category.catId }
-    this.routerCoach.navigate(["category-details"], { queryParams: params  })
+    void this.routerCoach.navigate(["category-details"], { queryParams: params  })
   }
 
   displayImages(images: any, isOneImage: boolean)
